@@ -1,3 +1,6 @@
+/*eslint-disable*/
+var istanbul = require('browserify-istanbul');
+
 module.exports = function(config) {
     var webdriverConfig = {
         hostname: 'fe.nhnent.com',
@@ -17,6 +20,18 @@ module.exports = function(config) {
         exclude: [],
         preprocessors: {
             'src/**/*.js': ['coverage']
+        },
+        browserify: {
+            debug: true,
+            bundleDelay: 1000,
+            transform:[istanbul({
+                ignore: [
+                    '**/*.hbs',
+                    'index.js', 
+                    '**/test/**',
+                    '**/template/**'
+                ]
+            })]
         },
         reporters: [
             'mocha',
