@@ -1,0 +1,25 @@
+{
+    "name": "tui-component-colorpicker",
+    "version": "1.0.0",
+    "description": "Colorpicker component for web",
+    "devDependencies": {
+        "gulp": "^3.9.0",
+        "gulp-connect": "^2.2.0",
+        "jasmine-core": "^2.3.4",
+        "karma": "^0.13.14",
+        "karma-coverage": "^0.5.3",
+        "karma-jasmine": "^0.3.6",
+        "karma-junit-reporter": "^0.3.8",
+        "karma-webdriver-launcher": "https://github.com/everedifice/karma-webdriver-launcher.git",
+        "tui-code-snippet": "^1.0.4"
+    },
+    "scripts": {
+        "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json - ./node_modules/fedoc-template"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.nhnent.com/fe/component-colorpicker.git"
+    },
+    "author": "NHNEnt FE Development Team <dl_javascript@nhnent.com>",
+    "license": "MIT"
+}
