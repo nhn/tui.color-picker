@@ -10,6 +10,7 @@ var gutil = require('gulp-util');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var insert = require('gulp-insert');
+var stylus = require('gulp-stylus');
 var through = require('through2');
 var preprocessify = require('preprocessify');
 var KarmaServer = require('karma').Server;
@@ -54,17 +55,12 @@ function bundle(outputPath, isProduction) {
 
     outputPath = outputPath || 'dist';
 
-    // gulp.src([
-    //         'src/css/common.css',
-    //         'src/css#<{(||)}>#*.css'
-    //     ])
-    //     .pipe(concat('calendar.css'))
-    //     .pipe(insert.prepend(versionHeader))
-    //     .pipe(gulp.dest(outputPath))
-    //     .pipe(isProduction ? cssmin() : gutil.noop())
-    //     .pipe(isProduction ? rename({extname: '.min.css'}) : gutil.noop())
-    //     .pipe(insert.prepend(versionHeader))
-    //     .pipe(isProduction ? gulp.dest(outputPath) : gutil.noop());
+    gulp.src('./src/styl/**/*.styl')
+        .pipe(stylus())
+        .pipe(gulp.dest(outputPath))
+        .pipe(isProduction ? rename({extname: '.min.css'}) : gutil.noop())
+        .pipe(insert.prepend(versionHeader))
+        .pipe(isProduction ? gulp.dest(outputPath) : gutil.noop());
 
     var b = browserify({
         entries: 'index.js',
