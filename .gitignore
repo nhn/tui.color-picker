@@ -38,6 +38,7 @@ Desktop.ini
 .DS_Store
 
 # etc
+build
 temp
 doc
 demo-dev

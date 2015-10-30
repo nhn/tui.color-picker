@@ -11,6 +11,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var insert = require('gulp-insert');
 var through = require('through2');
+var preprocessify = require('preprocessify');
 var KarmaServer = require('karma').Server;
 
 var banner = [
@@ -38,7 +39,8 @@ gulp.task('connect', function() {
     gulp.watch([
         './src/**/*',
         './index.js',
-        './demo/**/*.html'
+        './demo/**/*.html',
+        './demo-dev/**/*.html'
     ], ['bundle-dev']);
 });
 
@@ -87,6 +89,7 @@ function bundle(outputPath, isProduction) {
     }
 
     return b.transform(prependTransform)
+        .transform(preprocessify({ENV: (isProduction ? 'RELEASE' : 'DEBUG')}))
         .bundle()
         .on('error', function(err) {
             console.log(err.message);

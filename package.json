@@ -19,6 +19,7 @@
         "karma-jasmine": "^0.3.6",
         "karma-junit-reporter": "^0.3.8",
         "karma-webdriver-launcher": "https://github.com/everedifice/karma-webdriver-launcher.git",
+        "preprocessify": "0.0.6",
         "through2": "^2.0.0",
         "tui-code-snippet": "^1.0.4",
         "vinyl-buffer": "^1.0.0",

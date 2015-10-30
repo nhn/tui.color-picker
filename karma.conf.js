@@ -12,8 +12,6 @@ module.exports = function(config) {
         basePath: '',
         frameworks: ['jasmine'],
         files: [
-            'bower_components/json2/json2.js',
-            'bower_components/jquery/jquery.js',
             'src/**/*.js',
             'test/**/*.spec.js'
         ],
@@ -26,7 +24,6 @@ module.exports = function(config) {
             bundleDelay: 1000,
             transform:[istanbul({
                 ignore: [
-                    '**/*.hbs',
                     'index.js', 
                     '**/test/**',
                     '**/template/**'
