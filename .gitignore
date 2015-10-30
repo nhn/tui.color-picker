@@ -40,7 +40,7 @@ Desktop.ini
 # etc
 temp
 doc
-demo
+demo-dev
 report
 dist
 *.vim
