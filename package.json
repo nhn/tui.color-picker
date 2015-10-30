@@ -5,6 +5,7 @@
     "devDependencies": {
         "gulp": "^3.9.0",
         "gulp-connect": "^2.2.0",
+        "gulp-stylus": "^2.1.0",
         "jasmine-core": "^2.3.4",
         "karma": "^0.13.14",
         "karma-coverage": "^0.5.3",
