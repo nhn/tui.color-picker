@@ -5,6 +5,7 @@
 'use strict';
 var util = global.tui.util;
 var View = require('./core/view');
+var tmpl = require('../template/layout');
 
 /**
  * @constructor
@@ -23,9 +24,19 @@ function Layout(options, container) {
     this.options = util.extend({
         cssPrefix: 'tui-colorpicker-'
     }, options);
+
+    this.render();
 }
 
 util.inherit(Layout, View);
+
+/**
+ * @override
+ */
+Layout.prototype.render = function() {
+    var html = tmpl.replace(/{{cssPrefix}}/g, this.options.cssPrefix);
+    this.container.innerHTML = html;
+};
 
 module.exports = Layout;
 
