@@ -1,0 +1,4 @@
+root: true
+rules:
+  no-plusplus: 0
+  strict: 0
