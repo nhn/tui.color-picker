@@ -9,7 +9,6 @@ module.exports = function(config) {
             'jasmine'
         ],
         files: [
-            'bower_components/json3/lib/json3.js',
             'bower_components/jquery/jquery.js',
             'node_modules/karma-jasmine-jquery/lib/jasmine-jquery.js',
             'index.js',

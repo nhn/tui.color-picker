@@ -2,8 +2,13 @@
 require('tui-code-snippet');
 
 /** @namespace tui.component */
-tui.util.defineNamespace('tui.component');
+tui.util.defineNamespace('tui.component.colorpicker', {
+    domutil: require('./src/js/core/domutil'),
+    domevent: require('./src/js/core/domevent'),
+    Collection: require('./src/js/core/collection'),
+    View: require('./src/js/core/view'),
 
-tui.component.colorpicker = require('./src/js/factory');
-tui.component.colorpicker.env = '{{env}}';
+    create: require('./src/js/factory'),
+    Palette: require('./src/js/palette')
+});
 

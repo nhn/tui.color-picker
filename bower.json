@@ -14,8 +14,6 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "1.8.3",
-    "json2": "*",
-    "json3": "~3.3.2"
+    "jquery": "1.8.3"
   }
 }
