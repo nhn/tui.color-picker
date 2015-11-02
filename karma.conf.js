@@ -10,14 +10,24 @@ module.exports = function(config) {
 
     config.set({
         basePath: '',
-        frameworks: ['jasmine'],
+        frameworks: [
+            'browserify',
+            'jquery-1.8.3',
+            'jasmine-jquery',
+            'jasmine'
+        ],
         files: [
+            'index.js',
             'src/**/*.js',
-            'test/**/*.spec.js'
+            'test/prepare.js',
+            'test/**/*.spec.js',
+            'test/fixtures/**/*'
         ],
         exclude: [],
         preprocessors: {
-            'src/**/*.js': ['coverage']
+            'index.js': ['browserify'],
+            'src/**/*.js': ['browserify'],
+            'src/js/view/template/helper.js': ['browserify']
         },
         browserify: {
             debug: true,
@@ -31,7 +41,7 @@ module.exports = function(config) {
             })]
         },
         reporters: [
-            'mocha',
+            'dots',
             'coverage',
             'junit'
         ],

@@ -5,9 +5,9 @@ module.exports = function(config) {
     config.set({
         basePath: '',
         frameworks: [
-            'jasmine-jquery',
             'browserify',
-            'jasmine-ajax',
+            'jquery-1.8.3',
+            'jasmine-jquery',
             'jasmine'
         ],
         files: [
