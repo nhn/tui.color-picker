@@ -13,7 +13,10 @@ var insert = require('gulp-insert');
 var stylus = require('gulp-stylus');
 var through = require('through2');
 var preprocessify = require('preprocessify');
-var KarmaServer = require('karma').Server;
+
+// KARMA
+var KarmaServer = require('karma').server;
+var karmaConfigParser = require('karma/lib/config').parseConfig;
 
 var banner = [
 '/** _____               _     _   _ ___    ____      _                  _      _',
@@ -27,10 +30,14 @@ var banner = [
 ].join('\n');
 
 gulp.task('default', function(done) {
-    new KarmaServer({
-        configFile: path.join(__dirname, 'karma.conf.js'),
-        singleRun: true
-    }, done).start();
+    var config = karmaConfigParser(path.resolve('karma.conf.js'), {});
+    config.singleRun = true;
+
+    KarmaServer.start(config, function(exitCode) {
+        gutil.log('Karma has exited with ' + exitCode);
+        done();
+        process.exit(exitCode);
+    });
 });
 
 gulp.task('connect', function() {
@@ -57,9 +64,9 @@ function bundle(outputPath, isProduction) {
 
     gulp.src('./src/styl/**/*.styl')
         .pipe(stylus())
+        .pipe(insert.prepend(versionHeader))
         .pipe(gulp.dest(outputPath))
         .pipe(isProduction ? rename({extname: '.min.css'}) : gutil.noop())
-        .pipe(insert.prepend(versionHeader))
         .pipe(isProduction ? gulp.dest(outputPath) : gutil.noop());
 
     var b = browserify({
@@ -114,8 +121,12 @@ gulp.task('dev', function() {
 });
 
 gulp.task('test-w', function(done) {
-    new KarmaServer({
-        configFile: path.join(__dirname, 'karma.conf.local.js')
-    }, done).start();
+    var config = karmaConfigParser(path.resolve('karma.conf.local.js'), {});
+
+    KarmaServer.start(config, function(exitCode) {
+        gutil.log('Karma has exited with ' + exitCode);
+        done();
+        process.exit(exitCode);
+    });
 });
 

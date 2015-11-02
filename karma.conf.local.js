@@ -6,11 +6,12 @@ module.exports = function(config) {
         basePath: '',
         frameworks: [
             'browserify',
-            'jquery-1.8.3',
-            'jasmine-jquery',
             'jasmine'
         ],
         files: [
+            'bower_components/json3/lib/json3.js',
+            'bower_components/jquery/jquery.js',
+            'node_modules/karma-jasmine-jquery/lib/jasmine-jquery.js',
             'index.js',
             'src/**/*.js',
             'test/prepare.js',
