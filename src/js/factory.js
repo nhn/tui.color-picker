@@ -34,7 +34,8 @@ function throwError(msg) {
  * colorpicker.getColor();    // '#ffffff'
  */
 function Colorpicker(options) {
-    var palette,
+    var layout,
+        palette,
         slider;
 
     if (!(this instanceof Colorpicker)) {
@@ -72,10 +73,14 @@ function Colorpicker(options) {
         return throwError('Colorpicker(): need container option.');
     }
 
+    /**********
+     * Create layout view
+     **********/
+
     /**
      * @type {Layout}
      */
-    this.layout = new Layout(options, options.container);
+    layout = this.layout = new Layout(options, options.container);
 
     /**********
      * Add palette view
@@ -98,15 +103,17 @@ function Colorpicker(options) {
             opt.color = color;
             this.render(color);
         },
-        '_toggleSlider': function() {}
+        '_toggleSlider': function() {
+            slider.toggle(!slider.isVisible());
+        }
     }, this);
+    layout.addChild(palette);
 
     /**********
      * Add slider view
      **********/
     slider = new Slider(options, this.layout.container);
-
-    this.layout.addChild(palette);
+    layout.addChild(slider);
 
     this.render(options.color);
 }
