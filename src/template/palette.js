@@ -1,4 +1,9 @@
-/* eslint strict:0 */
+/**
+ * @fileoverview Palette view template
+ * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
+ */
+'use strict';
+
 var layout = [
 '<ul class="{{cssPrefix}}clearfix">{{colorList}}</ul>',
 '<div class="{{cssPrefix}}clearfix" style="overflow:hidden">',
