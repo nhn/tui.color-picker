@@ -7,6 +7,7 @@ var util = global.tui.util;
 var colorutil = require('./colorutil');
 var Layout = require('./layout');
 var Palette = require('./palette');
+var Slider = require('./slider');
 
 function throwError(msg) {
     /* @if ENV='DEBUG' */
@@ -33,7 +34,8 @@ function throwError(msg) {
  * colorpicker.getColor();    // '#ffffff'
  */
 function Colorpicker(options) {
-    var palette;
+    var palette,
+        slider;
 
     if (!(this instanceof Colorpicker)) {
         return new Colorpicker(options);
@@ -75,6 +77,9 @@ function Colorpicker(options) {
      */
     this.layout = new Layout(options, options.container);
 
+    /**********
+     * Add palette view
+     **********/
     palette = new Palette(options, this.layout.container);
     palette.on({
         '_selectColor': function(e) {
@@ -95,6 +100,11 @@ function Colorpicker(options) {
         },
         '_toggleSlider': function() {}
     }, this);
+
+    /**********
+     * Add slider view
+     **********/
+    slider = new Slider(options, this.layout.container);
 
     this.layout.addChild(palette);
 
