@@ -1,0 +1,73 @@
+cssPrefix = 'tui-colorpicker-'
+
+containerWidth = 152px;
+
+box()
+    width: arguments
+    height: arguments
+
+no-mp()
+    margin: 0px;
+    padding: 0px;
+
+inlineBlock()
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+
++prefix-classes(cssPrefix)
+    
+    // Common
+    .clearfix
+        zoom: 1;
+
+    .clearfix:after
+        content: '';
+        display: block;
+        clear: both;
+
+    // Palette
+    .palette-container
+        width: containerWidth;
+
+    .palette-container ul
+        width: containerWidth;
+        no-mp();
+
+    .palette-container li
+        bow(16px)
+        float:left;
+        margin: 0;
+        padding: 0 3px 3px 0;
+        list-style: none;
+
+    .palette-button
+        display: block;
+        border: none;
+        overflow: hidden;
+        outline: none;
+        no-mp();
+        box(16px);
+        cursor: pointer;
+
+    .palette-button.selected
+        border: 2px solid #000;
+
+    .palette-hex
+        font-family: monospace;
+        inlineBlock();
+        width: 60px;
+        vertical-align: middle;
+
+    .palette-preview
+        inlineBlock();
+        box(12px);
+        border: 1px solid #ccc;
+        vertical-align: middle;
+        overflow: hidden;
+
+    .palette-toggle-slider
+        inlineBlock();
+        vertical-align: middle;
+        float: right;
+

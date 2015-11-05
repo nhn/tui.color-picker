@@ -4,7 +4,9 @@
  */
 'use strict';
 var util = global.tui.util;
+var colorutil = require('./colorutil');
 var Layout = require('./layout');
+var Palette = require('./palette');
 
 function throwError(msg) {
     /* @if ENV='DEBUG' */
@@ -21,7 +23,7 @@ function throwError(msg) {
  * @param {object} options - options for colorpicker component
  *  @param {HTMLDivElement} options.container - container element
  *  @param {string} [options.color='#ffffff'] - default selected color
- *  @param {object} [options.preset] - color preset for palette
+ *  @param {string[]} [options.preset] - color preset for palette (use base16 palette if not supplied)
  *  @param {string} [options.cssPrefix='tui-colorpicker-'] - css prefix text for each child elements
  * @example
  * var colorpicker = tui.component.colorpicker({
@@ -31,6 +33,8 @@ function throwError(msg) {
  * colorpicker.getColor();    // '#ffffff'
  */
 function Colorpicker(options) {
+    var palette;
+
     if (!(this instanceof Colorpicker)) {
         return new Colorpicker(options);
     }
@@ -40,8 +44,25 @@ function Colorpicker(options) {
      */
     options = this.options = util.extend({
         container: null,
-        color: '#ffffff',
-        preset: {},
+        color: '#f8f8f8',
+        preset: [
+            '#181818',
+            '#282828',
+            '#383838',
+            '#585858',
+            '#b8b8b8',
+            '#d8d8d8',
+            '#e8e8e8',
+            '#f8f8f8',
+            '#ab4642',
+            '#dc9656',
+            '#f7ca88',
+            '#a1b56c',
+            '#86c1b9',
+            '#7cafc2',
+            '#ba8baf',
+            '#a16946'
+        ],
         cssPrefix: 'tui-colorpicker-'
     }, options);
 
@@ -49,15 +70,58 @@ function Colorpicker(options) {
         return throwError('Colorpicker(): need container option.');
     }
 
-    this.layout = new Layout({
-        cssPrefix: options.cssPrefix
-    }, options.container);
+    /**
+     * @type {Layout}
+     */
+    this.layout = new Layout(options, options.container);
+
+    palette = new Palette(options, this.layout.container);
+    palette.on({
+        '_selectColor': function(e) {
+            var color = e.color,
+                opt = this.options;
+
+            if (!colorutil.isValidRGB(color)) {
+                this.render();
+                return;
+            }
+
+            if (opt.color === color) {
+                return;
+            }
+
+            opt.color = color;
+            this.render(color);
+        },
+        '_toggleSlider': function() {}
+    }, this);
+
+    this.layout.addChild(palette);
+
+    this.render(options.color);
 }
 
 Colorpicker.prototype.setColor = function() {};
 Colorpicker.prototype.getColor = function() {};
 Colorpicker.prototype.toggle = function() {};
-Colorpicker.prototype.destroy = function() {};
+
+/**
+ * Render colorpicker
+ * @param {string} [color] - selected color
+ */
+Colorpicker.prototype.render = function(color) {
+    this.layout.render(color || this.options.color);
+};
+
+/**
+ * Destroy colorpicker component
+ */
+Colorpicker.prototype.destroy = function() {
+    this.layout.destroy();
+    this.options.container.innerHTML = '';
+
+    this.layout = this.options = null;
+};
 
 util.CustomEvents.mixin(Colorpicker);
 

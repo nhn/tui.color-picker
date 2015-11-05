@@ -9,6 +9,7 @@ tui.util.defineNamespace('tui.component.colorpicker', {
     View: require('./src/js/core/view'),
 
     create: require('./src/js/factory'),
-    Palette: require('./src/js/palette')
+    Palette: require('./src/js/palette'),
+    colorutil: require('./src/js/colorutil')
 });
 
