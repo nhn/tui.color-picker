@@ -4,8 +4,8 @@
  */
 'use strict';
 var util = global.tui.util;
+var domutil = require('./core/domutil');
 var View = require('./core/view');
-var tmpl = require('../template/layout');
 
 /**
  * @constructor
@@ -15,8 +15,6 @@ var tmpl = require('../template/layout');
  * @param {HTMLDivElement} container - container
  */
 function Layout(options, container) {
-    View.call(this, options, container);
-
     /**
      * option object
      * @type {object}
@@ -25,6 +23,14 @@ function Layout(options, container) {
         cssPrefix: 'tui-colorpicker-'
     }, options);
 
+    container = domutil.appendHTMLElement(
+        'div',
+        container,
+        this.options.cssPrefix + 'container'
+    );
+
+    View.call(this, options, container);
+
     this.render();
 }
 
@@ -32,10 +38,12 @@ util.inherit(Layout, View);
 
 /**
  * @override
+ * @param {string} [color] - selected color
  */
-Layout.prototype.render = function() {
-    var html = tmpl.replace(/{{cssPrefix}}/g, this.options.cssPrefix);
-    this.container.innerHTML = html;
+Layout.prototype.render = function(color) {
+    this.recursive(function(view) {
+        view.render(color);
+    }, true);
 };
 
 module.exports = Layout;
