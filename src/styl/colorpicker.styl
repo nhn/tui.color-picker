@@ -2,6 +2,7 @@ cssPrefix = 'tui-colorpicker-'
 
 containerWidth = 152px;
 
+
 box()
     width: arguments
     height: arguments
@@ -17,6 +18,7 @@ inlineBlock()
     zoom: 1;
 
 +prefix-classes(cssPrefix)
+
     
     // Common
     .clearfix
@@ -26,6 +28,10 @@ inlineBlock()
         content: '';
         display: block;
         clear: both;
+
+    .vml
+        behavior: url(#default#VML);
+        position: absolute;
 
     // Palette
     .palette-container
@@ -76,10 +82,19 @@ inlineBlock()
     .slider-container
         margin: 5px 0 0 0;
 
+    .vml-wrap,
     .canvas
+        position: relative;
         margin: 0;
         padding: 0;
         width: containerWidth - 32;
         height: containerWidth - 32;
         border: 1px solid #ccc;
+        overflow: hidden;
+
+    .vml-slider-bg
+        margin-top: -1px;
+        margin-left: -1px;
+        width: containerWidth - 31;
+        height: containerWidth - 31;
 
