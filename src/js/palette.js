@@ -47,7 +47,7 @@ function Palette(options, container) {
     container = domutil.appendHTMLElement(
         'div',
         container,
-        this.options.cssPrefix + 'container'
+        this.options.cssPrefix + 'palette-container'
     );
 
     View.call(this, options, container);
