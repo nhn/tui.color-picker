@@ -54,9 +54,7 @@ Slider.prototype.isVisible = function() {
  */
 Slider.prototype.render = function() {
     var options = this.options,
-        html = tmpl.layout,
-        canvas,
-        size;
+        html = tmpl.layout;
 
     html = html.replace(/{{slider}}/, tmpl.slider);
     html = html.replace(/{{cssPrefix}}/g, options.cssPrefix);
