@@ -2,7 +2,6 @@ cssPrefix = 'tui-colorpicker-'
 
 containerWidth = 152px;
 
-
 box()
     width: arguments
     height: arguments
@@ -17,9 +16,14 @@ inlineBlock()
     *display: inline;
     zoom: 1;
 
-+prefix-classes(cssPrefix)
+clearfix()
+    zoom: 1;
+    &:after
+        content: '';
+        display: block;
+        clear: both;
 
-    
++prefix-classes(cssPrefix)
     // Common
     .clearfix
         zoom: 1;
@@ -81,18 +85,48 @@ inlineBlock()
     // Slider
     .slider-container
         margin: 5px 0 0 0;
+        height: containerWidth - 30;
+        clearfix()
 
-    // slider view
+    .slider-left
+        float: left;
+
+    .slider-right
+        float: right;
+
+    // SVG
+    .svg
+        display: block;
+
     .svg-slider
         box(containerWidth - 32);
 
-    .vml-slider-wrap
+    .svg-huebar
+        width: 21px;
+        height: containerWidth - 32;
+        border: 1px solid #ccc;
+
+    // VML
+    .vml-slider
         position: relative;
         width: containerWidth - 32;
         height: containerWidth - 32;
 
-    .vml-slider
+    .vml-slider-bg
         position: absolute;
-        width: containerWidth - 32;
-        height: containerWidth - 32;
+        top: 0;
+        left: 0;
+        width: containerWidth - 30;
+        height: containerWidth - 30;
+
+    .vml-huebar
+        width: 21px;
+        position: relative;
+    
+    .vml-huebar-bg
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 21px;
+        height: containerWidth - 30;
 

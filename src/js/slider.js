@@ -57,6 +57,7 @@ Slider.prototype.render = function() {
         html = tmpl.layout;
 
     html = html.replace(/{{slider}}/, tmpl.slider);
+    html = html.replace(/{{huebar}}/, tmpl.huebar);
     html = html.replace(/{{cssPrefix}}/g, options.cssPrefix);
 
     this.container.innerHTML = html;
