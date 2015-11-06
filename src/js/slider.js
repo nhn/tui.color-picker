@@ -58,7 +58,7 @@ Slider.prototype.render = function() {
         canvas,
         size;
 
-    html = html.replace(/{{canvas}}/, tmpl.canvas);
+    html = html.replace(/{{slider}}/, tmpl.slider);
     html = html.replace(/{{cssPrefix}}/g, options.cssPrefix);
 
     this.container.innerHTML = html;
