@@ -5,6 +5,7 @@
 'use strict';
 var util = global.tui.util;
 var colorutil = require('./colorutil');
+var Drag = require('./core/drag');
 var Layout = require('./layout');
 var Palette = require('./palette');
 var Slider = require('./slider');
@@ -36,6 +37,7 @@ function throwError(msg) {
 function Colorpicker(options) {
     var layout,
         palette,
+        drag,
         slider;
 
     if (!(this instanceof Colorpicker)) {
@@ -116,6 +118,21 @@ function Colorpicker(options) {
     layout.addChild(slider);
 
     this.render(options.color);
+
+    /**********
+     * Drag handler
+     **********/
+    util.debounce(function() {
+        drag = new Drag({
+            distance: 0
+        }, slider.container);
+
+        drag.on({
+            'dragStart': function(dragStartEvent) {},
+            'drag': function(dragEvent) {},
+            'dragEnd': function(dragEndEvent) {}
+        });
+    }, 0)();
 }
 
 Colorpicker.prototype.setColor = function() {};

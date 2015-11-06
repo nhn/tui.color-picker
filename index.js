@@ -7,6 +7,7 @@ tui.util.defineNamespace('tui.component.colorpicker', {
     domevent: require('./src/js/core/domevent'),
     Collection: require('./src/js/core/collection'),
     View: require('./src/js/core/view'),
+    Drag: require('./src/js/core/drag'),
 
     create: require('./src/js/factory'),
     Palette: require('./src/js/palette'),

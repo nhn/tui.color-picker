@@ -82,7 +82,7 @@ clearfix()
         vertical-align: middle;
         float: right;
 
-    // Slider
+    // Slider View
     .slider-container
         margin: 5px 0 0 0;
         height: containerWidth - 30;
@@ -94,6 +94,38 @@ clearfix()
     .slider-right
         float: right;
 
+    // hue bar
+    .hue-rail
+        position: relative;
+        float: left;
+        width: 2px;
+        margin: 1px 0;
+        height: containerWidth - 32;
+        overflow: visible;
+
+    .hue-handle
+        display: block;
+        position: absolute;
+        width: 16px;
+        height: 13px;
+        top: 0%;
+        left: -6px;
+        margin-top: -6.5px;
+        cursor: pointer;
+        line-height: 13px;
+        font-family: monospace;
+        font-size: 1.1em;
+
+    // slider
+    .slider-handle
+        position: absolute;
+        overflow: visible;
+        top: 0;
+        left: 0;
+        width: 1px;
+        height: 1px;
+        z-index: 2;
+
     // SVG
     .svg
         display: block;
@@ -102,7 +134,8 @@ clearfix()
         box(containerWidth - 32);
 
     .svg-huebar
-        width: 21px;
+        float: right;
+        width: 16px;
         height: containerWidth - 32;
         border: 1px solid #ccc;
 
@@ -114,19 +147,20 @@ clearfix()
 
     .vml-slider-bg
         position: absolute;
+        margin: -1px 0 0 -1px;
         top: 0;
         left: 0;
         width: containerWidth - 30;
         height: containerWidth - 30;
 
     .vml-huebar
-        width: 21px;
+        width: 16px;
         position: relative;
     
     .vml-huebar-bg
         position: absolute;
         top: 0;
         left: 0;
-        width: 21px;
+        width: 16px;
         height: containerWidth - 30;
 
