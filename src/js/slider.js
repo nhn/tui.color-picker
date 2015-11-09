@@ -10,8 +10,10 @@ var domevent = require('./core/domevent');
 var View = require('./core/view');
 var tmpl = require('../template/slider');
 
-// Limitation position of point element inside of color slider
-var SVG_POS_LIMIT_RANGE = [-7.5, 112];
+// Limitation position of point element inside of colorslider and hue bar
+var COLORSLIDER_POS_LIMIT_RANGE = [-7.5, 112];
+var HUEBAR_POS_LIMIT_RANGE = [-3, 115];
+var HUEBAR_HANDLE_RIGHT_POS = -6;
 
 /**
  * @constructor
@@ -60,9 +62,16 @@ function Slider(options, container) {
     this.huebarContainer = null;
 
     /**
-     * Color slider point element (i.e. Path, v:path)
+     * Color slider handle element
+     * @type {SVG|VML}
      */
-    this.sliderPointElement = null;
+    this.sliderHandleElement = null;
+
+    /**
+     * hue bar handle element
+     * @type {SVG|VML}
+     */
+    this.huebarHandleElement = null;
 }
 
 util.inherit(Slider, View);
@@ -84,6 +93,27 @@ Slider.prototype.isVisible = function() {
 };
 
 /**
+ * Get handle element's position
+ * @param {SVG|VML} handle - handle element
+ * @returns {number[]} position of handle element
+ */
+Slider.prototype._getHandlePosition = function(handle) {
+    var parseTransformRX = /[\.\-0-9]+/g,
+        temp;
+
+    if (this.isOldBrowser) {
+        temp = handle.style;
+        return [parseFloat(temp.top), parseFloat(temp.left)];
+    }
+
+    temp = handle.getAttribute('transform').match(parseTransformRX);
+
+    // need caution for difference of VML, SVG coordinates system.
+    // translate command need X coords in first parameter. but VML is use CSS coordinate system(top, left)
+    return [parseFloat(temp[1]), parseFloat(temp[0])];
+};
+
+/**
  * @override
  */
 Slider.prototype.render = function() {
@@ -98,7 +128,9 @@ Slider.prototype.render = function() {
 
     that.container.innerHTML = html;
 
-    that.sliderPointElement = domutil.find('.' + options.cssPrefix + 'slider-handle', container);
+    that.sliderHandleElement = domutil.find('.' + options.cssPrefix + 'slider-handle', container);
+    that.huebarHandleElement = domutil.find('.' + options.cssPrefix + 'huebar-handle', container);
+
     that.colorsliderContainer = domutil.find('.' + options.cssPrefix + 'slider-left', container);
     that.huebarContainer = domutil.find('.' + options.cssPrefix + 'slider-right', container);
 
@@ -112,25 +144,25 @@ Slider.prototype.render = function() {
  * @param {number} leftPercent - percent value of point left position
  */
 Slider.prototype.moveSliderPercent = function(topPercent, leftPercent) {
-    var pointElement = this.sliderPointElement,
+    var pointElement = this.sliderHandleElement,
         absMin, maxValue, top, left,
         pointerColor;
 
     topPercent = topPercent || 0;
     leftPercent = leftPercent || 0;
 
-    absMin = Math.abs(SVG_POS_LIMIT_RANGE[0]);
-    maxValue = absMin + SVG_POS_LIMIT_RANGE[1];
+    absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]);
+    maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1];
 
     // 100 : maxValue = x : topPercent
     top = ((topPercent / 100) * maxValue) - absMin;
     left = ((leftPercent / 100) * maxValue) - absMin;
 
     // Check position limitation.
-    top = Math.max(SVG_POS_LIMIT_RANGE[0], top);
-    top = Math.min(SVG_POS_LIMIT_RANGE[1], top);
-    left = Math.max(SVG_POS_LIMIT_RANGE[0], left);
-    left = Math.min(SVG_POS_LIMIT_RANGE[1], left);
+    top = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], top);
+    top = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], top);
+    left = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], left);
+    left = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], left);
 
     pointerColor = top > 50 ? 'white' : 'black';
 
@@ -151,57 +183,98 @@ Slider.prototype.moveSliderPercent = function(topPercent, leftPercent) {
  * @return {number[]} percent position of colorslider point
  */
 Slider.prototype.getSliderPercent = function() {
-    var pointElement = this.sliderPointElement,
-        parseTransformRX = /[\.\-0-9]+/g,
-        style, position,
-        absMin = Math.abs(SVG_POS_LIMIT_RANGE[0]),
-        maxValue = absMin + SVG_POS_LIMIT_RANGE[1],
+    var absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]),
+        maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1],
         topPercent, leftPercent;
 
-    if (this.isOldBrowser) {
-        style = pointElement.style;
-        position = [parseFloat(style.top), parseFloat(style.left)];
-    } else {
-        style = pointElement.getAttribute('transform').match(parseTransformRX);
+    position = this._getHandlePosition(this.sliderHandleElement);
 
-        // need caution for difference of VML, SVG coordinates system.
-        position = [parseFloat(style[1]), parseFloat(style[0])];
-    }
-
-    position[0] += absMin;
-    position[1] += absMin;
-
-    topPercent = (position[0] / maxValue) * 100;
-    leftPercent = (position[1] / maxValue) * 100;
+    // Add absMin because handle position use center coordinate of element not lefttop.
+    topPercent = ((position[0] + absMin) / maxValue) * 100;
+    leftPercent = ((position[1] + absMin) / maxValue) * 100;
 
     //TODO: need get h valur from hue bar
     return [topPercent, leftPercent, NaN];
 };
 
-Slider.prototype.getHSV = function() {
-    var percent = this.getSliderPercent(),
-        v = percent[0];
+/**
+ * Move hue handle supplied pixel value
+ * @param {number} newTop - pixel to move hue handle
+ */
+Slider.prototype._moveHueHandle = function(newTop) {
+    var handleElement = this.huebarHandleElement;
 
-    // return [
-    //     NaN,
-    //     percent[1],
-    //     percent[0]
-    // ];
-    //
-    v = Math.round((v * 255) / 100);
+    newTop = Math.max(HUEBAR_POS_LIMIT_RANGE[0], newTop);
+    newTop = Math.min(HUEBAR_POS_LIMIT_RANGE[1], newTop);
 
-    v = 255 - v;
+    if (this.isOldBrowser) {
+        handleElement.style.top = newTop + 'px';
+        return;
+    }
 
+    handleElement.setAttribute('transform', 
+       'translate(' + HUEBAR_HANDLE_RIGHT_POS + ',' + newTop + ')');
+};
 
-    domutil.find('.tui-colorpicker-palette-preview').style.backgroundColor = 'rgb(' + v + ',' + v + ',' + v + ')';
-    //
-    // // console.log(topPercent);
+/**
+ * Move hue bar handle by supplied degree
+ * @param {number} degree - 0 ~ 360 degree
+ */
+Slider.prototype.moveHueByDegree = function(degree) {
+    var newTop = 0,
+        absMin, maxValue;
+
+    absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
+    maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
+
+    degree = degree || 0;
+    newTop = ((maxValue * degree) / 360) - absMin;
+    this._moveHueHandle(newTop);
+
+    // TODO: change colorslider base color
+};
+
+/**
+ * Move hue bar handle by supplied percent
+ * @param {number} percent - 0 ~ 100 percent
+ */
+Slider.prototype.moveHueByPercent = function(percent) {
+    var newTop = 0,
+        absMin, maxValue;
+
+    absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
+    maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
+
+    percent = percent || 0;
+    newTop = ((maxValue * percent) / 100) - absMin;
+    this._moveHueHandle(newTop);
+};
+
+/**
+ * Get huebar handle position by color degree
+ * @returns {number} degree
+ */
+Slider.prototype.getHueDegree = function() {
+    var handle = this.huebarHandleElement,
+        position = this._getHandlePosition(handle),
+        absMin, maxValue;
+
+    absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
+    maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
+
+    // maxValue : 360 = pos.y : x
+    return ((position[0] + absMin) * 360) / maxValue;
 };
 
 /**********
  * Drag event handler
  **********/
 
+/**
+ * Cache immutable data when dragging or click view
+ * @param {object} event - Click, DragStart event.
+ * @returns {object} cached data.
+ */
 Slider.prototype._prepareColorSliderForMouseEvent = function(event) {
     var options = this.options,
         sliderPart = domutil.closest(event.target, '.' + options.cssPrefix + 'slider-part'),
@@ -217,39 +290,58 @@ Slider.prototype._prepareColorSliderForMouseEvent = function(event) {
     return cache;
 };
 
+/**
+ * Click event handler
+ * @param {object} clickEvent - Click event from Drag module
+ */
 Slider.prototype._onClick = function(clickEvent) {
     var cache = this._prepareColorSliderForMouseEvent(clickEvent),
-        mousePos, topPercent, leftPercent;
+        mousePos = domevent.getMousePosition(clickEvent.originEvent, cache.parentElement),
+        topPercent, leftPercent;
+
+    topPercent = (mousePos[1] / cache.parentElementSize[1]) * 100;
 
     if (cache.isColorSlider) {
-        mousePos = domevent.getMousePosition(clickEvent.originEvent, cache.parentElement);
         leftPercent = (mousePos[0] / cache.parentElementSize[0]) * 100;
-        topPercent = (mousePos[1] / cache.parentElementSize[1]) * 100;
 
         this.moveSliderPercent(topPercent, leftPercent);
         this._dragDataCache = null;
-        return;
+    } else {
+        this.moveHueByPercent(topPercent);
     }
 };
 
+/**
+ * DragStart event handler
+ * @param {object} dragStartEvent - dragStart event data from Drag#dragStart
+ */
 Slider.prototype._onDragStart = function(dragStartEvent) {
     this._prepareColorSliderForMouseEvent(dragStartEvent);
 };
 
+/**
+ * Drag event handler
+ * @param {Drag#drag} dragEvent - drag event data
+ */
 Slider.prototype._onDrag = function(dragEvent) {
     var cache = this._dragDataCache,
-        mousePos, topPercent, leftPercent;
+        mousePos = domevent.getMousePosition(dragEvent.originEvent, cache.parentElement),
+        topPercent, leftPercent;
+
+    topPercent = (mousePos[1] / cache.parentElementSize[1]) * 100;
 
     if (cache.isColorSlider) {
-        mousePos = domevent.getMousePosition(dragEvent.originEvent, cache.parentElement);
         leftPercent = (mousePos[0] / cache.parentElementSize[0]) * 100;
-        topPercent = (mousePos[1] / cache.parentElementSize[1]) * 100;
-
         this.moveSliderPercent(topPercent, leftPercent);
         return;
+    } else {
+        this.moveHueByPercent(topPercent);
     }
 };
 
+/**
+ * Drag#dragEnd event handler
+ */
 Slider.prototype._onDragEnd = function() {
     this._dragDataCache = null;
 };

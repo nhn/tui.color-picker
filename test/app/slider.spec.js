@@ -9,21 +9,21 @@ describe('view:Slider', function() {
 
     describe('moveSliderPercent()', function() {
         beforeEach(function() {
-            inst.sliderPointElement= jasmine.createSpyObj('pointElement', ['setAttribute']);
-            inst.sliderPointElement.style = {};
+            inst.sliderHandleElement = jasmine.createSpyObj('pointElement', ['setAttribute']);
+            inst.sliderHandleElement.style = {};
         });
         
         it('Move colorslider point by supplied top, left, percent.', function() {
             inst.moveSliderPercent(0, 0);
 
-            expect(inst.sliderPointElement.setAttribute).toHaveBeenCalledWith(
+            expect(inst.sliderHandleElement.setAttribute).toHaveBeenCalledWith(
                 'transform',
                 'translate(-7.5,-7.5)'
             );
 
             inst.moveSliderPercent(100, 100);
 
-            expect(inst.sliderPointElement.setAttribute).toHaveBeenCalledWith(
+            expect(inst.sliderHandleElement.setAttribute).toHaveBeenCalledWith(
                 'transform',
                 'translate(112,112)'
             );
@@ -37,7 +37,7 @@ describe('view:Slider', function() {
 
             inst.moveSliderPercent(20, 50);
 
-            style = inst.sliderPointElement.style;
+            style = inst.sliderHandleElement.style;
 
             expect(parseFloat(style.top)).toBeCloseTo(16.4);
             expect(parseFloat(style.left)).toBeCloseTo(52.25);
