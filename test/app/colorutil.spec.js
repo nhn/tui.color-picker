@@ -18,4 +18,12 @@ describe('colorutil', function() {
         expect(hsv).toEqual([36, 45, 97]);
         expect(colorutil.rgbToHSV(255, 255, 0)).toEqual([60, 100, 100]);
     });
+
+    it('hsvToRGB()', function() {
+        // 색상각도 0, 채도 100, 명도 100 => 붉은색
+        expect(colorutil.hsvToRGB(0, 100, 100)).toEqual([255, 0, 0]);
+
+        // 색상각도 0, 채도 0, 명도 0 => 검정색
+        expect(colorutil.hsvToRGB(0, 0, 0)).toEqual([0, 0, 0]);
+    });
 });
