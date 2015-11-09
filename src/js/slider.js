@@ -7,6 +7,7 @@
 var util = global.tui.util;
 var domutil = require('./core/domutil');
 var domevent = require('./core/domevent');
+var colorutil = require('./colorutil');
 var View = require('./core/view');
 var tmpl = require('../template/slider');
 
@@ -14,6 +15,7 @@ var tmpl = require('../template/slider');
 var COLORSLIDER_POS_LIMIT_RANGE = [-7.5, 112];
 var HUEBAR_POS_LIMIT_RANGE = [-3, 115];
 var HUEBAR_HANDLE_RIGHT_POS = -6;
+var VML_BASECOLOR_TEMPLATE = '0% {{color}}, 100% rgb(255,255,255)';
 
 /**
  * @constructor
@@ -72,6 +74,12 @@ function Slider(options, container) {
      * @type {SVG|VML}
      */
     this.huebarHandleElement = null;
+
+    /**
+     * Element that render base color in colorslider part
+     * @type {SVG|VML}
+     */
+    this.baseColorElement = null;
 }
 
 util.inherit(Slider, View);
@@ -116,11 +124,13 @@ Slider.prototype._getHandlePosition = function(handle) {
 /**
  * @override
  */
-Slider.prototype.render = function() {
+Slider.prototype.render = function(colorStr) {
     var that = this,
         container = that.container,
         options = that.options,
-        html = tmpl.layout;
+        html = tmpl.layout,
+        rgb,
+        hsv;
 
     html = html.replace(/{{slider}}/, tmpl.slider);
     html = html.replace(/{{huebar}}/, tmpl.huebar);
@@ -130,12 +140,16 @@ Slider.prototype.render = function() {
 
     that.sliderHandleElement = domutil.find('.' + options.cssPrefix + 'slider-handle', container);
     that.huebarHandleElement = domutil.find('.' + options.cssPrefix + 'huebar-handle', container);
+    that.baseColorElement = domutil.find('.' + options.cssPrefix + 'slider-basecolor', container);
 
     that.colorsliderContainer = domutil.find('.' + options.cssPrefix + 'slider-left', container);
     that.huebarContainer = domutil.find('.' + options.cssPrefix + 'slider-right', container);
 
-    // TODO: apply rgb string
-    that.moveSliderPercent(0, 0);
+    rgb = colorutil.hexToRGB(colorStr);
+    hsv = colorutil.rgbToHSV.apply(null, rgb);
+
+    this.moveHueByDegree(hsv[0])
+    this.moveSliderPercent(100 - hsv[2], hsv[1]);
 };
 
 /**
@@ -185,7 +199,7 @@ Slider.prototype.moveSliderPercent = function(topPercent, leftPercent) {
 Slider.prototype.getSliderPercent = function() {
     var absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]),
         maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1],
-        topPercent, leftPercent;
+        topPercent, leftPercent, position; 
 
     position = this._getHandlePosition(this.sliderHandleElement);
 
@@ -193,8 +207,7 @@ Slider.prototype.getSliderPercent = function() {
     topPercent = ((position[0] + absMin) / maxValue) * 100;
     leftPercent = ((position[1] + absMin) / maxValue) * 100;
 
-    //TODO: need get h valur from hue bar
-    return [topPercent, leftPercent, NaN];
+    return [topPercent, leftPercent];
 };
 
 /**
@@ -202,23 +215,33 @@ Slider.prototype.getSliderPercent = function() {
  * @param {number} newTop - pixel to move hue handle
  */
 Slider.prototype._moveHueHandle = function(newTop) {
-    var handleElement = this.huebarHandleElement;
+    var handleElement = this.huebarHandleElement,
+        baseColorElement = this.baseColorElement,
+        newBaseColor, colorStr, vmlColor;
 
     newTop = Math.max(HUEBAR_POS_LIMIT_RANGE[0], newTop);
     newTop = Math.min(HUEBAR_POS_LIMIT_RANGE[1], newTop);
 
     if (this.isOldBrowser) {
         handleElement.style.top = newTop + 'px';
-        return;
+    } else {
+        handleElement.setAttribute('transform', 
+           'translate(' + HUEBAR_HANDLE_RIGHT_POS + ',' + newTop + ')');
     }
 
-    handleElement.setAttribute('transform', 
-       'translate(' + HUEBAR_HANDLE_RIGHT_POS + ',' + newTop + ')');
+    newBaseColor = colorutil.hsvToRGB(this.getHueDegree(), 100, 100);
+    colorStr = 'rgb(' + newBaseColor[0] + ',' + newBaseColor[1] + ',' + newBaseColor[2] + ')';
+
+    if (this.isOldBrowser) {
+        baseColorElement.color = colorStr;
+    } else {
+        baseColorElement.setAttribute('stop-color', colorStr);
+    }
 };
 
 /**
  * Move hue bar handle by supplied degree
- * @param {number} degree - 0 ~ 360 degree
+ * @param {number} degree - 0 ~ 359 degree
  */
 Slider.prototype.moveHueByDegree = function(degree) {
     var newTop = 0,
@@ -228,10 +251,8 @@ Slider.prototype.moveHueByDegree = function(degree) {
     maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
 
     degree = degree || 0;
-    newTop = ((maxValue * degree) / 360) - absMin;
+    newTop = ((maxValue * degree) / 359) - absMin;
     this._moveHueHandle(newTop);
-
-    // TODO: change colorslider base color
 };
 
 /**
@@ -262,8 +283,27 @@ Slider.prototype.getHueDegree = function() {
     absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
     maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
 
-    // maxValue : 360 = pos.y : x
-    return ((position[0] + absMin) * 360) / maxValue;
+    // maxValue : 359 = pos.y : x
+    return ((position[0] + absMin) * 359) / maxValue;
+};
+
+/**
+ * Get HSV value from slider
+ * @returns {number[]} hsv values
+ */
+Slider.prototype.getHSV = function() {
+    var sv = this.getSliderPercent(),
+        h = this.getHueDegree();
+
+    return [h].concat(sv);
+};
+
+/**
+ * Get RGB value from slider
+ * @returns {number[]} RGB value
+ */
+Slider.prototype.getRGB = function() {
+    return colorutil.hsvToRGB.apply(null, this.getHSV());
 };
 
 /**********

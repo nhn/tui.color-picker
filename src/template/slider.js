@@ -15,7 +15,7 @@ var SVGSlider = ['<svg class="{{cssPrefix}}svg {{cssPrefix}}svg-slider">',
     '<defs>',
         '<linearGradient id="{{cssPrefix}}svg-fill-color" x1="0%" y1="0%" x2="100%" y2="0%">',
             '<stop offset="0%" stop-color="rgb(255,255,255)" />',
-            '<stop offset="100%" stop-color="rgb(255,0,0)" />',
+            '<stop class="{{cssPrefix}}slider-basecolor" offset="100%" stop-color="rgb(255,0,0)" />',
         '</linearGradient>',
         '<linearGradient id="{{cssPrefix}}svn-fill-black" x1="0%" y1="0%" x2="0%" y2="100%">',
             '<stop offset="0%" style="stop-color:rgb(0,0,0);stop-opacity:0" />',
@@ -29,10 +29,10 @@ var SVGSlider = ['<svg class="{{cssPrefix}}svg {{cssPrefix}}svg-slider">',
 
 var VMLSlider = ['<div class="{{cssPrefix}}vml-slider">',
     '<v:rect strokecolor="none" class="{{cssPrefix}}vml {{cssPrefix}}vml-slider-bg">',
-        '<v:fill type="gradient" method="sigma" colors="0% rgb(255,0,0), 100% rgb(255,255,255)" angle="90" class="{{cssPrefix}}vml" />',
+      '<v:fill class="{{cssPrefix}}vml {{cssPrefix}}slider-basecolor" type="gradient" method="none" color="#ff0000" color2="#fff" angle="90" />',
     '</v:rect>',
     '<v:rect strokecolor="#ccc" class="{{cssPrefix}}vml {{cssPrefix}}vml-slider-bg">',
-        '<v:fill type="gradient" method="sigma" colors="0% rgb(0,0,0)" opacity="0%" class="{{cssPrefix}}vml" />',
+        '<v:fill type="gradient" method="none" color="black" color2="white" o:opacity2="0%" class="{{cssPrefix}}vml" />',
     '</v:rect>',
     '<v:shape class="{{cssPrefix}}vml {{cssPrefix}}slider-handle" coordsize="1 1" style="width:1px;height:1px;"' +
         'path="m 0,7 l 14,7 m 7,14 l 7,0 ar 12,12 2,2 z" filled="false" stroked="true" />',
@@ -56,7 +56,7 @@ var SVGHuebar = ['<svg class="{{cssPrefix}}svg {{cssPrefix}}svg-huebar">',
 
 var VMLHuebar = ['<div class="{{cssPrefix}}vml-huebar">',
     '<v:rect strokecolor="#ccc" class="{{cssPrefix}}vml {{cssPrefix}}vml-huebar-bg">',
-        '<v:fill type="gradient" method="sigma" colors="' +
+        '<v:fill type="gradient" method="none" colors="' +
         '0% rgb(255,0,0), 16.666% rgb(255,255,0), 33.333% rgb(0,255,0), 50% rgb(0,255,255), 66.666% rgb(0,0,255), 83.333% rgb(255,0,255), 100% rgb(255,0,0)' +
         '" angle="180" class="{{cssPrefix}}vml" />',
     '</v:rect>',
