@@ -7,8 +7,8 @@
 var util = global.tui.util;
 
 var layout = [
-'<div class="{{cssPrefix}}slider-left">{{slider}}</div>',
-'<div class="{{cssPrefix}}slider-right">',
+'<div class="{{cssPrefix}}slider-left {{cssPrefix}}slider-part">{{slider}}</div>',
+'<div class="{{cssPrefix}}slider-right {{cssPrefix}}slider-part">',
     '<div class="{{cssPrefix}}hue-rail"><span class="{{cssPrefix}}hue-handle">&#9656;</span></div>',
     '{{huebar}}',
 '</div>'
@@ -37,9 +37,10 @@ var VMLSlider = ['<div class="{{cssPrefix}}vml-slider">',
     '<v:rect strokecolor="#ccc" class="{{cssPrefix}}vml {{cssPrefix}}vml-slider-bg">',
         '<v:fill type="gradient" method="sigma" colors="0% rgb(0,0,0)" opacity="0%" class="{{cssPrefix}}vml" />',
     '</v:rect>',
-    '<v:group coordsize="1 1" style="width:1px;height:1px" class="{{cssPrefix}}vml {{cssPrefix}}slider-handle">',
-        '<v:shape class="{{cssPrefix}}vml" style="width:1px;height:1px;" path="m 0,7 l 14,7 m 7,14 l 7,0 ar 12,12 2,2 z" filled="false" />',
-    '</v:group>',
+    // '<v:group coordsize="1 1" style="width:1px;height:1px" class="{{cssPrefix}}vml {{cssPrefix}}slider-handle">',
+    '<v:shape class="{{cssPrefix}}vml {{cssPrefix}}slider-handle" coordsize="1 1" style="width:1px;height:1px;"' +
+        'path="m 0,7 l 14,7 m 7,14 l 7,0 ar 12,12 2,2 z" filled="false" stroked="true" />',
+    // '</v:group>',
 '</div>'].join('\n');
 
 var SVGHuebar = ['<svg class="{{cssPrefix}}svg {{cssPrefix}}svg-huebar">',

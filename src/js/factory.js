@@ -128,10 +128,11 @@ function Colorpicker(options) {
         }, slider.container);
 
         drag.on({
-            'dragStart': function(dragStartEvent) {},
-            'drag': function(dragEvent) {},
-            'dragEnd': function(dragEndEvent) {}
-        });
+            'dragStart': slider._onDragStart,
+            'drag': slider._onDrag,
+            'dragEnd': slider._onDragEnd,
+            'click': slider._onClick
+        }, slider);
     }, 0)();
 }
 

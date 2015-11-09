@@ -4,8 +4,6 @@
  */
 'use strict';
 
-var RGB_MIN = 0x000000;
-var RGB_MAX = 0xffffff;
 var hexRX = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i;
 
 var colorutil = {
@@ -18,22 +16,34 @@ var colorutil = {
         return hexRX.test(str);
     },
 
-    hexToRGB: function(str) {
+    /**
+     * Convert color hex string to rgb number array
+     * @param {string} hexStr - hex string
+     * @return {number[]} rgb numbers
+     */
+    hexToRGB: function(hexStr) {
         var r, g, b;
 
-        if (!colorutil.isValidRGB(str)) {
+        if (!colorutil.isValidRGB(hexStr)) {
             return false;
         }
 
-        str = str.substring(1);
+        hexStr = hexStr.substring(1);
 
-        r = parseInt(str.substr(0, 2), 16);
-        g = parseInt(str.substr(2, 2), 16);
-        b = parseInt(str.substr(4, 2), 16);
+        r = parseInt(hexStr.substr(0, 2), 16);
+        g = parseInt(hexStr.substr(2, 2), 16);
+        b = parseInt(hexStr.substr(4, 2), 16);
 
         return [r, g, b];
     },
 
+    /**
+     * Convert rgb number to HSV value
+     * @param {number} r - red
+     * @param {number} g - green
+     * @param {number} b - blue
+     * @return {number[]} hsv value
+     */
     rgbToHSV: function(r, g, b) {
         var max, min, h, s, v, d;
 
