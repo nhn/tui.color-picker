@@ -46,7 +46,6 @@ var colorutil = {
         d = max - min;
         s = max === 0 ? 0 : (d / max);
 
-
         if (max === min) {
             h = 0;
         } else {
@@ -59,7 +58,11 @@ var colorutil = {
             h /= 6;
         }
 
-        return [h, s, v];
+        return [
+            Math.round(h * 360), 
+            Math.round(s * 100),
+            Math.round(v * 100)
+        ];
     }
 };
 

@@ -30,6 +30,18 @@ var SVGSlider = ['<svg class="{{cssPrefix}}svg {{cssPrefix}}svg-slider">',
     '<path class="{{cssPrefix}}slider-handle" d="M0 7.5 L15 7.5 M7.5 15 L7.5 0 M2 7 a5.5 5.5 0 1 1 0 1 Z" stroke="black" stroke-width="0.75" fill="none" />',
 '</svg>'].join('\n');
 
+var VMLSlider = ['<div class="{{cssPrefix}}vml-slider">',
+    '<v:rect strokecolor="none" class="{{cssPrefix}}vml {{cssPrefix}}vml-slider-bg">',
+        '<v:fill type="gradient" method="sigma" colors="0% rgb(255,0,0), 100% rgb(255,255,255)" angle="90" class="{{cssPrefix}}vml" />',
+    '</v:rect>',
+    '<v:rect strokecolor="#ccc" class="{{cssPrefix}}vml {{cssPrefix}}vml-slider-bg">',
+        '<v:fill type="gradient" method="sigma" colors="0% rgb(0,0,0)" opacity="0%" class="{{cssPrefix}}vml" />',
+    '</v:rect>',
+    '<v:group coordsize="1 1" style="width:1px;height:1px" class="{{cssPrefix}}vml {{cssPrefix}}slider-handle">',
+        '<v:shape class="{{cssPrefix}}vml" style="width:1px;height:1px;" path="m 0,7 l 14,7 m 7,14 l 7,0 ar 12,12 2,2 z" filled="false" />',
+    '</v:group>',
+'</div>'].join('\n');
+
 var SVGHuebar = ['<svg class="{{cssPrefix}}svg {{cssPrefix}}svg-huebar">',
     '<defs>',
         '<linearGradient id="g" x1="0%" y1="0%" x2="0%" y2="100%">',
@@ -44,18 +56,6 @@ var SVGHuebar = ['<svg class="{{cssPrefix}}svg {{cssPrefix}}svg-huebar">',
     '</defs>',
     '<rect width="100%" height="100%" fill="url(#g)"></rect>',
 '</svg>'].join('\n');
-
-var VMLSlider = ['<div class="{{cssPrefix}}vml-slider">',
-    '<v:rect strokecolor="none" class="{{cssPrefix}}vml {{cssPrefix}}vml-slider-bg">',
-        '<v:fill type="gradient" method="sigma" colors="0% rgb(255,0,0), 100% rgb(255,255,255)" angle="90" class="{{cssPrefix}}vml" />',
-    '</v:rect>',
-    '<v:rect strokecolor="#ccc" class="{{cssPrefix}}vml {{cssPrefix}}vml-slider-bg">',
-        '<v:fill type="gradient" method="sigma" colors="0% rgb(0,0,0)" opacity="0%" class="{{cssPrefix}}vml" />',
-    '</v:rect>',
-    '<v:group coordsize="1 1" style="width:1px;height:1px" class="{{cssPrefix}}vml {{cssPrefix}}slider-handle">',
-        '<v:shape class="{{cssPrefix}}vml" style="width:1px;height:1px;" path="m 0,7 l 14,7 m 7,14 l 7,0 ar 12,12 2,2 z" filled="false" />',
-    '</v:group>',
-'</div>'].join('\n');
 
 var VMLHuebar = ['<div class="{{cssPrefix}}vml-huebar">',
     '<v:rect strokecolor="#ccc" class="{{cssPrefix}}vml {{cssPrefix}}vml-huebar-bg">',

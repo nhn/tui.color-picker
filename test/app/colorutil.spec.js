@@ -14,6 +14,7 @@ describe('colorutil', function() {
     });
 
     it('rgbToHSV()', function() {
-        expect(colorutil.rgbToHSV(247, 202, 136)).toEqual([35, 87.4, 75.1]);
+        var hsv = colorutil.rgbToHSV(247, 202, 136);
+        expect(hsv).toEqual([36, 45, 97]);
     });
 });
