@@ -8,7 +8,6 @@ var util = global.tui.util;
 var domutil = require('./core/domutil');
 var View = require('./core/view');
 var tmpl = require('../template/slider');
-var isOldBrowser = util.browser.msie && util.browser.version < 9;
 
 // Limitation position of point element inside of color slider
 var SVG_POS_LIMIT_RANGE = [-7.5, 112];
@@ -33,6 +32,11 @@ function Slider(options, container) {
     this.options = util.extend({
         cssPrefix: 'tui-colorpicker-'
     }, options);
+
+    /**
+     * @type {boolean}
+     */
+    this.isOldBrowser = (util.browser.msie && util.browser.version < 9);
 
     /**
      * Color slider point element (i.e. Path, v:path)
@@ -72,9 +76,9 @@ Slider.prototype.render = function() {
 
     that.container.innerHTML = html;
 
-    util.debounce(function() {
-        that.sliderPointElement = domutil.find('.' + options.cssPrefix + 'slider-handle', that.container);
-    }, 0)();
+    that.sliderPointElement = domutil.find('.' + options.cssPrefix + 'slider-handle', that.container);
+    // TODO: apply rgb string
+    that.moveSliderPercent(0, 0);
 };
 
 /**
@@ -96,13 +100,13 @@ Slider.prototype.moveSliderPercent = function(topPercent, leftPercent) {
     top = ((topPercent / 100) * maxValue) - absMin;
     left = ((leftPercent / 100) * maxValue) - absMin;
 
-    if (isOldBrowser) {
+    if (this.isOldBrowser) {
         pointElement.style.top = top + 'px';
         pointElement.style.left = left + 'px';
         return;
     }
 
-    pointElement.setAttribute('transform', 'translate(' + left + ', ' + top + ')');
+    pointElement.setAttribute('transform', 'translate(' + left + ',' + top + ')');
 };
 
 util.CustomEvents.mixin(Slider);

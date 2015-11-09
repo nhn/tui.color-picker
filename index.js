@@ -11,6 +11,7 @@ tui.util.defineNamespace('tui.component.colorpicker', {
 
     create: require('./src/js/factory'),
     Palette: require('./src/js/palette'),
+    Slider: require('./src/js/slider'),
     colorutil: require('./src/js/colorutil')
 });
 
