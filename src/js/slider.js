@@ -8,6 +8,10 @@ var util = global.tui.util;
 var domutil = require('./core/domutil');
 var View = require('./core/view');
 var tmpl = require('../template/slider');
+var isOldBrowser = util.browser.msie && util.browser.version < 9;
+
+// Limitation position of point element inside of color slider
+var SVG_POS_LIMIT_RANGE = [-7.5, 112];
 
 /**
  * @constructor
@@ -29,6 +33,11 @@ function Slider(options, container) {
     this.options = util.extend({
         cssPrefix: 'tui-colorpicker-'
     }, options);
+
+    /**
+     * Color slider point element (i.e. Path, v:path)
+     */
+    this.sliderPointElement = null;
 }
 
 util.inherit(Slider, View);
@@ -53,14 +62,47 @@ Slider.prototype.isVisible = function() {
  * @override
  */
 Slider.prototype.render = function() {
-    var options = this.options,
+    var that = this,
+        options = this.options,
         html = tmpl.layout;
 
     html = html.replace(/{{slider}}/, tmpl.slider);
     html = html.replace(/{{huebar}}/, tmpl.huebar);
     html = html.replace(/{{cssPrefix}}/g, options.cssPrefix);
 
-    this.container.innerHTML = html;
+    that.container.innerHTML = html;
+
+    util.debounce(function() {
+        that.sliderPointElement = domutil.find('.' + options.cssPrefix + 'slider-handle', that.container);
+    }, 0)();
+};
+
+/**
+ * Move slider point to supplied top, left percent
+ * @param {number} topPercent - percent value of pointer top position
+ * @param {number} leftPercent - percent value of point left position
+ */
+Slider.prototype.moveSliderPercent = function(topPercent, leftPercent) {
+    var pointElement = this.sliderPointElement,
+        absMin, maxValue, top, left;
+
+    topPercent = topPercent || 0;
+    leftPercent = leftPercent || 0;
+
+    absMin = Math.abs(SVG_POS_LIMIT_RANGE[0]);
+    maxValue = absMin + SVG_POS_LIMIT_RANGE[1];
+
+    // 100 : maxValue = x : topPercent
+    top = ((topPercent / 100) * maxValue) - absMin;
+    left = ((leftPercent / 100) * maxValue) - absMin;
+
+    if (isOldBrowser) {
+        pointElement.style.top = top + 'px';
+        pointElement.style.left = left + 'px';
+        return;
+    }
+
+    pointElement.setAttribute('transform', 'translate(' + left + ', ' + top + ')');
 };
 
 util.CustomEvents.mixin(Slider);
