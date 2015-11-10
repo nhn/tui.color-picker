@@ -7,6 +7,7 @@
 var util = global.tui.util;
 var domutil = require('./core/domutil');
 var domevent = require('./core/domevent');
+var svgvml = require('./svgvml');
 var colorutil = require('./colorutil');
 var View = require('./core/view');
 var tmpl = require('../template/slider');
@@ -14,7 +15,6 @@ var tmpl = require('../template/slider');
 // Limitation position of point element inside of colorslider and hue bar
 var COLORSLIDER_POS_LIMIT_RANGE = [-7, 112];
 var HUEBAR_POS_LIMIT_RANGE = [-3, 115];
-var HUEBAR_HANDLE_RIGHT_POS = -6;
 
 /**
  * @constructor
@@ -37,11 +37,6 @@ function Slider(options, container) {
         color: '#f8f8f8',
         cssPrefix: 'tui-colorpicker-'
     }, options);
-
-    /**
-     * @type {boolean}
-     */
-    this.isOldBrowser = (util.browser.msie && util.browser.version < 9);
 
     /**
      * Cache immutable data in click, drag events.
@@ -91,28 +86,6 @@ Slider.prototype.isVisible = function() {
 };
 
 /**
- * Get handle element's position
- * @private
- * @param {SVG|VML} handle - handle element
- * @returns {number[]} handle element's position [top, left]
- */
-Slider.prototype._getHandlePosition = function(handle) {
-    var parseTransformRX = /[\.\-0-9]+/g,
-        temp;
-
-    if (this.isOldBrowser) {
-        temp = handle.style;
-        return [parseFloat(temp.top), parseFloat(temp.left)];
-    }
-
-    temp = handle.getAttribute('transform').match(parseTransformRX);
-
-    // need caution for difference of VML, SVG coordinates system.
-    // translate command need X coords in first parameter. but VML is use CSS coordinate system(top, left)
-    return [parseFloat(temp[1]), parseFloat(temp[0])];
-};
-
-/**
  * @override
  */
 Slider.prototype.render = function(colorStr) {
@@ -159,14 +132,8 @@ Slider.prototype._moveColorSliderHandle = function(newLeft, newTop, silent) {
 
     handleColor = newTop > 50 ? 'white' : 'black';
 
-    if (this.isOldBrowser) {
-        handleColor.strokecolor = handleColor;
-        handle.style.left = newLeft + 'px';
-        handle.style.top = newTop + 'px';
-    } else {
-        handle.setAttribute('transform', 'translate(' + newLeft + ',' + newTop + ')');
-        handle.setAttribute('stroke', handleColor);
-    }
+    svgvml.setTranslateXY(handle, newLeft, newTop);
+    svgvml.setStrokeColor(handle, handleColor);
 
     if (!silent) {
         this.fire('_selectColor', {
@@ -222,9 +189,8 @@ Slider.prototype._moveColorSliderByPosition = function(x, y) {
 Slider.prototype.getSaturationAndValue = function() {
     var absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]),
         maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1],
-        position, saturation, value;
-
-    position = this._getHandlePosition(this.sliderHandleElement);
+        position = svgvml.getTranslateXY(this.sliderHandleElement), 
+        saturation, value;
 
     saturation = ((position[1] + absMin) / maxValue) * 100;
     // The value of HSV color model is inverted. top 100 ~ bottom 0. so subtract by 100
@@ -240,28 +206,19 @@ Slider.prototype.getSaturationAndValue = function() {
  * @param {boolean} [silent=false] - set true then not fire custom event
  */
 Slider.prototype._moveHueHandle = function(newTop, silent) {
-    var handleElement = this.huebarHandleElement,
+    var hueHandleElement = this.huebarHandleElement,
         baseColorElement = this.baseColorElement,
         newBaseColor, colorStr;
 
     newTop = Math.max(HUEBAR_POS_LIMIT_RANGE[0], newTop);
     newTop = Math.min(HUEBAR_POS_LIMIT_RANGE[1], newTop);
 
-    if (this.isOldBrowser) {
-        handleElement.style.top = newTop + 'px';
-    } else {
-        handleElement.setAttribute('transform', 
-           'translate(' + HUEBAR_HANDLE_RIGHT_POS + ',' + newTop + ')');
-    }
+    svgvml.setTranslateY(hueHandleElement, newTop);
 
     newBaseColor = colorutil.hsvToRGB(this.getHue(), 100, 100);
     colorStr = 'rgb(' + newBaseColor[0] + ',' + newBaseColor[1] + ',' + newBaseColor[2] + ')';
 
-    if (this.isOldBrowser) {
-        baseColorElement.color = colorStr;
-    } else {
-        baseColorElement.setAttribute('stop-color', colorStr);
-    }
+    svgvml.setGradientColorStop(baseColorElement, colorStr);
 
     if (!silent) {
         this.fire('_selectColor', {
@@ -303,7 +260,7 @@ Slider.prototype._moveHueByPosition = function(y) {
  */
 Slider.prototype.getHue = function() {
     var handle = this.huebarHandleElement,
-        position = this._getHandlePosition(handle),
+        position = svgvml.getTranslateXY(handle),
         absMin, maxValue;
 
     absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
