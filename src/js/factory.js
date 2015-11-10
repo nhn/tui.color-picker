@@ -35,19 +35,17 @@ function throwError(msg) {
  * colorpicker.getColor();    // '#ffffff'
  */
 function Colorpicker(options) {
-    var layout,
-        palette,
-        drag,
-        slider;
+    var that = this,
+        layout, palette, drag, slider;
 
-    if (!(this instanceof Colorpicker)) {
+    if (!(that instanceof Colorpicker)) {
         return new Colorpicker(options);
     }
     /**
      * Option object
      * @type {object}
      */
-    options = this.options = util.extend({
+    options = that.options = util.extend({
         container: null,
         color: '#f8f8f8',
         preset: [
@@ -72,7 +70,8 @@ function Colorpicker(options) {
     }, options);
 
     if (!options.container) {
-        return throwError('Colorpicker(): need container option.');
+        throwError('Colorpicker(): need container option.');
+        return;
     }
 
     /**********
@@ -82,19 +81,19 @@ function Colorpicker(options) {
     /**
      * @type {Layout}
      */
-    layout = this.layout = new Layout(options, options.container);
+    layout = that.layout = new Layout(options, options.container);
 
     /**********
      * Add palette view
      **********/
-    palette = new Palette(options, this.layout.container);
+    palette = new Palette(options, layout.container);
     palette.on({
         '_selectColor': function(e) {
             var color = e.color,
-                opt = this.options;
+                opt = that.options;
 
             if (!colorutil.isValidRGB(color)) {
-                this.render();
+                that.render();
                 return;
             }
 
@@ -103,22 +102,22 @@ function Colorpicker(options) {
             }
 
             opt.color = color;
-            this.render(color);
+            that.render(color);
         },
         '_toggleSlider': function() {
             slider.toggle(!slider.isVisible());
         }
-    }, this);
+    });
     layout.addChild(palette);
 
     /**********
      * Add slider view
      **********/
-    slider = new Slider(options, this.layout.container);
+    slider = new Slider(options, layout.container);
     slider.on({
         '_selectColor': function(e) {
             var color = e.color,
-                opt = this.options;
+                opt = that.options;
 
             if (opt.color === color) {
                 return;
@@ -127,16 +126,16 @@ function Colorpicker(options) {
             opt.color = color;
             palette.render(color);
         }
-    }, this);
+    });
     layout.addChild(slider);
 
-    this.render(options.color);
+    that.render(options.color);
 
     /**********
      * Drag handler
      **********/
     util.debounce(function() {
-        drag = new Drag({
+        drag = that.drag = new Drag({
             distance: 0
         }, slider.container);
 
@@ -149,9 +148,34 @@ function Colorpicker(options) {
     }, 0)();
 }
 
-Colorpicker.prototype.setColor = function() {};
-Colorpicker.prototype.getColor = function() {};
-Colorpicker.prototype.toggle = function() {};
+/**
+ * Set colorpicker current color
+ * @param {string} hexStr - hex formatted color string
+ */
+Colorpicker.prototype.setColor = function(hexStr) {
+    if (!colorutil.isValidRGB(hexStr)) {
+        throwError('Colorpicker#setColor(): need valid hex string color value');
+    }
+
+    this.options.color = hexStr;
+    this.render(hexStr);
+};
+
+/**
+ * Get colorpicker current color
+ * @returns {string} hex string formatted color
+ */
+Colorpicker.prototype.getColor = function() {
+    return this.options.color;
+};
+
+/**
+ * Toggle colorpicker container element
+ * @param {boolean} [isShow=true] - true when reveal colorpicker
+ */
+Colorpicker.prototype.toggle = function(isShow) {
+    this.layout.container.style.display = !!isShow ? 'block' : 'none';
+};
 
 /**
  * Render colorpicker
@@ -165,10 +189,11 @@ Colorpicker.prototype.render = function(color) {
  * Destroy colorpicker component
  */
 Colorpicker.prototype.destroy = function() {
+    this.drag.off();
     this.layout.destroy();
     this.options.container.innerHTML = '';
 
-    this.layout = this.options = null;
+    this.layout = this.options = this.drag = null;
 };
 
 util.CustomEvents.mixin(Colorpicker);
