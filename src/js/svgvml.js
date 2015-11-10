@@ -8,6 +8,7 @@ var util = global.tui.util;
 var PARSE_TRANSLATE_NUM_REGEX = /[\.\-0-9]+/g;
 var SVG_HUE_HANDLE_RIGHT_POS = -6;
 
+/* istanbul ignore next */
 var svgvml = {
     /**
      * Return true when browser is below IE8.
