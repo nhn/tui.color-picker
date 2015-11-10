@@ -212,21 +212,22 @@ Slider.prototype.getSaturationAndValue = function() {
 Slider.prototype._moveHueHandle = function(newTop, silent) {
     var hueHandleElement = this.huebarHandleElement,
         baseColorElement = this.baseColorElement,
-        newBaseColor, colorStr;
+        newGradientColor,
+        hexStr;
 
     newTop = Math.max(HUEBAR_POS_LIMIT_RANGE[0], newTop);
     newTop = Math.min(HUEBAR_POS_LIMIT_RANGE[1], newTop);
 
     svgvml.setTranslateY(hueHandleElement, newTop);
 
-    newBaseColor = colorutil.hsvToRGB(this.getHue(), 100, 100);
-    colorStr = colorutil.rgbToHEX.apply(null, newBaseColor);
+    newGradientColor = colorutil.hsvToRGB(this.getHue(), 100, 100);
+    hexStr = colorutil.rgbToHEX.apply(null, newGradientColor);
 
-    svgvml.setGradientColorStop(baseColorElement, colorStr);
+    svgvml.setGradientColorStop(baseColorElement, hexStr);
 
     if (!silent) {
         this.fire('_selectColor', {
-            color: colorStr
+            color: colorutil.rgbToHEX.apply(null, this.getRGB()) 
         });
     }
 };
