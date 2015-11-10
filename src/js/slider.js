@@ -12,7 +12,7 @@ var View = require('./core/view');
 var tmpl = require('../template/slider');
 
 // Limitation position of point element inside of colorslider and hue bar
-var COLORSLIDER_POS_LIMIT_RANGE = [-7.5, 112];
+var COLORSLIDER_POS_LIMIT_RANGE = [-7, 112];
 var HUEBAR_POS_LIMIT_RANGE = [-3, 115];
 var HUEBAR_HANDLE_RIGHT_POS = -6;
 
@@ -52,16 +52,6 @@ function Slider(options, container) {
      * @property {number[]} containerSize
      */
     this._dragDataCache = {};
-
-    /**
-     * @type {HTMLDivElement}
-     */
-    this.colorsliderContainer = null;
-
-    /**
-     * @type {HTMLDivElement}
-     */
-    this.huebarContainer = null;
 
     /**
      * Color slider handle element
@@ -142,9 +132,6 @@ Slider.prototype.render = function(colorStr) {
     that.sliderHandleElement = domutil.find('.' + options.cssPrefix + 'slider-handle', container);
     that.huebarHandleElement = domutil.find('.' + options.cssPrefix + 'huebar-handle', container);
     that.baseColorElement = domutil.find('.' + options.cssPrefix + 'slider-basecolor', container);
-
-    that.colorsliderContainer = domutil.find('.' + options.cssPrefix + 'slider-left', container);
-    that.huebarContainer = domutil.find('.' + options.cssPrefix + 'slider-right', container);
 
     rgb = colorutil.hexToRGB(colorStr);
     hsv = colorutil.rgbToHSV.apply(null, rgb);
@@ -357,13 +344,11 @@ Slider.prototype.getRGB = function() {
 Slider.prototype._prepareColorSliderForMouseEvent = function(event) {
     var options = this.options,
         sliderPart = domutil.closest(event.target, '.' + options.cssPrefix + 'slider-part'),
-        size = domutil.getSize(sliderPart),
         cache;
 
     cache = this._dragDataCache = {
-        isColorSlider: sliderPart === this.colorsliderContainer,
-        parentElement: sliderPart,
-        parentElementSize: size
+        isColorSlider: domutil.hasClass(sliderPart, options.cssPrefix + 'slider-left'),
+        parentElement: sliderPart
     };
     
     return cache;
