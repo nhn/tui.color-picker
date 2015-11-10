@@ -13,8 +13,10 @@ var View = require('./core/view');
 var tmpl = require('../template/slider');
 
 // Limitation position of point element inside of colorslider and hue bar
+// Minimum value can to be negative because that using color point of handle element is center point. not left, top point.
 var COLORSLIDER_POS_LIMIT_RANGE = [-7, 112];
 var HUEBAR_POS_LIMIT_RANGE = [-3, 115];
+var HUE_WHEEL_MAX = 359.99;
 
 /**
  * @constructor
@@ -240,7 +242,7 @@ Slider.prototype.moveHue = function(degree, silent) {
     maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
 
     degree = degree || 0;
-    newTop = ((maxValue * degree) / 359.9) - absMin;
+    newTop = ((maxValue * degree) / HUE_WHEEL_MAX) - absMin;
     this._moveHueHandle(newTop, silent);
 };
 
@@ -266,8 +268,8 @@ Slider.prototype.getHue = function() {
     absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
     maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
 
-    // maxValue : 359 = pos.y : x
-    return ((position[0] + absMin) * 359.9) / maxValue;
+    // maxValue : 359.99 = pos.y : x
+    return ((position[0] + absMin) * HUE_WHEEL_MAX) / maxValue;
 };
 
 /**
