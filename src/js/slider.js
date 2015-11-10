@@ -88,7 +88,9 @@ Slider.prototype.isVisible = function() {
 };
 
 /**
+ * Render slider view
  * @override
+ * @param {string} colorStr - hex string color from parent view (Layout)
  */
 Slider.prototype.render = function(colorStr) {
     var that = this,
@@ -132,9 +134,9 @@ Slider.prototype._moveColorSliderHandle = function(newLeft, newTop, silent) {
     newLeft = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], newLeft);
     newLeft = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], newLeft);
 
-    handleColor = newTop > 50 ? 'white' : 'black';
-
     svgvml.setTranslateXY(handle, newLeft, newTop);
+
+    handleColor = newTop > 50 ? 'white' : 'black';
     svgvml.setStrokeColor(handle, handleColor);
 
     if (!silent) {
@@ -165,7 +167,7 @@ Slider.prototype.moveSaturationAndValue = function(saturation, value, silent) {
     // subtract absMin value because current color position is not left, top of handle element.
     // The saturation. from left 0 to right 100
     newLeft = ((saturation * maxValue) / 100) - absMin;
-    // The Value. from top 100 to bottom 0
+    // The Value. from top 100 to bottom 0. that why newTop subtract by maxValue.
     newTop = (maxValue - ((value * maxValue) / 100)) - absMin;
 
     this._moveColorSliderHandle(newLeft, newTop, silent);
@@ -218,13 +220,13 @@ Slider.prototype._moveHueHandle = function(newTop, silent) {
     svgvml.setTranslateY(hueHandleElement, newTop);
 
     newBaseColor = colorutil.hsvToRGB(this.getHue(), 100, 100);
-    colorStr = 'rgb(' + newBaseColor[0] + ',' + newBaseColor[1] + ',' + newBaseColor[2] + ')';
+    colorStr = colorutil.rgbToHEX.apply(null, newBaseColor);
 
     svgvml.setGradientColorStop(baseColorElement, colorStr);
 
     if (!silent) {
         this.fire('_selectColor', {
-            color: colorutil.rgbToHEX.apply(null, this.getRGB())
+            color: colorStr
         });
     }
 };
@@ -243,6 +245,7 @@ Slider.prototype.moveHue = function(degree, silent) {
 
     degree = degree || 0;
     newTop = ((maxValue * degree) / HUE_WHEEL_MAX) - absMin;
+
     this._moveHueHandle(newTop, silent);
 };
 
@@ -253,6 +256,7 @@ Slider.prototype.moveHue = function(degree, silent) {
  */
 Slider.prototype._moveHueByPosition = function(y) {
     var offset = HUEBAR_POS_LIMIT_RANGE[0];
+
     this._moveHueHandle(y + offset);
 };
 
@@ -323,10 +327,11 @@ Slider.prototype._onClick = function(clickEvent) {
 
     if (cache.isColorSlider) {
         this._moveColorSliderByPosition(mousePos[0], mousePos[1]);
-        this._dragDataCache = null;
     } else {
         this._moveHueByPosition(mousePos[1]);
     }
+
+    this._dragDataCache = null;
 };
 
 /**
