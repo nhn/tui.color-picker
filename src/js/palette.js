@@ -41,7 +41,8 @@ function Palette(options, container) {
             '#7CAFC2',
             '#BA8BAF',
             '#A16946'
-        ]
+        ],
+        detailTxt: 'Detail'
     }, options);
 
     container = domutil.appendHTMLElement(
@@ -154,6 +155,7 @@ Palette.prototype.render = function(color) {
     }).join(''));
 
     html = html.replace(/{{cssPrefix}}/g, options.cssPrefix)
+        .replace('{{detailTxt}}', options.detailTxt)
         .replace(/{{color}}/g, color);
 
     this.container.innerHTML = html;

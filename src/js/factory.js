@@ -27,6 +27,7 @@ function throwError(msg) {
  *  @param {string} [options.color='#ffffff'] - default selected color
  *  @param {string[]} [options.preset] - color preset for palette (use base16 palette if not supplied)
  *  @param {string} [options.cssPrefix='tui-colorpicker-'] - css prefix text for each child elements
+ *  @param {string} [options.detailTxt='Detail'] - text for detail button.
  * @example
  * var colorpicker = tui.component.colorpicker({
  *   container: document.getElementById('colorpicker')
@@ -66,7 +67,8 @@ function Colorpicker(options) {
             '#ba8baf',
             '#a16946'
         ],
-        cssPrefix: 'tui-colorpicker-'
+        cssPrefix: 'tui-colorpicker-',
+        detailTxt: 'Detail'
     }, options);
 
     if (!options.container) {
