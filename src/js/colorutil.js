@@ -8,6 +8,27 @@ var hexRX = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i;
 
 var colorutil = {
     /**
+     * pad left zero characters.
+     * @param {number} number number value to pad zero.
+     * @param {number} length pad length to want.
+     * @returns {string} padded string.
+     */
+    leadingZero: function(number, length) {
+        var zero = '',
+            i = 0;
+
+        if ((number + '').length > length) {
+            return number + '';
+        }
+
+        for (; i < (length - 1); i += 1) {
+            zero += '0';
+        }
+
+        return (zero + number).slice(length * -1);
+    },
+
+    /**
      * Check validate of hex string value is RGB
      * @param {string} str - rgb hex string
      * @returns {boolean} return true when supplied str is valid RGB hex string
@@ -35,6 +56,27 @@ var colorutil = {
         b = parseInt(hexStr.substr(4, 2), 16);
 
         return [r, g, b];
+    },
+
+    
+    /**
+     * Convert rgb number to hex string
+     * @param {number} r - red
+     * @param {number} g - green
+     * @param {number} b - blue
+     * @returns {string|boolean} return false when supplied rgb number is not valid. otherwise, converted hex string
+     */
+    rgbToHEX: function(r, g, b) {
+        var hexStr = '#' + 
+            colorutil.leadingZero(r.toString(16), 2) + 
+            colorutil.leadingZero(g.toString(16), 2) +
+            colorutil.leadingZero(b.toString(16), 2);
+        
+        if (colorutil.isValidRGB(hexStr)) {
+            return hexStr;
+        }
+
+        return false;
     },
 
     /**

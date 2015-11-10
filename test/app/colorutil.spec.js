@@ -26,4 +26,12 @@ describe('colorutil', function() {
         // 색상각도 0, 채도 0, 명도 0 => 검정색
         expect(colorutil.hsvToRGB(0, 0, 0)).toEqual([0, 0, 0]);
     });
+
+    it('rgbToHEX()', function() {
+        expect(colorutil.rgbToHEX(255, 0, 0)).toBe('#ff0000');
+        expect(colorutil.rgbToHEX(255, 255, 255)).toBe('#ffffff');
+        expect(colorutil.rgbToHEX(0, 0, 0)).toBe('#000000');
+        expect(colorutil.rgbToHEX(0, 0, 0)).toBe('#000000');
+        expect(colorutil.rgbToHEX(255, 153, 51)).toBe('#ff9933');
+    });
 });
