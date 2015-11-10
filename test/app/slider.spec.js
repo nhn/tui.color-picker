@@ -7,7 +7,7 @@ describe('view:Slider', function() {
         inst = new Slider({}, el);
     });
 
-    describe('moveSliderPercent()', function() {
+    xdescribe('moveSliderPercent()', function() {
         beforeEach(function() {
             inst.sliderHandleElement = jasmine.createSpyObj('pointElement', ['setAttribute']);
             inst.sliderHandleElement.style = {};

@@ -15,7 +15,6 @@ var tmpl = require('../template/slider');
 var COLORSLIDER_POS_LIMIT_RANGE = [-7.5, 112];
 var HUEBAR_POS_LIMIT_RANGE = [-3, 115];
 var HUEBAR_HANDLE_RIGHT_POS = -6;
-var VML_BASECOLOR_TEMPLATE = '0% {{color}}, 100% rgb(255,255,255)';
 
 /**
  * @constructor
@@ -35,6 +34,7 @@ function Slider(options, container) {
      * @type {object}
      */
     this.options = util.extend({
+        color: '#f8f8f8',
         cssPrefix: 'tui-colorpicker-'
     }, options);
 
@@ -102,8 +102,9 @@ Slider.prototype.isVisible = function() {
 
 /**
  * Get handle element's position
+ * @private
  * @param {SVG|VML} handle - handle element
- * @returns {number[]} position of handle element
+ * @returns {number[]} handle element's position [top, left]
  */
 Slider.prototype._getHandlePosition = function(handle) {
     var parseTransformRX = /[\.\-0-9]+/g,
@@ -148,76 +149,113 @@ Slider.prototype.render = function(colorStr) {
     rgb = colorutil.hexToRGB(colorStr);
     hsv = colorutil.rgbToHSV.apply(null, rgb);
 
-    this.moveHueByDegree(hsv[0])
-    this.moveSliderPercent(100 - hsv[2], hsv[1]);
+    this.moveHue(hsv[0], true)
+    this.moveSaturationAndValue(hsv[1], hsv[2], true);
 };
 
 /**
- * Move slider point to supplied top, left percent
- * @param {number} topPercent - percent value of pointer top position
- * @param {number} leftPercent - percent value of point left position
+ * Move colorslider by newLeft(X), newTop(Y) value
+ * @private
+ * @param {number} newLeft - left pixel value to move handle
+ * @param {number} newTop - top pixel value to move handle
+ * @param {boolean} [silent=false] - set true then not fire custom event
  */
-Slider.prototype.moveSliderPercent = function(topPercent, leftPercent) {
-    var pointElement = this.sliderHandleElement,
-        absMin, maxValue, top, left,
-        pointerColor;
-
-    topPercent = topPercent || 0;
-    leftPercent = leftPercent || 0;
-
-    absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]);
-    maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1];
-
-    // 100 : maxValue = x : topPercent
-    top = ((topPercent / 100) * maxValue) - absMin;
-    left = ((leftPercent / 100) * maxValue) - absMin;
+Slider.prototype._moveColorSliderHandle = function(newLeft, newTop, silent) {
+    var handle = this.sliderHandleElement,
+        handleColor;
 
     // Check position limitation.
-    top = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], top);
-    top = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], top);
-    left = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], left);
-    left = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], left);
+    newTop = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], newTop);
+    newTop = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], newTop);
+    newLeft = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], newLeft);
+    newLeft = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], newLeft);
 
-    pointerColor = top > 50 ? 'white' : 'black';
+    handleColor = newTop > 50 ? 'white' : 'black';
 
     if (this.isOldBrowser) {
-        pointElement.strokecolor = pointerColor;
-        pointElement.style.top = top + 'px';
-        pointElement.style.left = left + 'px';
-        return;
+        handleColor.strokecolor = handleColor;
+        handle.style.left = newLeft + 'px';
+        handle.style.top = newTop + 'px';
+    } else {
+        handle.setAttribute('transform', 'translate(' + newLeft + ',' + newTop + ')');
+        handle.setAttribute('stroke', handleColor);
     }
 
-    // need caution for difference of VML, SVG coordinates system.
-    pointElement.setAttribute('transform', 'translate(' + left + ',' + top + ')');
-    pointElement.setAttribute('stroke', pointerColor);
+    if (!silent) {
+        this.fire('_selectColor', {
+            color: colorutil.rgbToHEX.apply(null, this.getRGB())
+        });
+    }
 };
 
 /**
- * Get colorslider point position (percent value)
- * @return {number[]} percent position of colorslider point
+ * Move colorslider by supplied saturation and values.
+ *
+ * The movement of color slider handle follow HSV cylinder model. {@link https://en.wikipedia.org/wiki/HSL_and_HSV}
+ * @param {number} saturation - the percent of saturation (0% ~ 100%)
+ * @param {number} value - the percent of saturation (0% ~ 100%)
+ * @param {boolean} [silent=false] - set true then not fire custom event
  */
-Slider.prototype.getSliderPercent = function() {
+Slider.prototype.moveSaturationAndValue = function(saturation, value, silent) {
+    var absMin, maxValue,
+        newLeft, newTop;
+
+    saturation = saturation || 0;
+    value = value || 0;
+
+    absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]);
+    maxValue = COLORSLIDER_POS_LIMIT_RANGE[1];
+
+    // subtract absMin value because current color position is not left, top of handle element.
+    // The saturation. from left 0 to right 100
+    newLeft = ((saturation * maxValue) / 100) - absMin;
+    // The Value. from top 100 to bottom 0
+    newTop = (maxValue - ((value * maxValue) / 100)) - absMin;
+
+    this._moveColorSliderHandle(newLeft, newTop, silent);
+};
+
+/**
+ * Move color slider handle to supplied position
+ *
+ * The number of X, Y must be related value from color slider container
+ * @private
+ * @param {number} x - the pixel value to move handle 
+ * @param {number} y - the pixel value to move handle
+ */
+Slider.prototype._moveColorSliderByPosition = function(x, y) {
+    var offset = COLORSLIDER_POS_LIMIT_RANGE[0];
+    this._moveColorSliderHandle(x + offset, y + offset);
+};
+
+/**
+ * Get saturation and value value.
+ * @returns {number[]} saturation and value
+ */
+Slider.prototype.getSaturationAndValue = function() {
     var absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]),
         maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1],
-        topPercent, leftPercent, position; 
+        position, saturation, value;
 
     position = this._getHandlePosition(this.sliderHandleElement);
 
-    // Add absMin because handle position use center coordinate of element not lefttop.
-    topPercent = ((position[0] + absMin) / maxValue) * 100;
-    leftPercent = ((position[1] + absMin) / maxValue) * 100;
+    saturation = ((position[1] + absMin) / maxValue) * 100;
+    // The value of HSV color model is inverted. top 100 ~ bottom 0. so subtract by 100
+    value = 100 - (((position[0] + absMin) / maxValue) * 100);
 
-    return [topPercent, leftPercent];
+    return [saturation, value];
 };
 
 /**
  * Move hue handle supplied pixel value
+ * @private
  * @param {number} newTop - pixel to move hue handle
+ * @param {boolean} [silent=false] - set true then not fire custom event
  */
-Slider.prototype._moveHueHandle = function(newTop) {
+Slider.prototype._moveHueHandle = function(newTop, silent) {
     var handleElement = this.huebarHandleElement,
         baseColorElement = this.baseColorElement,
-        newBaseColor, colorStr, vmlColor;
+        newBaseColor, colorStr;
 
     newTop = Math.max(HUEBAR_POS_LIMIT_RANGE[0], newTop);
     newTop = Math.min(HUEBAR_POS_LIMIT_RANGE[1], newTop);
@@ -229,7 +267,7 @@ Slider.prototype._moveHueHandle = function(newTop) {
            'translate(' + HUEBAR_HANDLE_RIGHT_POS + ',' + newTop + ')');
     }
 
-    newBaseColor = colorutil.hsvToRGB(this.getHueDegree(), 100, 100);
+    newBaseColor = colorutil.hsvToRGB(this.getHue(), 100, 100);
     colorStr = 'rgb(' + newBaseColor[0] + ',' + newBaseColor[1] + ',' + newBaseColor[2] + ')';
 
     if (this.isOldBrowser) {
@@ -237,13 +275,20 @@ Slider.prototype._moveHueHandle = function(newTop) {
     } else {
         baseColorElement.setAttribute('stop-color', colorStr);
     }
+
+    if (!silent) {
+        this.fire('_selectColor', {
+            color: colorutil.rgbToHEX.apply(null, this.getRGB())
+        });
+    }
 };
 
 /**
  * Move hue bar handle by supplied degree
- * @param {number} degree - 0 ~ 359 degree
+ * @param {number} degree - (0 ~ 359.9 degree)
+ * @param {boolean} [silent=false] - set true then not fire custom event
  */
-Slider.prototype.moveHueByDegree = function(degree) {
+Slider.prototype.moveHue = function(degree, silent) {
     var newTop = 0,
         absMin, maxValue;
 
@@ -251,31 +296,25 @@ Slider.prototype.moveHueByDegree = function(degree) {
     maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
 
     degree = degree || 0;
-    newTop = ((maxValue * degree) / 359) - absMin;
-    this._moveHueHandle(newTop);
+    newTop = ((maxValue * degree) / 359.9) - absMin;
+    this._moveHueHandle(newTop, silent);
 };
 
 /**
  * Move hue bar handle by supplied percent
- * @param {number} percent - 0 ~ 100 percent
+ * @private
+ * @param {number} y - pixel value to move hue handle
  */
-Slider.prototype.moveHueByPercent = function(percent) {
-    var newTop = 0,
-        absMin, maxValue;
-
-    absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
-    maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
-
-    percent = percent || 0;
-    newTop = ((maxValue * percent) / 100) - absMin;
-    this._moveHueHandle(newTop);
+Slider.prototype._moveHueByPosition = function(y) {
+    var offset = HUEBAR_POS_LIMIT_RANGE[0];
+    this._moveHueHandle(y + offset);
 };
 
 /**
  * Get huebar handle position by color degree
- * @returns {number} degree
+ * @returns {number} degree (0 ~ 359.9 degree)
  */
-Slider.prototype.getHueDegree = function() {
+Slider.prototype.getHue = function() {
     var handle = this.huebarHandleElement,
         position = this._getHandlePosition(handle),
         absMin, maxValue;
@@ -284,7 +323,7 @@ Slider.prototype.getHueDegree = function() {
     maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
 
     // maxValue : 359 = pos.y : x
-    return ((position[0] + absMin) * 359) / maxValue;
+    return ((position[0] + absMin) * 359.9) / maxValue;
 };
 
 /**
@@ -292,8 +331,8 @@ Slider.prototype.getHueDegree = function() {
  * @returns {number[]} hsv values
  */
 Slider.prototype.getHSV = function() {
-    var sv = this.getSliderPercent(),
-        h = this.getHueDegree();
+    var sv = this.getSaturationAndValue(),
+        h = this.getHue();
 
     return [h].concat(sv);
 };
@@ -336,18 +375,13 @@ Slider.prototype._prepareColorSliderForMouseEvent = function(event) {
  */
 Slider.prototype._onClick = function(clickEvent) {
     var cache = this._prepareColorSliderForMouseEvent(clickEvent),
-        mousePos = domevent.getMousePosition(clickEvent.originEvent, cache.parentElement),
-        topPercent, leftPercent;
-
-    topPercent = (mousePos[1] / cache.parentElementSize[1]) * 100;
+        mousePos = domevent.getMousePosition(clickEvent.originEvent, cache.parentElement);
 
     if (cache.isColorSlider) {
-        leftPercent = (mousePos[0] / cache.parentElementSize[0]) * 100;
-
-        this.moveSliderPercent(topPercent, leftPercent);
+        this._moveColorSliderByPosition(mousePos[0], mousePos[1]);
         this._dragDataCache = null;
     } else {
-        this.moveHueByPercent(topPercent);
+        this._moveHueByPosition(mousePos[1]);
     }
 };
 
@@ -365,17 +399,12 @@ Slider.prototype._onDragStart = function(dragStartEvent) {
  */
 Slider.prototype._onDrag = function(dragEvent) {
     var cache = this._dragDataCache,
-        mousePos = domevent.getMousePosition(dragEvent.originEvent, cache.parentElement),
-        topPercent, leftPercent;
-
-    topPercent = (mousePos[1] / cache.parentElementSize[1]) * 100;
+        mousePos = domevent.getMousePosition(dragEvent.originEvent, cache.parentElement);
 
     if (cache.isColorSlider) {
-        leftPercent = (mousePos[0] / cache.parentElementSize[0]) * 100;
-        this.moveSliderPercent(topPercent, leftPercent);
-        return;
+        this._moveColorSliderByPosition(mousePos[0], mousePos[1]);
     } else {
-        this.moveHueByPercent(topPercent);
+        this._moveHueByPosition(mousePos[1]);
     }
 };
 

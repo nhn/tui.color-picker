@@ -115,6 +115,19 @@ function Colorpicker(options) {
      * Add slider view
      **********/
     slider = new Slider(options, this.layout.container);
+    slider.on({
+        '_selectColor': function(e) {
+            var color = e.color,
+                opt = this.options;
+
+            if (opt.color === color) {
+                return;
+            }
+
+            opt.color = color;
+            palette.render(color);
+        }
+    }, this);
     layout.addChild(slider);
 
     this.render(options.color);
