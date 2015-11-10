@@ -84,7 +84,7 @@ function Colorpicker(options) {
     layout = that.layout = new Layout(options, options.container);
 
     /**********
-     * Add palette view
+     * Create palette view
      **********/
     palette = new Palette(options, layout.container);
     palette.on({
@@ -103,15 +103,23 @@ function Colorpicker(options) {
 
             opt.color = color;
             that.render(color);
+
+            /**
+             * @event Colorpicker#selectColor
+             * @type {object}
+             * @property {string} color - selected color (hex string)
+             */
+            that.fire('selectColor', {
+                color: color
+            });
         },
         '_toggleSlider': function() {
             slider.toggle(!slider.isVisible());
         }
     });
-    layout.addChild(palette);
 
     /**********
-     * Add slider view
+     * Create slider view
      **********/
     slider = new Slider(options, layout.container);
     slider.on({
@@ -125,8 +133,22 @@ function Colorpicker(options) {
 
             opt.color = color;
             palette.render(color);
+
+            /**
+             * @event Colorpicker#selectColor
+             * @type {object}
+             * @property {string} color - selected color (hex string)
+             */
+            that.fire('selectColor', {
+                color: color
+            });
         }
     });
+
+    /**********
+     * Add child views
+     **********/
+    layout.addChild(palette);
     layout.addChild(slider);
 
     that.render(options.color);
