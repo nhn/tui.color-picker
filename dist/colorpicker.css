@@ -14,6 +14,9 @@
   behavior: url("#default#VML");
   display: block;
 }
+.tui-colorpicker-container {
+  width: 152px;
+}
 .tui-colorpicker-palette-container {
   width: 152px;
 }
