@@ -10,6 +10,7 @@ var domevent = require('./core/domevent');
 var svgvml = require('./svgvml');
 var colorutil = require('./colorutil');
 var View = require('./core/view');
+var Drag = require('./core/drag');
 var tmpl = require('../template/slider');
 
 // Limitation position of point element inside of colorslider and hue bar
@@ -67,9 +68,35 @@ function Slider(options, container) {
      * @type {SVG|VML}
      */
     this.baseColorElement = null;
+
+    /**
+     * @type {Drag}
+     */
+    this.drag = new Drag({
+        distance: 0
+    }, container);
+    
+    // bind drag events
+    this.drag.on({
+        'dragStart': this._onDragStart,
+        'drag': this._onDrag,
+        'dragEnd': this._onDragEnd,
+        'click': this._onClick
+    }, this);
 }
 
 util.inherit(Slider, View);
+
+/**
+ * @override
+ */
+Slider.prototype._beforeDestroy = function() {
+    this.drag.off();
+
+    this.drag = this.options = this._dragDataCache =
+        this.sliderHandleElement = this.huebarHandleElement =
+        this.baseColorElement = null;
+};
 
 /**
  * Toggle slider view

@@ -5,7 +5,6 @@
 'use strict';
 var util = global.tui.util;
 var colorutil = require('./colorutil');
-var Drag = require('./core/drag');
 var Layout = require('./layout');
 var Palette = require('./palette');
 var Slider = require('./slider');
@@ -36,17 +35,16 @@ function throwError(msg) {
  * colorpicker.getColor();    // '#ffffff'
  */
 function Colorpicker(options) {
-    var that = this,
-        layout, palette, drag, slider;
+    var layout;
 
-    if (!(that instanceof Colorpicker)) {
+    if (!(this instanceof Colorpicker)) {
         return new Colorpicker(options);
     }
     /**
      * Option object
      * @type {object}
      */
-    options = that.options = util.extend({
+    options = this.options = util.extend({
         container: null,
         color: '#f8f8f8',
         preset: [
@@ -83,94 +81,103 @@ function Colorpicker(options) {
     /**
      * @type {Layout}
      */
-    layout = that.layout = new Layout(options, options.container);
+    layout = this.layout = new Layout(options, options.container);
 
     /**********
      * Create palette view
      **********/
-    palette = new Palette(options, layout.container);
-    palette.on({
-        '_selectColor': function(e) {
-            var color = e.color,
-                opt = that.options;
-
-            if (!colorutil.isValidRGB(color)) {
-                that.render();
-                return;
-            }
-
-            if (opt.color === color) {
-                return;
-            }
-
-            opt.color = color;
-            that.render(color);
-
-            /**
-             * @event Colorpicker#selectColor
-             * @type {object}
-             * @property {string} color - selected color (hex string)
-             */
-            that.fire('selectColor', {
-                color: color
-            });
-        },
-        '_toggleSlider': function() {
-            slider.toggle(!slider.isVisible());
-        }
-    });
+    this.palette = new Palette(options, layout.container);
+    this.palette.on({
+        '_selectColor': this._onSelectColorInPalette,
+        '_toggleSlider': this._onToggleSlider
+    }, this);
 
     /**********
      * Create slider view
      **********/
-    slider = new Slider(options, layout.container);
-    slider.on({
-        '_selectColor': function(e) {
-            var color = e.color,
-                opt = that.options;
-
-            if (opt.color === color) {
-                return;
-            }
-
-            opt.color = color;
-            palette.render(color);
-
-            /**
-             * @event Colorpicker#selectColor
-             * @type {object}
-             * @property {string} color - selected color (hex string)
-             */
-            that.fire('selectColor', {
-                color: color
-            });
-        }
-    });
+    this.slider = new Slider(options, layout.container);
+    this.slider.on('_selectColor', this._onSelectColorInSlider, this);
 
     /**********
      * Add child views
      **********/
-    layout.addChild(palette);
-    layout.addChild(slider);
+    layout.addChild(this.palette);
+    layout.addChild(this.slider);
 
-    that.render(options.color);
-
-    /**********
-     * Drag handler
-     **********/
-    util.debounce(function() {
-        drag = that.drag = new Drag({
-            distance: 0
-        }, slider.container);
-
-        drag.on({
-            'dragStart': slider._onDragStart,
-            'drag': slider._onDrag,
-            'dragEnd': slider._onDragEnd,
-            'click': slider._onClick
-        }, slider);
-    }, 0)();
+    this.render(options.color);
 }
+
+/**
+ * Handler method for Palette#_selectColor event
+ * @private
+ * @fires Colorpicker#selectColor
+ * @param {object} selectColorEventData - event data
+ */
+Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
+    var color = selectColorEventData.color,
+        opt = this.options;
+
+    if (!colorutil.isValidRGB(color)) {
+        this.render();
+        return;
+    }
+
+    if (opt.color === color) {
+        return;
+    }
+
+    opt.color = color;
+    this.render(color);
+
+    /**
+     * @event Colorpicker#selectColor
+     * @type {object}
+     * @property {string} color - selected color (hex string)
+     */
+    this.fire('selectColor', {
+        color: color
+    });
+};
+
+/**
+ * Handler method for Palette#_toggleSlider event
+ * @private
+ */
+Colorpicker.prototype._onToggleSlider = function() {
+    this.slider.toggle(!this.slider.isVisible());
+};
+
+
+/**
+ * Handler method for Slider#_selectColor event
+ * @private
+ * @fires Colorpicker#selectColor
+ * @param {object} selectColorEventData - event data
+ */
+Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
+    var color = selectColorEventData.color,
+        opt = this.options;
+
+    if (opt.color === color) {
+        return;
+    }
+
+    opt.color = color;
+    this.palette.render(color);
+
+    /**
+     * @event Colorpicker#selectColor
+     * @type {object}
+     * @property {string} color - selected color (hex string)
+     */
+    this.fire('selectColor', {
+        color: color
+    });
+};
+
+/**********
+ * PUBLIC API
+ **********/
 
 /**
  * Set colorpicker current color
@@ -213,11 +220,11 @@ Colorpicker.prototype.render = function(color) {
  * Destroy colorpicker component
  */
 Colorpicker.prototype.destroy = function() {
-    this.drag.off();
     this.layout.destroy();
     this.options.container.innerHTML = '';
 
-    this.layout = this.options = this.drag = null;
+    this.layout = this.slider = this.palette =
+        this.options = null;
 };
 
 util.CustomEvents.mixin(Colorpicker);
