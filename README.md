@@ -2,12 +2,13 @@
 
 Colorpicker component for web
 
-<<pic>>
+## Documentation
 
-# Support Browsers
+[Documentation](Home)
 
-- IE (upper 7)
-- Edge
+## Support Browsers
+
+- IE7+
 - Chrome
 - Firefox
 - Safari
