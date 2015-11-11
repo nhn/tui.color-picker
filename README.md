@@ -2,9 +2,11 @@
 
 Colorpicker component for web
 
+![Colorpicker Screenshot](develop/screenshot.png)
+
 ## Documentation
 
-[Documentation](/wiki/Home)
+Please see the github wiki page.
 
 ## Support Browsers
 
