@@ -43,6 +43,5 @@ temp
 doc
 demo-dev
 report
-dist
 *.vim
 
