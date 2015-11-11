@@ -13,6 +13,14 @@
     "test",
     "tests"
   ],
+  "main": [
+    "dist/colorpicker.js",
+    "dist/colorpicker.css"
+  ],
+  "keywords": [
+    "colorpicker",
+    "component"
+  ],
   "dependencies": {
     "jquery": "1.8.3",
     "tui-code-snippet": "~1.0.4"
