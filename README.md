@@ -2,7 +2,7 @@
 
 Colorpicker component for web
 
-![Colorpicker Screenshot](develop/screenshot.png)
+![Colorpicker Screenshot](screenshot.png)
 
 ## Documentation
 
