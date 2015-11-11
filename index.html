@@ -6,17 +6,38 @@
 <link rel="stylesheet" type="text/css" href="reset.css" />
 <link rel="stylesheet" type="text/css" href="typo.css" />
 <link rel="stylesheet" type="text/css" href="build/colorpicker.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <style>
     #colorpicker {
+        width: 152px;
         border: 1px solid #ccc;
         border-radius: 3px;
-        padding: 5px;
+        padding: 7px;
+    }
+    .code {
+        font-size: 0.8em;
     }
 </style>
 </head>
 <body>
 <h1>Toast UI Colorpicker</h1>
 <div id="colorpicker"></div>
+<pre class="code"><code class="html">&lt;style&gt;
+  #colorpicker {
+    width: 152px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 7px;
+  }
+&lt;/style&gt;
+&lt;div id="colorpicker"&gt;&lt;/div&gt;
+&lt;script&gt;
+  tui.component.colorpicker.create({
+    container: document.getElementById('colorpicker')
+  });
+&lt;/script&gt;</code></pre>
 <h2>Documentation</h2>
 <ul>
     <li><a href="doc/1.0.0/">v1.0.0</a></li>
