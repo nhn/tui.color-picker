@@ -4,7 +4,7 @@ Colorpicker component for web
 
 ## Documentation
 
-[Documentation](Home)
+[Documentation](wiki/Home)
 
 ## Support Browsers
 
