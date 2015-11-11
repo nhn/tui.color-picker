@@ -2,7 +2,7 @@
 
 Colorpicker component for web
 
-![Colorpicker Screenshot](/gh-pages/screenshot.png)
+![Colorpicker Screenshot](screenshot.png)
 
 ## Documentation
 
