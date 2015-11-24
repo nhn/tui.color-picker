@@ -133,9 +133,11 @@ Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
      * @event Colorpicker#selectColor
      * @type {object}
      * @property {string} color - selected color (hex string)
+     * @property {string} origin - flags for represent the source of event fires.
      */
     this.fire('selectColor', {
-        color: color
+        color: color,
+        origin: 'palette'
     });
 };
 
@@ -169,9 +171,11 @@ Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
      * @event Colorpicker#selectColor
      * @type {object}
      * @property {string} color - selected color (hex string)
+     * @property {string} origin - flags for represent the source of event fires.
      */
     this.fire('selectColor', {
-        color: color
+        color: color,
+        origin: 'slider'
     });
 };
 
