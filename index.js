@@ -1,6 +1,4 @@
-/* eslint vars-on-top:0, strict:0 */
-require('tui-code-snippet');
-
+'use strict';
 /** @namespace tui.component */
 tui.util.defineNamespace('tui.component.colorpicker', {
     domutil: require('./src/js/core/domutil'),

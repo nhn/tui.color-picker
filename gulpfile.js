@@ -84,10 +84,6 @@ function bundle(outputPath, isProduction) {
         });
     }
 
-    if (isProduction) {
-        b.ignore('tui-code-snippet');
-    }
-
     return b.transform(prependTransform)
         .transform(preprocessify({ENV: (isProduction ? 'RELEASE' : 'DEBUG')}))
         .bundle()

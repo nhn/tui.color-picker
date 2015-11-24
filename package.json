@@ -25,7 +25,6 @@
     "karma-webdriver-launcher": "https://github.com/everedifice/karma-webdriver-launcher.git",
     "preprocessify": "0.0.6",
     "through2": "^2.0.0",
-    "tui-code-snippet": "^1.0.4",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },

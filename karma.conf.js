@@ -16,6 +16,7 @@ module.exports = function(config) {
         ],
         files: [
             'bower_components/jquery/jquery.js',
+            'bower_components/tui-code-snippet/code-snippet.js',
             'node_modules/karma-jasmine-jquery/lib/jasmine-jquery.js',
             'index.js',
             'src/**/*.js',
