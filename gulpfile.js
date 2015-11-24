@@ -38,7 +38,8 @@ gulp.task('default', function(done) {
 
 gulp.task('connect', function() {
     connect.server({
-        livereload: true
+        livereload: true,
+        port: 8090
     });
     gulp.watch([
         './src/**/*',

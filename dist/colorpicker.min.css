@@ -1,6 +1,6 @@
 /**
  * Toast UI Colorpicker
- * @version 1.0.0
+ * @version 1.0.1
  */
 .tui-colorpicker-clearfix {
   zoom: 1;
@@ -103,6 +103,7 @@
   width: 1px;
   height: 1px;
   z-index: 2;
+  opacity: 0.9;
 }
 .tui-colorpicker-svg-slider {
   width: 120px;
