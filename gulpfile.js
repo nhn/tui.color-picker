@@ -68,7 +68,7 @@ function bundle(outputPath, isProduction) {
 
     var b = browserify({
         entries: 'index.js',
-        debug: true
+        debug: !isProduction
     });
 
     var added = false;
