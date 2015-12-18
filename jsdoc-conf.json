@@ -12,7 +12,7 @@
         "default": {
             "outputSourceFiles" : true
         },
-        "applicationName": "Toast UI Colorpicker",
+        "applicationName": "Colorpicker",
         "meta": {
             "title": "",
             "description": "",
@@ -26,7 +26,8 @@
     },
     "opts": {
         "recurse": true,
-        "private": true,
-        "destination": "doc"
+        "destination": "doc",
+        "template": "./node_modules/fedoc-template",
+        "name": "Color Picker"
     }
 }
