@@ -28,9 +28,6 @@ bower_components
 # idea
 .idea
 
-# compress
-dist
-
 # sample
 samples
 doc
