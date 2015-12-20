@@ -29,7 +29,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
-    "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json"
+    "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json -t ./node_modules/fedoc-template"
   },
   "repository": {
     "type": "git",

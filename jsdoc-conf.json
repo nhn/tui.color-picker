@@ -27,7 +27,6 @@
     "opts": {
         "recurse": true,
         "destination": "doc",
-        "template": "./node_modules/fedoc-template",
         "name": "Color Picker"
     }
 }

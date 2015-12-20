@@ -130,6 +130,7 @@ Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
     this.render(color);
 
     /**
+     * @api
      * @event Colorpicker#selectColor
      * @type {object}
      * @property {string} color - selected color (hex string)
@@ -168,6 +169,7 @@ Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
     this.palette.render(color);
 
     /**
+     * @api
      * @event Colorpicker#selectColor
      * @type {object}
      * @property {string} color - selected color (hex string)
@@ -184,8 +186,12 @@ Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
  **********/
 
 /**
- * Set colorpicker current color
+ * Set color to colorpicker instance.<br>
+ * The string parameter must be hex color value
+ * @api
  * @param {string} hexStr - hex formatted color string
+ * @example
+ * colorPicker.setColor('#ffff00');
  */
 Colorpicker.prototype.setColor = function(hexStr) {
     if (!colorutil.isValidRGB(hexStr)) {
@@ -197,16 +203,25 @@ Colorpicker.prototype.setColor = function(hexStr) {
 };
 
 /**
- * Get colorpicker current color
+ * Get hex color string of current selected color in colorpicker instance.
+ * @api
  * @returns {string} hex string formatted color
+ * @example
+ * colorPicker.setColor('#ffff00');
+ * colorPicker.getColor(); // '#ffff00';
  */
 Colorpicker.prototype.getColor = function() {
     return this.options.color;
 };
 
 /**
- * Toggle colorpicker container element
- * @param {boolean} [isShow=true] - true when reveal colorpicker
+ * Toggle colorpicker element. set true then reveal colorpicker view.
+ * @api
+ * @param {boolean} [isShow=false] - A flag to show
+ * @example
+ * colorPicker.toggle(false); // hide
+ * colorPicker.toggle(); // hide
+ * colorPicker.toggle(true); // show
  */
 Colorpicker.prototype.toggle = function(isShow) {
     this.layout.container.style.display = !!isShow ? 'block' : 'none';
@@ -221,7 +236,10 @@ Colorpicker.prototype.render = function(color) {
 };
 
 /**
- * Destroy colorpicker component
+ * Destroy colorpicker instance.
+ * @api
+ * @example
+ * colorPicker.destroy(); // DOM-element is removed
  */
 Colorpicker.prototype.destroy = function() {
     this.layout.destroy();
