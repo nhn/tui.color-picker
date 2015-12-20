@@ -27,6 +27,7 @@
     "opts": {
         "recurse": true,
         "destination": "doc",
-        "name": "Color Picker"
+        "name": "Color Picker",
+        "tutorials": "samples"
     }
 }

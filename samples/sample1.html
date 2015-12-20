@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Toast UI Colorpicker</title>
+<link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+<link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+<link type="text/css" rel="stylesheet" href="../styles/tui.css">
+
+<link rel="stylesheet" type="text/css" href="dist/colorpicker.min.css" />
+<style>
+    #colorpicker {
+        width: 166px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 7px;
+    }
+</style>
+</head>
+<body>
+<h1>Toast UI Colorpicker</h1>
+<div class="wrap">
+    <div id="colorpicker"></div>
+</div>
+
+<div class="codeArea"></div>
+
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../scripts/prettify/prettify.js"></script>
+<script type="text/javascript" src="../scripts/prettify/lang-css.js"></script>
+<script type="text/javascript" src="../scripts/samplecode.js"></script>
+
+<script src="lib/code-snippet.min.js"></script>
+<script src="dist/colorpicker.min.js"></script>
+
+<script class="serviceCode">
+(function() {
+    tui.component.colorpicker.create({
+        container: document.getElementById('colorpicker')
+    });
+})();
+</script>
+</body>
+</html>
