@@ -37,6 +37,8 @@ var colorutil = {
         return hexRX.test(str);
     },
 
+    // @license RGB <-> HSV conversion utilities based off of http://www.cs.rit.edu/~ncs/color/t_convert.html
+
     /**
      * Convert color hex string to rgb number array
      * @param {string} hexStr - hex string
@@ -58,7 +60,7 @@ var colorutil = {
         return [r, g, b];
     },
 
-    
+
     /**
      * Convert rgb number to hex string
      * @param {number} r - red
@@ -67,11 +69,11 @@ var colorutil = {
      * @returns {string|boolean} return false when supplied rgb number is not valid. otherwise, converted hex string
      */
     rgbToHEX: function(r, g, b) {
-        var hexStr = '#' + 
-            colorutil.leadingZero(r.toString(16), 2) + 
+        var hexStr = '#' +
+            colorutil.leadingZero(r.toString(16), 2) +
             colorutil.leadingZero(g.toString(16), 2) +
             colorutil.leadingZero(b.toString(16), 2);
-        
+
         if (colorutil.isValidRGB(hexStr)) {
             return hexStr;
         }
@@ -111,7 +113,7 @@ var colorutil = {
         }
 
         return [
-            Math.round(h * 360), 
+            Math.round(h * 360),
             Math.round(s * 100),
             Math.round(v * 100)
         ];
@@ -128,20 +130,20 @@ var colorutil = {
         var r, g, b;
         var i;
         var f, p, q, t;
-        
+
         h = Math.max(0, Math.min(360, h));
         s = Math.max(0, Math.min(100, s));
         v = Math.max(0, Math.min(100, v));
-        
+
         s /= 100;
         v /= 100;
-        
+
         if (s === 0) {
             // Achromatic (grey)
             r = g = b = v;
             return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         }
-        
+
         h /= 60; // sector 0 to 5
         i = Math.floor(h);
         f = h - i; // factorial part of h
@@ -157,7 +159,7 @@ var colorutil = {
             case 4: r = t; g = p; b = v; break;
             default: r = v; g = p; b = q; break;
         }
-        
+
         return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
     }
 };
