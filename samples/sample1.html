@@ -35,8 +35,12 @@
 
 <script class="serviceCode">
 (function() {
-    tui.component.colorpicker.create({
+    var colorpicker = tui.component.colorpicker.create({
         container: document.getElementById('colorpicker')
+    });
+
+    colorpicker.on('selectColor', function(obj) {
+        console.log(obj);
     });
 })();
 </script>

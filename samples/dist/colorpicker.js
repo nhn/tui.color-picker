@@ -1,7 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Toast UI Colorpicker
- * @version 1.0.1
+ * @version 1.0.2
  */
 'use strict';
 /** @namespace tui.component */
@@ -60,6 +60,8 @@ var colorutil = {
         return hexRX.test(str);
     },
 
+    // @license RGB <-> HSV conversion utilities based off of http://www.cs.rit.edu/~ncs/color/t_convert.html
+
     /**
      * Convert color hex string to rgb number array
      * @param {string} hexStr - hex string
@@ -81,7 +83,7 @@ var colorutil = {
         return [r, g, b];
     },
 
-    
+
     /**
      * Convert rgb number to hex string
      * @param {number} r - red
@@ -90,11 +92,11 @@ var colorutil = {
      * @returns {string|boolean} return false when supplied rgb number is not valid. otherwise, converted hex string
      */
     rgbToHEX: function(r, g, b) {
-        var hexStr = '#' + 
-            colorutil.leadingZero(r.toString(16), 2) + 
+        var hexStr = '#' +
+            colorutil.leadingZero(r.toString(16), 2) +
             colorutil.leadingZero(g.toString(16), 2) +
             colorutil.leadingZero(b.toString(16), 2);
-        
+
         if (colorutil.isValidRGB(hexStr)) {
             return hexStr;
         }
@@ -134,7 +136,7 @@ var colorutil = {
         }
 
         return [
-            Math.round(h * 360), 
+            Math.round(h * 360),
             Math.round(s * 100),
             Math.round(v * 100)
         ];
@@ -151,20 +153,20 @@ var colorutil = {
         var r, g, b;
         var i;
         var f, p, q, t;
-        
+
         h = Math.max(0, Math.min(360, h));
         s = Math.max(0, Math.min(100, s));
         v = Math.max(0, Math.min(100, v));
-        
+
         s /= 100;
         v /= 100;
-        
+
         if (s === 0) {
             // Achromatic (grey)
             r = g = b = v;
             return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         }
-        
+
         h /= 60; // sector 0 to 5
         i = Math.floor(h);
         f = h - i; // factorial part of h
@@ -180,7 +182,7 @@ var colorutil = {
             case 4: r = t; g = p; b = v; break;
             default: r = v; g = p; b = q; break;
         }
-        
+
         return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
     }
 };
@@ -2139,14 +2141,8 @@ Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
         return;
     }
 
-    if (opt.color === color) {
-        return;
-    }
-
-    opt.color = color;
-    this.render(color);
-
     /**
+     * @api
      * @event Colorpicker#selectColor
      * @type {object}
      * @property {string} color - selected color (hex string)
@@ -2156,6 +2152,13 @@ Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
         color: color,
         origin: 'palette'
     });
+
+    if (opt.color === color) {
+        return;
+    }
+
+    opt.color = color;
+    this.render(color);
 };
 
 /**
@@ -2177,14 +2180,8 @@ Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
     var color = selectColorEventData.color,
         opt = this.options;
 
-    if (opt.color === color) {
-        return;
-    }
-
-    opt.color = color;
-    this.palette.render(color);
-
     /**
+     * @api
      * @event Colorpicker#selectColor
      * @type {object}
      * @property {string} color - selected color (hex string)
@@ -2194,6 +2191,13 @@ Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
         color: color,
         origin: 'slider'
     });
+
+    if (opt.color === color) {
+        return;
+    }
+
+    opt.color = color;
+    this.palette.render(color);
 };
 
 /**********
@@ -2201,8 +2205,12 @@ Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
  **********/
 
 /**
- * Set colorpicker current color
+ * Set color to colorpicker instance.<br>
+ * The string parameter must be hex color value
+ * @api
  * @param {string} hexStr - hex formatted color string
+ * @example
+ * colorPicker.setColor('#ffff00');
  */
 Colorpicker.prototype.setColor = function(hexStr) {
     if (!colorutil.isValidRGB(hexStr)) {
@@ -2214,16 +2222,25 @@ Colorpicker.prototype.setColor = function(hexStr) {
 };
 
 /**
- * Get colorpicker current color
+ * Get hex color string of current selected color in colorpicker instance.
+ * @api
  * @returns {string} hex string formatted color
+ * @example
+ * colorPicker.setColor('#ffff00');
+ * colorPicker.getColor(); // '#ffff00';
  */
 Colorpicker.prototype.getColor = function() {
     return this.options.color;
 };
 
 /**
- * Toggle colorpicker container element
- * @param {boolean} [isShow=true] - true when reveal colorpicker
+ * Toggle colorpicker element. set true then reveal colorpicker view.
+ * @api
+ * @param {boolean} [isShow=false] - A flag to show
+ * @example
+ * colorPicker.toggle(false); // hide
+ * colorPicker.toggle(); // hide
+ * colorPicker.toggle(true); // show
  */
 Colorpicker.prototype.toggle = function(isShow) {
     this.layout.container.style.display = !!isShow ? 'block' : 'none';
@@ -2238,7 +2255,10 @@ Colorpicker.prototype.render = function(color) {
 };
 
 /**
- * Destroy colorpicker component
+ * Destroy colorpicker instance.
+ * @api
+ * @example
+ * colorPicker.destroy(); // DOM-element is removed
  */
 Colorpicker.prototype.destroy = function() {
     this.layout.destroy();
@@ -2251,7 +2271,6 @@ Colorpicker.prototype.destroy = function() {
 util.CustomEvents.mixin(Colorpicker);
 
 module.exports = Colorpicker;
-
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./colorutil":2,"./layout":9,"./palette":10,"./slider":11}],9:[function(require,module,exports){

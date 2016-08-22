@@ -122,13 +122,6 @@ Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
         return;
     }
 
-    if (opt.color === color) {
-        return;
-    }
-
-    opt.color = color;
-    this.render(color);
-
     /**
      * @api
      * @event Colorpicker#selectColor
@@ -140,6 +133,13 @@ Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
         color: color,
         origin: 'palette'
     });
+
+    if (opt.color === color) {
+        return;
+    }
+
+    opt.color = color;
+    this.render(color);
 };
 
 /**
@@ -161,13 +161,6 @@ Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
     var color = selectColorEventData.color,
         opt = this.options;
 
-    if (opt.color === color) {
-        return;
-    }
-
-    opt.color = color;
-    this.palette.render(color);
-
     /**
      * @api
      * @event Colorpicker#selectColor
@@ -179,6 +172,13 @@ Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
         color: color,
         origin: 'slider'
     });
+
+    if (opt.color === color) {
+        return;
+    }
+
+    opt.color = color;
+    this.palette.render(color);
 };
 
 /**********
@@ -252,4 +252,3 @@ Colorpicker.prototype.destroy = function() {
 util.CustomEvents.mixin(Colorpicker);
 
 module.exports = Colorpicker;
-

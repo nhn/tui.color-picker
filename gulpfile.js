@@ -122,4 +122,3 @@ gulp.task('test-w', function(done) {
         process.exit(exitCode);
     });
 });
-

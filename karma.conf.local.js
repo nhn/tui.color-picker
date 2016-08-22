@@ -11,7 +11,7 @@ module.exports = function(config) {
         files: [
             'bower_components/jquery/jquery.js',
             'bower_components/tui-code-snippet/code-snippet.js',
-            'node_modules/karma-jasmine-jquery/lib/jasmine-jquery.js',
+            'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
             'index.js',
             'src/**/*.js',
             'test/prepare.js',
@@ -29,7 +29,7 @@ module.exports = function(config) {
             bundleDelay: 1000,
             transform:[istanbul({
                 ignore: [
-                    'index.js', 
+                    'index.js',
                     '**/test/**',
                     '**/template/**'
                 ]
