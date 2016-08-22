@@ -5,8 +5,10 @@ Component - Colorpicker for web
 ![Colorpicker Screenshot](https://github.com/nhnent/tui.component.colorpicker/raw/master/screenshot.png)
 
 ## Documentation
-* API: https://nhnent.github.io/tui.component.colorpicker/latest
-* Wiki: https://github.com/nhnent/tui.component.colorpicker/wiki
+* **API** : https://nhnent.github.io/tui.component.colorpicker/latest
+* **Tutorial** : https://github.com/nhnent/tui.component.colorpicker/wiki
+* **Sample** :
+http://nhnent.github.io/tui.component.colorpicker/latest/tutorial-sample1.html
 
 ## Support Browsers
 * IE7+
@@ -16,16 +18,14 @@ Component - Colorpicker for web
 
 ## Download/Install
 * Bower:
-   * Latest : `bower install tui-component-colorpicker"`
-   * Each version : `bower install tui-component-colorpicker[#tag]"`
-* Download: https://github.com/nhnent/tui.component.colorpicker
-
-## History
-| Version | Description | Date | Developer |
-| ---- | ---- | ---- | ---- |
-| 1.0.1 | [Changes](https://github.com/nhnent/tui.component.colorpicker/releases/tag/1.0.1) | 2015.11 | NHNent. FE Dev team <br><dl_javascript@nhnent.com> |
-| [1.0.0](http://nhnent.github.io/tui.component.colorpicker/1.0.0) | Develop | 2015.11 | NHNent. FE Dev team <br><dl_javascript@nhnent.com> |
+   * Latest : `bower install tui-component-colorpicker`
+   * Each version : `bower install tui-component-colorpicker[#tag]`
+* Download: https://github.com/nhnent/tui.component.colorpicker/dist
 
 <br>
 ## License
 [MIT](https://github.com/nhnent/tui.component.colorpicker/raw/master/LICENSE)
+
+## Sponsor
+* <img src="https://cloud.githubusercontent.com/assets/12269563/12287774/8cf4d2c0-ba12-11e5-9fa8-0a9c452cca05.png" height="30"><br>
+ [BrowserStack](https://www.browserstack.com/) is a cloud based cross browser testing tool
