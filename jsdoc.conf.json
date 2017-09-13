@@ -23,7 +23,7 @@
         "default": {
             "outputSourceFiles" : true
         },
-        "applicationName": "Colorpicker",
+        "applicationName": "ColorPicker",
         "meta": {
             "title": "",
             "description": "",
