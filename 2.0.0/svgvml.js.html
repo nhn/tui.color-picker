@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home | ColorPicker</title>
+    <title>Source: svgvml.js | ColorPicker</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -55,55 +57,123 @@
 
 
     
-
-
-
-
-
-
-
-
-
-    
-
-
     <section>
-        <article class="readme"><h1>Colorpicker</h1><p>Component - ColorPicker for web</p>
-<p><img src="https://github.com/nhnent/tui.color-picker/raw/master/screenshot.png" alt="Colorpicker Screenshot"></p>
-<h2>Documentation</h2><ul>
-<li><strong>API</strong> : https://nhnent.github.io/tui.color-picker/latest</li>
-<li><strong>Tutorial</strong> : https://github.com/nhnent/tui.color-picker/wiki</li>
-<li><strong>Sample</strong> :<br>http://nhnent.github.io/tui.color-picker/latest/tutorial-sample1.html</li>
-</ul>
-<h2>Dependency</h2><ul>
-<li><a href="https://github.com/nhnent/tui.code-snippet/releases/tag/v1.2.8">tui.code-snippet: 1.2.8</a></li>
-</ul>
-<h2>Tested Browsers</h2><ul>
-<li>IE7+</li>
-<li>Edge</li>
-<li>Chrome</li>
-<li>Firefox</li>
-<li>Safari</li>
-</ul>
-<h2>Usage</h2><h3>Use <code>npm</code></h3><p>Install the latest version using <code>npm</code> command:</p>
-<pre class="prettyprint source"><code>$ npm install tui-color-picker --save</code></pre><p>or want to install the each version:</p>
-<pre class="prettyprint source"><code>$ npm install tui-color-picker@&lt;version> --save</code></pre><p>To access as module format in your code:</p>
-<pre class="prettyprint source lang-javascript"><code>var colorPicker = require('tui-color-picker');
-var instance = colorPicker.create({
-    container: document.getElementById('colorpicker')
-});</code></pre><h3>Use <code>bower</code></h3><p>Install the latest version using <code>bower</code> command:</p>
-<pre class="prettyprint source"><code>$ bower install tui-color-picker</code></pre><p>or want to install the each version:</p>
-<pre class="prettyprint source"><code>$ bower install tui-color-picker#&lt;tag></code></pre><p>To access as namespace format in your code:</p>
-<pre class="prettyprint source lang-javascript"><code>var instance = tui.colorPicker.create({
-    container: document.getElementById('colorpicker')
-});</code></pre><h3>Download</h3><ul>
-<li><a href="https://github.com/nhnent/tui.color-pditor/tree/production/dist">Download bundle files from <code>dist</code> folder</a></li>
-<li><a href="https://github.com/nhnent/tui.color-picker/releases">Download all sources for each version</a></li>
-</ul>
-<h2>License</h2><p><a href="https://github.com/nhnent/tui.color-picker/raw/master/LICENSE">MIT LICENSE</a></p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview module for manipulate SVG or VML object
+ * @author NHN Ent. FE Development Team &lt;dl_javascript@nhnent.com>
+ */
+
+'use strict';
+
+var util = require('tui-code-snippet');
+var PARSE_TRANSLATE_NUM_REGEX = /[\.\-0-9]+/g;
+var SVG_HUE_HANDLE_RIGHT_POS = -6;
+
+/* istanbul ignore next */
+var svgvml = {
+    /**
+     * Return true when browser is below IE8.
+     * @returns {boolean} is old browser?
+     */
+    isOldBrowser: function() {
+        var _isOldBrowser = svgvml._isOldBrowser;
+
+        if (!util.isExisty(_isOldBrowser)) {
+            svgvml._isOldBrowser = _isOldBrowser = util.browser.msie &amp;&amp; util.browser.version &lt; 9;
+        }
+
+        return _isOldBrowser;
+    },
+
+    /**
+     * Get translate transform value
+     * @param {SVG|VML} obj - svg or vml object that want to know translate x, y
+     * @returns {number[]} translated coordinates [x, y]
+     */
+    getTranslateXY: function(obj) {
+        var temp;
+
+        if (svgvml.isOldBrowser()) {
+            temp = obj.style;
+
+            return [parseFloat(temp.top), parseFloat(temp.left)];
+        }
+
+        temp = obj.getAttribute('transform');
+
+        if (!temp) {
+            return [0, 0];
+        }
+
+        temp = temp.match(PARSE_TRANSLATE_NUM_REGEX);
+
+        // need caution for difference of VML, SVG coordinates system.
+        // translate command need X coords in first parameter. but VML is use CSS coordinate system(top, left)
+        return [parseFloat(temp[1]), parseFloat(temp[0])];
+    },
+
+    /**
+     * Set translate transform value
+     * @param {SVG|VML} obj - SVG or VML object to setting translate transform.
+     * @param {number} x - translate X value
+     * @param {number} y - translate Y value
+     */
+    setTranslateXY: function(obj, x, y) {
+        if (svgvml.isOldBrowser()) {
+            obj.style.left = x + 'px';
+            obj.style.top = y + 'px';
+        } else {
+            obj.setAttribute('transform', 'translate(' + x + ',' + y + ')');
+        }
+    },
+
+    /**
+     * Set translate only Y value
+     * @param {SVG|VML} obj - SVG or VML object to setting translate transform.
+     * @param {number} y - translate Y value
+     */
+    setTranslateY: function(obj, y) {
+        if (svgvml.isOldBrowser()) {
+            obj.style.top = y + 'px';
+        } else {
+            obj.setAttribute('transform', 'translate(' + SVG_HUE_HANDLE_RIGHT_POS + ',' + y + ')');
+        }
+    },
+
+    /**
+     * Set stroke color to SVG or VML object
+     * @param {SVG|VML} obj - SVG or VML object to setting stroke color
+     * @param {string} colorStr - color string
+     */
+    setStrokeColor: function(obj, colorStr) {
+        if (svgvml.isOldBrowser()) {
+            obj.strokecolor = colorStr;
+        } else {
+            obj.setAttribute('stroke', colorStr);
+        }
+    },
+
+    /**
+     * Set gradient stop color to SVG, VML object.
+     * @param {SVG|VML} obj - SVG, VML object to applying gradient stop color
+     * @param {string} colorStr - color string
+     */
+    setGradientColorStop: function(obj, colorStr) {
+        if (svgvml.isOldBrowser()) {
+            obj.color = colorStr;
+        } else {
+            obj.setAttribute('stop-color', colorStr);
+        }
+    }
+
+};
+
+module.exports = svgvml;
+
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -120,7 +190,7 @@ var instance = colorPicker.create({
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:tui-color-picker_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

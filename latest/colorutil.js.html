@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home | ColorPicker</title>
+    <title>Source: colorutil.js | ColorPicker</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -55,55 +57,180 @@
 
 
     
-
-
-
-
-
-
-
-
-
-    
-
-
     <section>
-        <article class="readme"><h1>Colorpicker</h1><p>Component - ColorPicker for web</p>
-<p><img src="https://github.com/nhnent/tui.color-picker/raw/master/screenshot.png" alt="Colorpicker Screenshot"></p>
-<h2>Documentation</h2><ul>
-<li><strong>API</strong> : https://nhnent.github.io/tui.color-picker/latest</li>
-<li><strong>Tutorial</strong> : https://github.com/nhnent/tui.color-picker/wiki</li>
-<li><strong>Sample</strong> :<br>http://nhnent.github.io/tui.color-picker/latest/tutorial-sample1.html</li>
-</ul>
-<h2>Dependency</h2><ul>
-<li><a href="https://github.com/nhnent/tui.code-snippet/releases/tag/v1.2.8">tui.code-snippet: 1.2.8</a></li>
-</ul>
-<h2>Tested Browsers</h2><ul>
-<li>IE7+</li>
-<li>Edge</li>
-<li>Chrome</li>
-<li>Firefox</li>
-<li>Safari</li>
-</ul>
-<h2>Usage</h2><h3>Use <code>npm</code></h3><p>Install the latest version using <code>npm</code> command:</p>
-<pre class="prettyprint source"><code>$ npm install tui-color-picker --save</code></pre><p>or want to install the each version:</p>
-<pre class="prettyprint source"><code>$ npm install tui-color-picker@&lt;version> --save</code></pre><p>To access as module format in your code:</p>
-<pre class="prettyprint source lang-javascript"><code>var colorPicker = require('tui-color-picker');
-var instance = colorPicker.create({
-    container: document.getElementById('colorpicker')
-});</code></pre><h3>Use <code>bower</code></h3><p>Install the latest version using <code>bower</code> command:</p>
-<pre class="prettyprint source"><code>$ bower install tui-color-picker</code></pre><p>or want to install the each version:</p>
-<pre class="prettyprint source"><code>$ bower install tui-color-picker#&lt;tag></code></pre><p>To access as namespace format in your code:</p>
-<pre class="prettyprint source lang-javascript"><code>var instance = tui.colorPicker.create({
-    container: document.getElementById('colorpicker')
-});</code></pre><h3>Download</h3><ul>
-<li><a href="https://github.com/nhnent/tui.color-pditor/tree/production/dist">Download bundle files from <code>dist</code> folder</a></li>
-<li><a href="https://github.com/nhnent/tui.color-picker/releases">Download all sources for each version</a></li>
-</ul>
-<h2>License</h2><p><a href="https://github.com/nhnent/tui.color-picker/raw/master/LICENSE">MIT LICENSE</a></p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Utility methods to manipulate colors
+ * @author NHN Ent. FE Development Team &lt;dl_javascript@nhnent.com>
+ */
+
+'use strict';
+
+var hexRX = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i;
+
+var colorutil = {
+    /**
+     * pad left zero characters.
+     * @param {number} number number value to pad zero.
+     * @param {number} length pad length to want.
+     * @returns {string} padded string.
+     */
+    leadingZero: function(number, length) {
+        var zero = '',
+            i = 0;
+
+        if ((number + '').length > length) {
+            return number + '';
+        }
+
+        for (; i &lt; (length - 1); i += 1) {
+            zero += '0';
+        }
+
+        return (zero + number).slice(length * -1);
+    },
+
+    /**
+     * Check validate of hex string value is RGB
+     * @param {string} str - rgb hex string
+     * @returns {boolean} return true when supplied str is valid RGB hex string
+     */
+    isValidRGB: function(str) {
+        return hexRX.test(str);
+    },
+
+    // @license RGB &lt;-> HSV conversion utilities based off of http://www.cs.rit.edu/~ncs/color/t_convert.html
+
+    /**
+     * Convert color hex string to rgb number array
+     * @param {string} hexStr - hex string
+     * @returns {number[]} rgb numbers
+     */
+    hexToRGB: function(hexStr) {
+        var r, g, b;
+
+        if (!colorutil.isValidRGB(hexStr)) {
+            return false;
+        }
+
+        hexStr = hexStr.substring(1);
+
+        r = parseInt(hexStr.substr(0, 2), 16);
+        g = parseInt(hexStr.substr(2, 2), 16);
+        b = parseInt(hexStr.substr(4, 2), 16);
+
+        return [r, g, b];
+    },
+
+    /**
+     * Convert rgb number to hex string
+     * @param {number} r - red
+     * @param {number} g - green
+     * @param {number} b - blue
+     * @returns {string|boolean} return false when supplied rgb number is not valid. otherwise, converted hex string
+     */
+    rgbToHEX: function(r, g, b) {
+        var hexStr = '#' +
+            colorutil.leadingZero(r.toString(16), 2) +
+            colorutil.leadingZero(g.toString(16), 2) +
+            colorutil.leadingZero(b.toString(16), 2);
+
+        if (colorutil.isValidRGB(hexStr)) {
+            return hexStr;
+        }
+
+        return false;
+    },
+
+    /**
+     * Convert rgb number to HSV value
+     * @param {number} r - red
+     * @param {number} g - green
+     * @param {number} b - blue
+     * @returns {number[]} hsv value
+     */
+    rgbToHSV: function(r, g, b) {
+        var max, min, h, s, v, d;
+
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        max = Math.max(r, g, b);
+        min = Math.min(r, g, b);
+        v = max;
+        d = max - min;
+        s = max === 0 ? 0 : (d / max);
+
+        if (max === min) {
+            h = 0;
+        } else {
+            switch (max) {
+                case r: h = (g - b) / d + (g &lt; b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+                // no default
+            }
+            h /= 6;
+        }
+
+        return [
+            Math.round(h * 360),
+            Math.round(s * 100),
+            Math.round(v * 100)
+        ];
+    },
+
+    /**
+     * Convert HSV number to RGB
+     * @param {number} h - hue
+     * @param {number} s - saturation
+     * @param {number} v - value
+     * @returns {number[]} rgb value
+     */
+    hsvToRGB: function(h, s, v) {
+        var r, g, b;
+        var i;
+        var f, p, q, t;
+
+        h = Math.max(0, Math.min(360, h));
+        s = Math.max(0, Math.min(100, s));
+        v = Math.max(0, Math.min(100, v));
+
+        s /= 100;
+        v /= 100;
+
+        if (s === 0) {
+            // Achromatic (grey)
+            r = g = b = v;
+
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+
+        h /= 60; // sector 0 to 5
+        i = Math.floor(h);
+        f = h - i; // factorial part of h
+        p = v * (1 - s);
+        q = v * (1 - s * f);
+        t = v * (1 - s * (1 - f));
+
+        switch (i) {
+            case 0: r = v; g = t; b = p; break;
+            case 1: r = q; g = v; b = p; break;
+            case 2: r = p; g = v; b = t; break;
+            case 3: r = p; g = q; b = v; break;
+            case 4: r = t; g = p; b = v; break;
+            default: r = v; g = p; b = q; break;
+        }
+
+        return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+    }
+};
+
+module.exports = colorutil;
+
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -120,7 +247,7 @@ var instance = colorPicker.create({
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:tui-color-picker_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

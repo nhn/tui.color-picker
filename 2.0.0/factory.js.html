@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home | ColorPicker</title>
+    <title>Source: factory.js | ColorPicker</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -55,55 +57,257 @@
 
 
     
-
-
-
-
-
-
-
-
-
-    
-
-
     <section>
-        <article class="readme"><h1>Colorpicker</h1><p>Component - ColorPicker for web</p>
-<p><img src="https://github.com/nhnent/tui.color-picker/raw/master/screenshot.png" alt="Colorpicker Screenshot"></p>
-<h2>Documentation</h2><ul>
-<li><strong>API</strong> : https://nhnent.github.io/tui.color-picker/latest</li>
-<li><strong>Tutorial</strong> : https://github.com/nhnent/tui.color-picker/wiki</li>
-<li><strong>Sample</strong> :<br>http://nhnent.github.io/tui.color-picker/latest/tutorial-sample1.html</li>
-</ul>
-<h2>Dependency</h2><ul>
-<li><a href="https://github.com/nhnent/tui.code-snippet/releases/tag/v1.2.8">tui.code-snippet: 1.2.8</a></li>
-</ul>
-<h2>Tested Browsers</h2><ul>
-<li>IE7+</li>
-<li>Edge</li>
-<li>Chrome</li>
-<li>Firefox</li>
-<li>Safari</li>
-</ul>
-<h2>Usage</h2><h3>Use <code>npm</code></h3><p>Install the latest version using <code>npm</code> command:</p>
-<pre class="prettyprint source"><code>$ npm install tui-color-picker --save</code></pre><p>or want to install the each version:</p>
-<pre class="prettyprint source"><code>$ npm install tui-color-picker@&lt;version> --save</code></pre><p>To access as module format in your code:</p>
-<pre class="prettyprint source lang-javascript"><code>var colorPicker = require('tui-color-picker');
-var instance = colorPicker.create({
-    container: document.getElementById('colorpicker')
-});</code></pre><h3>Use <code>bower</code></h3><p>Install the latest version using <code>bower</code> command:</p>
-<pre class="prettyprint source"><code>$ bower install tui-color-picker</code></pre><p>or want to install the each version:</p>
-<pre class="prettyprint source"><code>$ bower install tui-color-picker#&lt;tag></code></pre><p>To access as namespace format in your code:</p>
-<pre class="prettyprint source lang-javascript"><code>var instance = tui.colorPicker.create({
-    container: document.getElementById('colorpicker')
-});</code></pre><h3>Download</h3><ul>
-<li><a href="https://github.com/nhnent/tui.color-pditor/tree/production/dist">Download bundle files from <code>dist</code> folder</a></li>
-<li><a href="https://github.com/nhnent/tui.color-picker/releases">Download all sources for each version</a></li>
-</ul>
-<h2>License</h2><p><a href="https://github.com/nhnent/tui.color-picker/raw/master/LICENSE">MIT LICENSE</a></p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Colorpicker factory module
+ * @author NHN Ent. FE Development Team &lt;dl_javascript@nhnent.com>
+ */
+
+'use strict';
+
+var util = require('tui-code-snippet');
+var colorutil = require('./colorutil');
+var Layout = require('./layout');
+var Palette = require('./palette');
+var Slider = require('./slider');
+
+/**
+ * @constructor
+ * @mixes CustomEvents
+ * @param {object} options - options for colorpicker component
+ *  @param {HTMLDivElement} options.container - container element
+ *  @param {string} [options.color='#ffffff'] - default selected color
+ *  @param {string[]} [options.preset] - color preset for palette (use base16 palette if not supplied)
+ *  @param {string} [options.cssPrefix='tui-colorpicker-'] - css prefix text for each child elements
+ *  @param {string} [options.detailTxt='Detail'] - text for detail button.
+ * @example
+ * var colorpicker = tui.component.colorpicker({
+ *   container: document.getElementById('colorpicker')
+ * });
+ *
+ * colorpicker.getColor();    // '#ffffff'
+ */
+function Colorpicker(options) {
+    var layout;
+
+    if (!(this instanceof Colorpicker)) {
+        return new Colorpicker(options);
+    }
+    /**
+     * Option object
+     * @type {object}
+     */
+    options = this.options = util.extend({
+        container: null,
+        color: '#f8f8f8',
+        preset: [
+            '#181818',
+            '#282828',
+            '#383838',
+            '#585858',
+            '#b8b8b8',
+            '#d8d8d8',
+            '#e8e8e8',
+            '#f8f8f8',
+            '#ab4642',
+            '#dc9656',
+            '#f7ca88',
+            '#a1b56c',
+            '#86c1b9',
+            '#7cafc2',
+            '#ba8baf',
+            '#a16946'
+        ],
+        cssPrefix: 'tui-colorpicker-',
+        detailTxt: 'Detail'
+    }, options);
+
+    if (!options.container) {
+        throw new Error('Colorpicker(): need container option.');
+    }
+
+    /**********
+     * Create layout view
+     **********/
+
+    /**
+     * @type {Layout}
+     */
+    layout = this.layout = new Layout(options, options.container);
+
+    /**********
+     * Create palette view
+     **********/
+    this.palette = new Palette(options, layout.container);
+    this.palette.on({
+        '_selectColor': this._onSelectColorInPalette,
+        '_toggleSlider': this._onToggleSlider
+    }, this);
+
+    /**********
+     * Create slider view
+     **********/
+    this.slider = new Slider(options, layout.container);
+    this.slider.on('_selectColor', this._onSelectColorInSlider, this);
+
+    /**********
+     * Add child views
+     **********/
+    layout.addChild(this.palette);
+    layout.addChild(this.slider);
+
+    this.render(options.color);
+}
+
+/**
+ * Handler method for Palette#_selectColor event
+ * @private
+ * @fires Colorpicker#selectColor
+ * @param {object} selectColorEventData - event data
+ */
+Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
+    var color = selectColorEventData.color,
+        opt = this.options;
+
+    if (!colorutil.isValidRGB(color)) {
+        this.render();
+
+        return;
+    }
+
+    /**
+     * @api
+     * @event Colorpicker#selectColor
+     * @type {object}
+     * @property {string} color - selected color (hex string)
+     * @property {string} origin - flags for represent the source of event fires.
+     */
+    this.fire('selectColor', {
+        color: color,
+        origin: 'palette'
+    });
+
+    if (opt.color === color) {
+        return;
+    }
+
+    opt.color = color;
+    this.render(color);
+};
+
+/**
+ * Handler method for Palette#_toggleSlider event
+ * @private
+ */
+Colorpicker.prototype._onToggleSlider = function() {
+    this.slider.toggle(!this.slider.isVisible());
+};
+
+/**
+ * Handler method for Slider#_selectColor event
+ * @private
+ * @fires Colorpicker#selectColor
+ * @param {object} selectColorEventData - event data
+ */
+Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
+    var color = selectColorEventData.color,
+        opt = this.options;
+
+    /**
+     * @api
+     * @event Colorpicker#selectColor
+     * @type {object}
+     * @property {string} color - selected color (hex string)
+     * @property {string} origin - flags for represent the source of event fires.
+     */
+    this.fire('selectColor', {
+        color: color,
+        origin: 'slider'
+    });
+
+    if (opt.color === color) {
+        return;
+    }
+
+    opt.color = color;
+    this.palette.render(color);
+};
+
+/**********
+ * PUBLIC API
+ **********/
+
+/**
+ * Set color to colorpicker instance.&lt;br>
+ * The string parameter must be hex color value
+ * @api
+ * @param {string} hexStr - hex formatted color string
+ * @example
+ * colorPicker.setColor('#ffff00');
+ */
+Colorpicker.prototype.setColor = function(hexStr) {
+    if (!colorutil.isValidRGB(hexStr)) {
+        throw new Error('Colorpicker#setColor(): need valid hex string color value');
+    }
+
+    this.options.color = hexStr;
+    this.render(hexStr);
+};
+
+/**
+ * Get hex color string of current selected color in colorpicker instance.
+ * @api
+ * @returns {string} hex string formatted color
+ * @example
+ * colorPicker.setColor('#ffff00');
+ * colorPicker.getColor(); // '#ffff00';
+ */
+Colorpicker.prototype.getColor = function() {
+    return this.options.color;
+};
+
+/**
+ * Toggle colorpicker element. set true then reveal colorpicker view.
+ * @api
+ * @param {boolean} [isShow=false] - A flag to show
+ * @example
+ * colorPicker.toggle(false); // hide
+ * colorPicker.toggle(); // hide
+ * colorPicker.toggle(true); // show
+ */
+Colorpicker.prototype.toggle = function(isShow) {
+    this.layout.container.style.display = !!isShow ? 'block' : 'none';
+};
+
+/**
+ * Render colorpicker
+ * @param {string} [color] - selected color
+ */
+Colorpicker.prototype.render = function(color) {
+    this.layout.render(color || this.options.color);
+};
+
+/**
+ * Destroy colorpicker instance.
+ * @api
+ * @example
+ * colorPicker.destroy(); // DOM-element is removed
+ */
+Colorpicker.prototype.destroy = function() {
+    this.layout.destroy();
+    this.options.container.innerHTML = '';
+
+    this.layout = this.slider = this.palette =
+        this.options = null;
+};
+
+util.CustomEvents.mixin(Colorpicker);
+
+module.exports = Colorpicker;
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -120,7 +324,7 @@ var instance = colorPicker.create({
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:tui-color-picker_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

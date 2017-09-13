@@ -1,0 +1,2262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Class: Drag | ColorPicker</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 13px">
+        
+            <a href="https://github.com/nhnent/tui.jsdoc-template" rel="noopener noreferrer" target="_blank">
+                <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">ColorPicker</a></h1>
+        
+            <span class="version">v2.0.0</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Examples</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example00.html">example00</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example00_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="Collection.html">Collection</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Collection_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Collection.html#getItemID">getItemID</a></li><li><a href="Collection.html#items">items</a></li><li><a href="Collection.html#length">length</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Collection.html#.and">and</a></li><li><a href="Collection.html#.merge">merge</a></li><li><a href="Collection.html#.or">or</a></li><li><a href="Collection.html#add">add</a></li><li><a href="Collection.html#clear">clear</a></li><li><a href="Collection.html#doWhenHas">doWhenHas</a></li><li><a href="Collection.html#each">each</a></li><li><a href="Collection.html#find">find</a></li><li><a href="Collection.html#getItemID">getItemID</a></li><li><a href="Collection.html#groupBy">groupBy</a></li><li><a href="Collection.html#has">has</a></li><li><a href="Collection.html#remove">remove</a></li><li><a href="Collection.html#single">single</a></li><li><a href="Collection.html#sort">sort</a></li><li><a href="Collection.html#toArray">toArray</a></li></ul></div></li><li><a href="Colorpicker.html">Colorpicker</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Colorpicker_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Colorpicker.html#~layout">layout</a></li><li><a href="Colorpicker.html#~options">options</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Colorpicker.html#destroy">destroy</a></li><li><a href="Colorpicker.html#getColor">getColor</a></li><li><a href="Colorpicker.html#render">render</a></li><li><a href="Colorpicker.html#setColor">setColor</a></li><li><a href="Colorpicker.html#toggle">toggle</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="Colorpicker.html#event:selectColor">selectColor</a></li><li><a href="Colorpicker.html#event:selectColor">selectColor</a></li></ul></div></li><li><a href="Drag.html">Drag</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Drag_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Drag.html#_distance">_distance</a></li><li><a href="Drag.html#_dragStartEventData">_dragStartEventData</a></li><li><a href="Drag.html#_dragStartFired">_dragStartFired</a></li><li><a href="Drag.html#_isMoved">_isMoved</a></li><li><a href="Drag.html#container">container</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Drag.html#_getEventData">_getEventData</a></li><li><a href="Drag.html#_onMouseDown">_onMouseDown</a></li><li><a href="Drag.html#_onMouseMove">_onMouseMove</a></li><li><a href="Drag.html#_onMouseUp">_onMouseUp</a></li><li><a href="Drag.html#_toggleDragEvent">_toggleDragEvent</a></li><li><a href="Drag.html#destroy">destroy</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="Drag.html#event:click">click</a></li><li><a href="Drag.html#event:drag">drag</a></li><li><a href="Drag.html#event:dragEnd">dragEnd</a></li><li><a href="Drag.html#event:dragStart">dragStart</a></li></ul></div></li><li><a href="Layout.html">Layout</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Layout_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Layout.html#childs">childs</a></li><li><a href="Layout.html#container">container</a></li><li><a href="Layout.html#id">id</a></li><li><a href="Layout.html#options">options</a></li><li><a href="Layout.html#parent">parent</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Layout.html#_beforeDestroy">_beforeDestroy</a></li><li><a href="Layout.html#_destroy">_destroy</a></li><li><a href="Layout.html#addChild">addChild</a></li><li><a href="Layout.html#destroy">destroy</a></li><li><a href="Layout.html#getViewBound">getViewBound</a></li><li><a href="Layout.html#recursive">recursive</a></li><li><a href="Layout.html#removeChild">removeChild</a></li><li><a href="Layout.html#render">render</a></li><li><a href="Layout.html#resize">resize</a></li></ul></div></li><li><a href="Palette.html">Palette</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Palette_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Palette.html#childs">childs</a></li><li><a href="Palette.html#container">container</a></li><li><a href="Palette.html#id">id</a></li><li><a href="Palette.html#options">options</a></li><li><a href="Palette.html#parent">parent</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Palette.html#_beforeDestroy">_beforeDestroy</a></li><li><a href="Palette.html#_destroy">_destroy</a></li><li><a href="Palette.html#_onChange">_onChange</a></li><li><a href="Palette.html#_onClick">_onClick</a></li><li><a href="Palette.html#_toggleEvent">_toggleEvent</a></li><li><a href="Palette.html#addChild">addChild</a></li><li><a href="Palette.html#destroy">destroy</a></li><li><a href="Palette.html#getViewBound">getViewBound</a></li><li><a href="Palette.html#recursive">recursive</a></li><li><a href="Palette.html#removeChild">removeChild</a></li><li><a href="Palette.html#render">render</a></li><li><a href="Palette.html#resize">resize</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="Palette.html#event:_selectColor">_selectColor</a></li><li><a href="Palette.html#event:_selectColor">_selectColor</a></li><li><a href="Palette.html#event:_toggleSlider">_toggleSlider</a></li></ul></div></li><li><a href="Slider.html">Slider</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="Slider_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="Slider.html#_dragDataCache">_dragDataCache</a></li><li><a href="Slider.html#baseColorElement">baseColorElement</a></li><li><a href="Slider.html#childs">childs</a></li><li><a href="Slider.html#container">container</a></li><li><a href="Slider.html#drag">drag</a></li><li><a href="Slider.html#huebarHandleElement">huebarHandleElement</a></li><li><a href="Slider.html#id">id</a></li><li><a href="Slider.html#options">options</a></li><li><a href="Slider.html#parent">parent</a></li><li><a href="Slider.html#sliderHandleElement">sliderHandleElement</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="Slider.html#_beforeDestroy">_beforeDestroy</a></li><li><a href="Slider.html#_destroy">_destroy</a></li><li><a href="Slider.html#_onClick">_onClick</a></li><li><a href="Slider.html#_onDrag">_onDrag</a></li><li><a href="Slider.html#_onDragEnd">_onDragEnd</a></li><li><a href="Slider.html#_onDragStart">_onDragStart</a></li><li><a href="Slider.html#_prepareColorSliderForMouseEvent">_prepareColorSliderForMouseEvent</a></li><li><a href="Slider.html#addChild">addChild</a></li><li><a href="Slider.html#destroy">destroy</a></li><li><a href="Slider.html#getHSV">getHSV</a></li><li><a href="Slider.html#getHue">getHue</a></li><li><a href="Slider.html#getRGB">getRGB</a></li><li><a href="Slider.html#getSaturationAndValue">getSaturationAndValue</a></li><li><a href="Slider.html#getViewBound">getViewBound</a></li><li><a href="Slider.html#isVisible">isVisible</a></li><li><a href="Slider.html#moveHue">moveHue</a></li><li><a href="Slider.html#moveSaturationAndValue">moveSaturationAndValue</a></li><li><a href="Slider.html#recursive">recursive</a></li><li><a href="Slider.html#removeChild">removeChild</a></li><li><a href="Slider.html#render">render</a></li><li><a href="Slider.html#resize">resize</a></li><li><a href="Slider.html#toggle">toggle</a></li></ul></div></li><li><a href="View.html">View</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="View_sub"><div class="member-type">Members</div><ul class="inner"><li><a href="View.html#childs">childs</a></li><li><a href="View.html#container">container</a></li><li><a href="View.html#id">id</a></li><li><a href="View.html#parent">parent</a></li></ul><div class="member-type">Methods</div><ul class="inner"><li><a href="View.html#_beforeDestroy">_beforeDestroy</a></li><li><a href="View.html#_destroy">_destroy</a></li><li><a href="View.html#addChild">addChild</a></li><li><a href="View.html#destroy">destroy</a></li><li><a href="View.html#getViewBound">getViewBound</a></li><li><a href="View.html#recursive">recursive</a></li><li><a href="View.html#removeChild">removeChild</a></li><li><a href="View.html#render">render</a></li><li><a href="View.html#resize">resize</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>Drag<span class="signature">(options, container)</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="Drag">
+            
+                new <span class="type-signature"></span>Drag<span class="signature">(options, container)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line19">line 19</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>options for drag handler</p>
+                <h6>Properties</h6>
+                
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>distance</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    10
+                
+                </td>
+            
+
+            <td class="description last"><p>distance in pixels after mouse must move before dragging should start</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>container</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>container element to bind drag events</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="mixes">Mixes In:</dt>
+
+        <dd class="mixes"><ul>
+        
+            <li>CustomEvents</li>
+        
+        </ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+
+<dt>
+<h4 class="name" id="_distance">
+    <span class="type-signature"></span>_distance<span class="type-signature"> :number</span>
+    
+    <div class="container-source members">
+        <code><a href="core_drag.js.html">core/drag.js</a></code>,
+        <code><a href="core_drag.js.html#line40">line 40</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>dragging distance in pixel between mousedown and firing dragStart events</p>
+    </div>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">number</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_dragStartEventData">
+    <span class="type-signature"></span>_dragStartEventData<span class="type-signature"> :object</span>
+    
+    <div class="container-source members">
+        <code><a href="core_drag.js.html">core/drag.js</a></code>,
+        <code><a href="core_drag.js.html#line50">line 50</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_dragStartFired">
+    <span class="type-signature"></span>_dragStartFired<span class="type-signature"> :boolean</span>
+    
+    <div class="container-source members">
+        <code><a href="core_drag.js.html">core/drag.js</a></code>,
+        <code><a href="core_drag.js.html#line45">line 45</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">boolean</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="_isMoved">
+    <span class="type-signature"></span>_isMoved<span class="type-signature"> :boolean</span>
+    
+    <div class="container-source members">
+        <code><a href="core_drag.js.html">core/drag.js</a></code>,
+        <code><a href="core_drag.js.html#line34">line 34</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">boolean</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        
+            
+
+<dt>
+<h4 class="name" id="container">
+    <span class="type-signature"></span>container<span class="type-signature"> :HTMLElement</span>
+    
+    <div class="container-source members">
+        <code><a href="core_drag.js.html">core/drag.js</a></code>,
+        <code><a href="core_drag.js.html#line29">line 29</a></code>
+    </div>
+    
+</h4>
+
+
+</dt>
+<dd>
+    
+
+    <!--
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">HTMLElement</span>
+
+
+            </li>
+        </ul>
+    
+    -->
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+                
+
+<dt>
+    
+        <h4 class="name" id="_getEventData">
+            
+                <span class="type-signature"></span>_getEventData<span class="signature">(mouseEvent)</span><span class="type-signature"> &rarr; {object}</span>
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line93">line 93</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Normalize mouse event object.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>mouseEvent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>mouse event object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-returns">
+        <h5>Returns:</h5>
+        
+                
+
+
+
+<span class="param-type">object</span>
+
+
+
+
+
+- <p>normalized mouse event data.</p>
+
+
+
+
+            
+    </div>
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="_onMouseDown">
+            
+                <span class="type-signature"></span>_onMouseDown<span class="signature">(mouseDownEvent)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line104">line 104</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>MouseDown DOM event handler.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>mouseDownEvent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>MouseDown event object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="_onMouseMove">
+            
+                <span class="type-signature"></span>_onMouseMove<span class="signature">(mouseMoveEvent)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line123">line 123</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>MouseMove DOM event handler.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>mouseMoveEvent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>MouseMove event object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li><a href="Drag.html#event:drag">Drag#event:drag</a></li>
+    
+        <li><a href="Drag.html#event:dragStart">Drag#event:dragStart</a></li>
+    </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="_onMouseUp">
+            
+                <span class="type-signature"></span>_onMouseUp<span class="signature">(mouseUpEvent)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line169">line 169</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>MouseUp DOM event handler.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>mouseUpEvent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>MouseUp event object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li><a href="Drag.html#event:dragEnd">Drag#event:dragEnd</a></li>
+    
+        <li><a href="Drag.html#event:click">Drag#event:click</a></li>
+    </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="_toggleDragEvent">
+            
+                <span class="type-signature"></span>_toggleDragEvent<span class="signature">(toBind)</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line67">line 67</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Toggle events for mouse dragging.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>toBind</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>bind events related with dragging when supplied &quot;true&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            
+                
+
+<dt>
+    
+        <h4 class="name" id="destroy">
+            
+                <span class="type-signature"></span>destroy<span class="signature">()</span><span class="type-signature"></span>
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line56">line 56</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Destroy method.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+            </dl>
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        <dl>
+            
+
+<dt>
+    
+        <h4 class="name" id="event:click">
+            
+                click
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line188">line 188</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Click events.</p>
+    </div>
+    
+
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">MouseEvent</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>target element in this event.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>originEvent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>original mouse event object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="event:drag">
+            
+                drag
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line153">line 153</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Events while dragging.</p>
+    </div>
+    
+
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>target element in this event.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>originEvent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>original mouse event object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="event:dragEnd">
+            
+                dragEnd
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line176">line 176</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Drag end events.</p>
+    </div>
+    
+
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">MouseEvent</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>target element in this event.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>originEvent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>original mouse event object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        
+            
+
+<dt>
+    
+        <h4 class="name" id="event:dragStart">
+            
+                dragStart
+                
+            
+            <div class="container-source members">
+                <code><a href="core_drag.js.html">core/drag.js</a></code>,
+                <code><a href="core_drag.js.html#line139">line 139</a></code>
+            </div>
+            
+        </h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Drag starts events. cancelable.</p>
+    </div>
+    
+
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>target element in this event.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>originEvent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">MouseEvent</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>original mouse event object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+</dd>
+
+        </dl>
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px; height: 13px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = 'Drag_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
