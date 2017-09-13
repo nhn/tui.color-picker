@@ -160,6 +160,7 @@ var domevent = {
         // throw exception when deleting host object's property in below IE8
         if (util.browser.msie && util.browser.version < 9) {
             obj[eventKey] = null;
+
             return;
         }
 
@@ -180,6 +181,7 @@ var domevent = {
             util.forEachOwnProperties(types, function(handler, type) {
                 domevent.once(obj, type, handler, fn);
             });
+
             return;
         }
 

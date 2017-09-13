@@ -194,6 +194,7 @@ domutil = {
                 ret += domutil.text(el[i]);
             }
         }
+
         return ret;
     },
 
@@ -206,6 +207,7 @@ domutil = {
     setData: function(el, key, data) {
         if ('dataset' in el) {
             el.dataset[key] = data;
+
             return;
         }
 

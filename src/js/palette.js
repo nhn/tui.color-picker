@@ -78,6 +78,7 @@ Palette.prototype._onClick = function(clickEvent) {
          * @property {string} color - selected color value
          */
         this.fire('_selectColor', eventData);
+
         return;
     }
 

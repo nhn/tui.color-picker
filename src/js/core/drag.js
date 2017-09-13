@@ -129,6 +129,7 @@ Drag.prototype._onMouseMove = function(mouseMoveEvent) {
 
     if (this._distance < distance) {
         this._distance += 1;
+
         return;
     }
 
@@ -144,6 +145,7 @@ Drag.prototype._onMouseMove = function(mouseMoveEvent) {
          */
         if (!this.invoke('dragStart', this._dragStartEventData)) {
             this._toggleDragEvent(false);
+
             return;
         }
     }
@@ -179,6 +181,7 @@ Drag.prototype._onMouseUp = function(mouseUpEvent) {
          * @property {MouseEvent} originEvent - original mouse event object.
          */
         this.fire('dragEnd', this._getEventData(mouseUpEvent));
+
         return;
     }
 
