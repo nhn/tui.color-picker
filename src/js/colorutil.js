@@ -2,6 +2,7 @@
  * @fileoverview Utility methods to manipulate colors
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
 var hexRX = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i;
@@ -42,7 +43,7 @@ var colorutil = {
     /**
      * Convert color hex string to rgb number array
      * @param {string} hexStr - hex string
-     * @return {number[]} rgb numbers
+     * @returns {number[]} rgb numbers
      */
     hexToRGB: function(hexStr) {
         var r, g, b;
@@ -59,7 +60,6 @@ var colorutil = {
 
         return [r, g, b];
     },
-
 
     /**
      * Convert rgb number to hex string
@@ -86,7 +86,7 @@ var colorutil = {
      * @param {number} r - red
      * @param {number} g - green
      * @param {number} b - blue
-     * @return {number[]} hsv value
+     * @returns {number[]} hsv value
      */
     rgbToHSV: function(r, g, b) {
         var max, min, h, s, v, d;
@@ -141,6 +141,7 @@ var colorutil = {
         if (s === 0) {
             // Achromatic (grey)
             r = g = b = v;
+
             return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         }
 

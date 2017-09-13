@@ -1,6 +1,6 @@
 /*eslint-disable*/
-var util = tui.util;
-var View = tui.component.colorpicker.View;
+var util = require('tui-code-snippet');
+var View = require('../../src/js/core/view');
 describe('View', function() {
     var view;
 

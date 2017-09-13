@@ -1,12 +1,23 @@
 {
     "source": {
-        "include": ["src/js", "README.md"],
+        "include": [
+            "src/js", "README.md"
+        ],
         "exclude": [],
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
-    "plugins": ["plugins/markdown"],
+    "plugins": [
+        "plugins/markdown"
+    ],
     "templates": {
+        "name": "ColorPicker",
+        "logo": {
+            "url": "https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png",
+            "width": "150px",
+            "height": "13px",
+            "link": "https://github.com/nhnent/tui.jsdoc-template"
+        },
         "cleverLinks": true,
         "monospaceLinks": true,
         "default": {
@@ -25,9 +36,12 @@
         "hardwrap": true
     },
     "opts": {
+        "private": false,
         "recurse": true,
         "destination": "doc",
         "name": "Color Picker",
-        "tutorials": "samples"
+        "tutorials": "examples",
+        "template": "./node_modules/tui-jsdoc-template",
+        "package": "package.json"
     }
 }

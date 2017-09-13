@@ -2,8 +2,10 @@
  * @fileoverview Color palette view
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
+
 'use strict';
-var util = global.tui.util;
+
+var util = require('tui-code-snippet');
 var domutil = require('./core/domutil');
 var domevent = require('./core/domevent');
 var View = require('./core/view');
@@ -106,7 +108,6 @@ Palette.prototype._onChange = function(changeEvent) {
          * @property {string} color - selected color value
          */
         this.fire('_selectColor', eventData);
-        return;
     }
 };
 
@@ -149,7 +150,7 @@ Palette.prototype.render = function(color) {
 
     html = tmpl.layout.replace('{{colorList}}', util.map(options.preset, function(_color) {
         var itemHtml = tmpl.item.replace(/{{color}}/g, _color);
-        itemHtml = itemHtml.replace('{{selected}}', _color === color ?  (' ' + options.cssPrefix + 'selected') : ''); 
+        itemHtml = itemHtml.replace('{{selected}}', _color === color ? (' ' + options.cssPrefix + 'selected') : '');
 
         return itemHtml;
     }).join(''));

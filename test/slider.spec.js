@@ -1,12 +1,15 @@
-var Slider = window.tui.component.colorpicker.Slider;
+'use strict';
+
+var Slider = require('../src/js/slider');
+var svgvml = require('../src/js/svgvml');
+var colorutil = require('../src/js/colorutil');
+
 var undef = (function() {})();
 describe('view:Slider', function() {
-    var originSVGVML;
     var inst;
-    var svgvml;
     var colorslider = {name: 'colorslider'};
     var huehandle = {name: 'huehandle'};
-    var gradient = {name: 'gradient'}
+    var gradient = {name: 'gradient'};
 
     beforeEach(function() {
         var el = document.createElement('div');
@@ -15,22 +18,22 @@ describe('view:Slider', function() {
         inst.huebarHandleElement = huehandle;
         inst.baseColorElement = gradient;
 
-        spyOn(tui.component.colorpicker.svgvml, 'setTranslateXY');
-        spyOn(tui.component.colorpicker.svgvml, 'setStrokeColor');
-        spyOn(tui.component.colorpicker.svgvml, 'getTranslateXY');
+        spyOn(svgvml, 'setTranslateXY');
+        spyOn(svgvml, 'setStrokeColor');
+        spyOn(svgvml, 'getTranslateXY');
         spyOn(inst, 'fire');
 
-        svgvml = tui.component.colorpicker.svgvml;
+        svgvml = svgvml;
     });
 
     describe('_moveColorSliderHandle()', function() {
         beforeEach(function() {
-            tui.component.colorpicker.svgvml.getTranslateXY.and.returnValue([0, 0]);
+            svgvml.getTranslateXY.and.returnValue([0, 0]);
         });
 
         it('move color slider handle by supplied position.', function() {
             inst._moveColorSliderHandle(10, 10);
-            
+
             expect(svgvml.setTranslateXY).toHaveBeenCalledWith(colorslider, 10, 10);
         });
 
@@ -65,9 +68,9 @@ describe('view:Slider', function() {
 
     describe('_moveHueHandle()', function() {
         beforeEach(function() {
-            spyOn(tui.component.colorpicker.svgvml, 'setTranslateY');
-            spyOn(tui.component.colorpicker.svgvml, 'setGradientColorStop');
-            tui.component.colorpicker.svgvml.getTranslateXY.and.returnValue([0, 0]);
+            spyOn(svgvml, 'setTranslateY');
+            spyOn(svgvml, 'setGradientColorStop');
+            svgvml.getTranslateXY.and.returnValue([0, 0]);
         });
 
         it('move hue handle properly.', function() {
@@ -77,7 +80,7 @@ describe('view:Slider', function() {
         });
 
         it('change colorslider\'s base gradient color properly.', function() {
-            spyOn(tui.component.colorpicker.colorutil, 'rgbToHEX').and.returnValue('good');
+            spyOn(colorutil, 'rgbToHEX').and.returnValue('good');
             inst._moveHueHandle(30);
 
             expect(svgvml.setGradientColorStop).toHaveBeenCalledWith(gradient, 'good');

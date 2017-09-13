@@ -2,9 +2,10 @@
  * @fileoverview Slider view
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
-var util = global.tui.util;
+var util = require('tui-code-snippet');
 var domutil = require('./core/domutil');
 var domevent = require('./core/domevent');
 var svgvml = require('./svgvml');
@@ -75,7 +76,7 @@ function Slider(options, container) {
     this.drag = new Drag({
         distance: 0
     }, container);
-    
+
     // bind drag events
     this.drag.on({
         'dragStart': this._onDragStart,
@@ -140,7 +141,7 @@ Slider.prototype.render = function(colorStr) {
     rgb = colorutil.hexToRGB(colorStr);
     hsv = colorutil.rgbToHSV.apply(null, rgb);
 
-    this.moveHue(hsv[0], true)
+    this.moveHue(hsv[0], true);
     this.moveSaturationAndValue(hsv[1], hsv[2], true);
 };
 
@@ -220,7 +221,7 @@ Slider.prototype._moveColorSliderByPosition = function(x, y) {
 Slider.prototype.getSaturationAndValue = function() {
     var absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]),
         maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1],
-        position = svgvml.getTranslateXY(this.sliderHandleElement), 
+        position = svgvml.getTranslateXY(this.sliderHandleElement),
         saturation, value;
 
     saturation = ((position[1] + absMin) / maxValue) * 100;
@@ -254,7 +255,7 @@ Slider.prototype._moveHueHandle = function(newTop, silent) {
 
     if (!silent) {
         this.fire('_selectColor', {
-            color: colorutil.rgbToHEX.apply(null, this.getRGB()) 
+            color: colorutil.rgbToHEX.apply(null, this.getRGB())
         });
     }
 };
@@ -341,7 +342,7 @@ Slider.prototype._prepareColorSliderForMouseEvent = function(event) {
         isColorSlider: domutil.hasClass(sliderPart, options.cssPrefix + 'slider-left'),
         parentElement: sliderPart
     };
-    
+
     return cache;
 };
 

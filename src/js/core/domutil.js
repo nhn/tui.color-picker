@@ -2,12 +2,14 @@
  * @fileoverview Utility modules for manipulate DOM elements.
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
+var snippet = require('tui-code-snippet');
 var domevent = require('./domevent');
 var Collection = require('./collection');
 
-var util = global.tui.util,
+var util = snippet,
     posKey = '_pos',
     domutil;
 
@@ -66,7 +68,7 @@ domutil = {
      * Check supplied element is matched selector.
      * @param {HTMLElement} el - element to check
      * @param {string} selector - selector string to check
-     * @return {boolean} match?
+     * @returns {boolean} match?
      */
     _matcher: function(el, selector) {
         var cssClassSelector = /^\./,
@@ -102,7 +104,7 @@ domutil = {
         if (util.isString(root)) {
             root = domutil.get(root);
         }
-        
+
         root = root || window.document.body;
 
         function recurse(el, selector) {
@@ -166,7 +168,7 @@ domutil = {
     /**
      * Return texts inside element.
      * @param {HTMLElement} el target element
-     * @return {string} text inside node
+     * @returns {string} text inside node
      */
     text: function(el) {
         var ret = '',
@@ -341,7 +343,7 @@ domutil = {
                     }
 
                     if (re.test(prop)) {
-                        prop = prop.replace(re, function () {
+                        prop = prop.replace(re, function() {
                             return arguments[2].toUpperCase();
                         });
                     }
@@ -410,7 +412,7 @@ domutil = {
     /**
      * Return element's size
      * @param {HTMLElement} el target element
-     * @return {number[]} width, height
+     * @returns {number[]} width, height
      */
     getSize: function(el) {
         var bound,
@@ -433,7 +435,7 @@ domutil = {
     /**
      * Check specific CSS style is available.
      * @param {array} props property name to testing
-     * @return {(string|boolean)} return true when property is available
+     * @returns {(string|boolean)} return true when property is available
      * @example
      * var props = ['transform', '-webkit-transform'];
      * domutil.testProp(props);    // 'transform'
@@ -448,6 +450,7 @@ domutil = {
                 return props[i];
             }
         }
+
         return false;
     },
 
@@ -457,12 +460,16 @@ domutil = {
      * @returns {object} form data
      */
     getFormData: function(formElement) {
-        var groupedByName = new Collection(function() { return this.length; }),
-            noDisabledFilter = function(el) { return !el.disabled; },
+        var groupedByName = new Collection(function() {
+                return this.length;
+            }),
+            noDisabledFilter = function(el) {
+                return !el.disabled;
+            },
             output = {};
-            
+
         groupedByName.add.apply(
-            groupedByName, 
+            groupedByName,
             domutil.find('input', formElement, noDisabledFilter)
                 .concat(domutil.find('select', formElement, noDisabledFilter))
                 .concat(domutil.find('textarea', formElement, noDisabledFilter))
@@ -483,21 +490,30 @@ domutil = {
                     result = [];
 
                 if (type === 'radio') {
-                    result = [elements.find(function(el) { return el.checked; }).toArray().pop()];
+                    result = [elements.find(function(el) {
+                        return el.checked;
+                    }).toArray().pop()];
                 } else if (type === 'checkbox') {
-                    result = elements.find(function(el) { return el.checked; }).toArray();
+                    result = elements.find(function(el) {
+                        return el.checked;
+                    }).toArray();
                 } else if (nodeName === 'select') {
-                    elements.find(function(el) { return !!el.childNodes.length; })
-                        .each(function(el) {
-                            result = result.concat(domutil.find('option', el, function(opt) {
-                                return opt.selected;
-                            }));
-                        });
+                    elements.find(function(el) {
+                        return !!el.childNodes.length;
+                    }).each(function(el) {
+                        result = result.concat(domutil.find('option', el, function(opt) {
+                            return opt.selected;
+                        }));
+                    });
                 } else {
-                    result = elements.find(function(el) { return el.value !== ''; }).toArray();
+                    result = elements.find(function(el) {
+                        return el.value !== '';
+                    }).toArray();
                 }
 
-                result = util.map(result, function(el) { return el.value; });
+                result = util.map(result, function(el) {
+                    return el.value;
+                });
 
                 if (!result.length) {
                     result = '';

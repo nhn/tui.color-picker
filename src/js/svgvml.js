@@ -2,9 +2,10 @@
  * @fileoverview module for manipulate SVG or VML object
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
-var util = global.tui.util;
+var util = require('tui-code-snippet');
 var PARSE_TRANSLATE_NUM_REGEX = /[\.\-0-9]+/g;
 var SVG_HUE_HANDLE_RIGHT_POS = -6;
 
@@ -34,6 +35,7 @@ var svgvml = {
 
         if (svgvml.isOldBrowser()) {
             temp = obj.style;
+
             return [parseFloat(temp.top), parseFloat(temp.left)];
         }
 
@@ -42,7 +44,7 @@ var svgvml = {
         if (!temp) {
             return [0, 0];
         }
-        
+
         temp = temp.match(PARSE_TRANSLATE_NUM_REGEX);
 
         // need caution for difference of VML, SVG coordinates system.

@@ -2,8 +2,10 @@
  * @fileoverview Colorpicker layout module
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
+
 'use strict';
-var util = global.tui.util;
+
+var util = require('tui-code-snippet');
 var domutil = require('./core/domutil');
 var View = require('./core/view');
 
