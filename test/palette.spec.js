@@ -1,4 +1,8 @@
-var Palette = tui.component.colorpicker.Palette;
+'use strict';
+
+var $ = require('jquery');
+
+var Palette = require('../src/js/palette');
 describe('view:Palette', function() {
     var inst;
 

@@ -1,5 +1,5 @@
 /*eslint-disable*/
-var domevent = tui.component.colorpicker.domevent;
+var domevent = require('../../src/js/core/domevent');
 describe('module:domevent', function() {
     beforeEach(function() {
         loadFixtures('domevent.html');

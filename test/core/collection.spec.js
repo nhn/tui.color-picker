@@ -1,5 +1,5 @@
 /*eslint-disable*/
-var Collection = tui.component.colorpicker.Collection;
+var Collection = require('../../src/js/core/collection');
 
 describe('Collection', function() {
     var c;

@@ -2,9 +2,12 @@
  * @fileoverview Common collections.
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
-var util = global.tui.util,
+var snippet = require('tui-code-snippet');
+
+var util = snippet,
     forEachProp = util.forEachOwnProperties,
     forEachArr = util.forEachArray,
     isFunc = util.isFunction,
@@ -63,7 +66,7 @@ Collection.and = function(filters) {
                 return false;
             }
         }
-        
+
         return true;
     };
 };
@@ -219,8 +222,11 @@ Collection.prototype.has = function(id) {
         this.each(function(item) {
             if (id(item) === true) {
                 has = true;
+
                 return false;
             }
+
+            return true;
         });
     } else {
         id = isObj(id) ? this.getItemID(id) : id;
@@ -321,7 +327,6 @@ Collection.prototype.groupBy = function(key, groupFunc) {
     var result = {},
         collection,
         baseValue,
-        isFunc = util.isFunction,
         keyIsFunc = isFunc(key),
         getItemIDFn = this.getItemID;
 
@@ -372,6 +377,7 @@ Collection.prototype.single = function() {
 
     this.each(function(item) {
         result = item;
+
         return false;
     }, this);
 

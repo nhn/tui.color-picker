@@ -1,5 +1,5 @@
 /*eslint-disable*/
-var domutil = tui.component.colorpicker.domutil;
+var domutil = require('../../src/js/core/domutil');
 describe('module:domutil', function() {
     var map, 
         btn;

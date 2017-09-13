@@ -1,4 +1,8 @@
-var colorutil = tui.component.colorpicker.colorutil;
+'use strict';
+
+// var colorutil = require('../src/js/colorutil');
+var colorutil = require('../src').colorutil;
+
 describe('colorutil', function() {
     it('isValidRGB() can validate rgb hex string.', function() {
         expect(colorutil.isValidRGB('werwerwer')).toBe(false);

@@ -2,9 +2,12 @@
  * @fileoverview Utility module for handling DOM events.
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
+
 'use strict';
 
-var util = global.tui.util,
+var snippet = require('tui-code-snippet');
+
+var util = snippet,
     browser = util.browser,
     eventKey = '_evt',
     DRAG = {
@@ -79,8 +82,7 @@ var domevent = {
                     }
                     originHandler(e);
                 };
-                obj.addEventListener((type === 'mouseenter') ?
-                    'mouseover' : 'mouseout', handler, false);
+                obj.addEventListener((type === 'mouseenter') ? 'mouseover' : 'mouseout', handler, false);
             } else {
                 if (type === 'mousewheel') {
                     obj.addEventListener('DOMMouseScroll', handler, false);
@@ -135,8 +137,7 @@ var domevent = {
 
         if ('removeEventListener' in obj) {
             if (type === 'mouseenter' || type === 'mouseleave') {
-                obj.removeEventListener((type === 'mouseenter') ?
-                    'mouseover' : 'mouseout', handler, false);
+                obj.removeEventListener((type === 'mouseenter') ? 'mouseover' : 'mouseout', handler, false);
             } else {
                 if (type === 'mousewheel') {
                     obj.removeEventListener('DOMMouseScroll', handler, false);
@@ -379,8 +380,13 @@ var domevent = {
             util.forEach(e, function(value, propName) {
                 evt[propName] = value;
             }, this);
-            evt.button = {0: 1, 1: 4, 2: 2}[evt.button] || evt.button;
+            evt.button = {
+                0: 1,
+                1: 4,
+                2: 2
+            }[evt.button] || evt.button;
         }
+
         return evt;
     },
 

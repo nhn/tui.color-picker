@@ -7,7 +7,7 @@
 <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
 <link type="text/css" rel="stylesheet" href="../styles/tui.css">
 
-<link rel="stylesheet" type="text/css" href="dist/colorpicker.min.css" />
+<link rel="stylesheet" type="text/css" href="../dist/tui-color-picker.min.css" />
 <style>
     #colorpicker {
         width: 166px;
@@ -30,12 +30,12 @@
 <script type="text/javascript" src="../scripts/prettify/lang-css.js"></script>
 <script type="text/javascript" src="../scripts/samplecode.js"></script>
 
-<script src="lib/code-snippet.min.js"></script>
-<script src="dist/colorpicker.min.js"></script>
+<script src="https://cdn.rawgit.com/nhnent/tui.code-snippet/v1.2.5/dist/tui-code-snippet.js"></script>
+<script src="../dist/tui-color-picker.js"></script>
 
 <script class="serviceCode">
 (function() {
-    var colorpicker = tui.component.colorpicker.create({
+    var colorpicker = tui.colorPicker.create({
         container: document.getElementById('colorpicker')
     });
 

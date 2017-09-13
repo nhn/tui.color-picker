@@ -1,9 +1,12 @@
 /*eslint-disable*/
-var Drag = tui.component.colorpicker.Drag;
+var Drag = require('../../src/js/core/drag');
+var domevent = require('../../src/js/core/domevent');
+var domutil = require('../../src/js/core/domutil');
+
 describe('Handler/Drag', function() {
     describe('_onMouseUp', function() {
         it('emit "click" when not emitted drag event between mousedown and mousedown', function() {
-            spyOn(tui.component.colorpicker.domevent, 'preventDefault');
+            spyOn(domevent, 'preventDefault');
             var mock = {
                 options: {
                     distance: 10
@@ -34,7 +37,7 @@ describe('Handler/Drag', function() {
 
     describe('dragging', function() {
         beforeEach(function() {
-            spyOn(tui.component.colorpicker.domevent, 'getMouseButton').and.returnValue(0);
+            spyOn(domevent, 'getMouseButton').and.returnValue(0);
         });
 
         it('_dragStart fired only once every drag sessions.', function() {
@@ -114,7 +117,7 @@ describe('Handler/Drag', function() {
         });
 
         it('only primary mouse button can start drag events.', function() {
-            tui.component.colorpicker.domevent.getMouseButton.and.returnValue(1);
+            domevent.getMouseButton.and.returnValue(1);
 
             var mock = {
                 options: {
@@ -135,20 +138,20 @@ describe('Handler/Drag', function() {
 
     describe('_toggleDragEvent', function() {
         beforeEach(function() {
-            spyOn(tui.component.colorpicker.domutil, 'enableTextSelection');
-            spyOn(tui.component.colorpicker.domutil, 'disableTextSelection');
-            spyOn(tui.component.colorpicker.domutil, 'enableImageDrag');
-            spyOn(tui.component.colorpicker.domutil, 'disableImageDrag');
-            spyOn(tui.component.colorpicker.domevent, 'on');
-            spyOn(tui.component.colorpicker.domevent, 'off');
+            spyOn(domutil, 'enableTextSelection');
+            spyOn(domutil, 'disableTextSelection');
+            spyOn(domutil, 'enableImageDrag');
+            spyOn(domutil, 'disableImageDrag');
+            spyOn(domevent, 'on');
+            spyOn(domevent, 'off');
         });
 
         it('toggle events for drags', function() {
             Drag.prototype._toggleDragEvent(true);
-            expect(tui.component.colorpicker.domutil.disableTextSelection).toHaveBeenCalled();
+            expect(domutil.disableTextSelection).toHaveBeenCalled();
 
             Drag.prototype._toggleDragEvent(false);
-            expect(tui.component.colorpicker.domevent.off).toHaveBeenCalled();
+            expect(domevent.off).toHaveBeenCalled();
         });
     });
 });

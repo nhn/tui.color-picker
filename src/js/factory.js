@@ -2,21 +2,14 @@
  * @fileoverview Colorpicker factory module
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
+
 'use strict';
-var util = global.tui.util;
+
+var util = require('tui-code-snippet');
 var colorutil = require('./colorutil');
 var Layout = require('./layout');
 var Palette = require('./palette');
 var Slider = require('./slider');
-
-function throwError(msg) {
-    /* @if ENV='DEBUG' */
-    throw new Error(msg);
-    /* @endif */
-    /* @if ENV='RELEASE' */
-    alert(msg);
-    /* @endif */
-}
 
 /**
  * @constructor
@@ -70,8 +63,7 @@ function Colorpicker(options) {
     }, options);
 
     if (!options.container) {
-        throwError('Colorpicker(): need container option.');
-        return;
+        throw new Error('Colorpicker(): need container option.');
     }
 
     /**********
@@ -150,7 +142,6 @@ Colorpicker.prototype._onToggleSlider = function() {
     this.slider.toggle(!this.slider.isVisible());
 };
 
-
 /**
  * Handler method for Slider#_selectColor event
  * @private
@@ -195,7 +186,7 @@ Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
  */
 Colorpicker.prototype.setColor = function(hexStr) {
     if (!colorutil.isValidRGB(hexStr)) {
-        throwError('Colorpicker#setColor(): need valid hex string color value');
+        throw new Error('Colorpicker#setColor(): need valid hex string color value');
     }
 
     this.options.color = hexStr;
