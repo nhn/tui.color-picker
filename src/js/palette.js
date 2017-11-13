@@ -18,6 +18,7 @@ var tmpl = require('../template/palette');
  * @param {object} options - options for color palette view
  *  @param {string[]} options.preset - color list
  * @param {HTMLDivElement} container - container element
+ * @ignore
  */
 function Palette(options, container) {
     /**
@@ -168,4 +169,3 @@ Palette.prototype.render = function(color) {
 util.CustomEvents.mixin(Palette);
 
 module.exports = Palette;
-

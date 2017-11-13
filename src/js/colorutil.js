@@ -166,4 +166,3 @@ var colorutil = {
 };
 
 module.exports = colorutil;
-

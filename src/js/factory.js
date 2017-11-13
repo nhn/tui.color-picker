@@ -1,5 +1,5 @@
 /**
- * @fileoverview Colorpicker factory module
+ * @fileoverview ColorPicker factory module
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
 
@@ -21,21 +21,22 @@ var Slider = require('./slider');
  *  @param {string} [options.cssPrefix='tui-colorpicker-'] - css prefix text for each child elements
  *  @param {string} [options.detailTxt='Detail'] - text for detail button.
  * @example
- * var colorpicker = tui.component.colorpicker({
- *   container: document.getElementById('colorpicker')
- * });
+ * var colorPicker = tui.colorPicker; // or require('tui-color-picker')
  *
- * colorpicker.getColor();    // '#ffffff'
+ * colorPicker.create({
+ *   container: document.getElementById('color-picker')
+ * });
  */
-function Colorpicker(options) {
+function ColorPicker(options) {
     var layout;
 
-    if (!(this instanceof Colorpicker)) {
-        return new Colorpicker(options);
+    if (!(this instanceof ColorPicker)) {
+        return new ColorPicker(options);
     }
     /**
      * Option object
      * @type {object}
+     * @private
      */
     options = this.options = util.extend({
         container: null,
@@ -63,7 +64,7 @@ function Colorpicker(options) {
     }, options);
 
     if (!options.container) {
-        throw new Error('Colorpicker(): need container option.');
+        throw new Error('ColorPicker(): need container option.');
     }
 
     /**********
@@ -72,6 +73,7 @@ function Colorpicker(options) {
 
     /**
      * @type {Layout}
+     * @private
      */
     layout = this.layout = new Layout(options, options.container);
 
@@ -102,10 +104,10 @@ function Colorpicker(options) {
 /**
  * Handler method for Palette#_selectColor event
  * @private
- * @fires Colorpicker#selectColor
+ * @fires ColorPicker#selectColor
  * @param {object} selectColorEventData - event data
  */
-Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
+ColorPicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
     var color = selectColorEventData.color,
         opt = this.options;
 
@@ -116,8 +118,7 @@ Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
     }
 
     /**
-     * @api
-     * @event Colorpicker#selectColor
+     * @event ColorPicker#selectColor
      * @type {object}
      * @property {string} color - selected color (hex string)
      * @property {string} origin - flags for represent the source of event fires.
@@ -139,26 +140,26 @@ Colorpicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
  * Handler method for Palette#_toggleSlider event
  * @private
  */
-Colorpicker.prototype._onToggleSlider = function() {
+ColorPicker.prototype._onToggleSlider = function() {
     this.slider.toggle(!this.slider.isVisible());
 };
 
 /**
  * Handler method for Slider#_selectColor event
  * @private
- * @fires Colorpicker#selectColor
+ * @fires ColorPicker#selectColor
  * @param {object} selectColorEventData - event data
  */
-Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
+ColorPicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
     var color = selectColorEventData.color,
         opt = this.options;
 
     /**
-     * @api
-     * @event Colorpicker#selectColor
+     * @event ColorPicker#selectColor
      * @type {object}
      * @property {string} color - selected color (hex string)
      * @property {string} origin - flags for represent the source of event fires.
+     * @ignore
      */
     this.fire('selectColor', {
         color: color,
@@ -180,14 +181,13 @@ Colorpicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
 /**
  * Set color to colorpicker instance.<br>
  * The string parameter must be hex color value
- * @api
  * @param {string} hexStr - hex formatted color string
  * @example
  * colorPicker.setColor('#ffff00');
  */
-Colorpicker.prototype.setColor = function(hexStr) {
+ColorPicker.prototype.setColor = function(hexStr) {
     if (!colorutil.isValidRGB(hexStr)) {
-        throw new Error('Colorpicker#setColor(): need valid hex string color value');
+        throw new Error('ColorPicker#setColor(): need valid hex string color value');
     }
 
     this.options.color = hexStr;
@@ -196,44 +196,42 @@ Colorpicker.prototype.setColor = function(hexStr) {
 
 /**
  * Get hex color string of current selected color in colorpicker instance.
- * @api
  * @returns {string} hex string formatted color
  * @example
  * colorPicker.setColor('#ffff00');
  * colorPicker.getColor(); // '#ffff00';
  */
-Colorpicker.prototype.getColor = function() {
+ColorPicker.prototype.getColor = function() {
     return this.options.color;
 };
 
 /**
  * Toggle colorpicker element. set true then reveal colorpicker view.
- * @api
  * @param {boolean} [isShow=false] - A flag to show
  * @example
  * colorPicker.toggle(false); // hide
  * colorPicker.toggle(); // hide
  * colorPicker.toggle(true); // show
  */
-Colorpicker.prototype.toggle = function(isShow) {
+ColorPicker.prototype.toggle = function(isShow) {
     this.layout.container.style.display = !!isShow ? 'block' : 'none';
 };
 
 /**
  * Render colorpicker
  * @param {string} [color] - selected color
+ * @ignore
  */
-Colorpicker.prototype.render = function(color) {
+ColorPicker.prototype.render = function(color) {
     this.layout.render(color || this.options.color);
 };
 
 /**
  * Destroy colorpicker instance.
- * @api
  * @example
  * colorPicker.destroy(); // DOM-element is removed
  */
-Colorpicker.prototype.destroy = function() {
+ColorPicker.prototype.destroy = function() {
     this.layout.destroy();
     this.options.container.innerHTML = '';
 
@@ -241,6 +239,6 @@ Colorpicker.prototype.destroy = function() {
         this.options = null;
 };
 
-util.CustomEvents.mixin(Colorpicker);
+util.CustomEvents.mixin(ColorPicker);
 
-module.exports = Colorpicker;
+module.exports = ColorPicker;

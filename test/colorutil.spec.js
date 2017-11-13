@@ -1,7 +1,7 @@
 'use strict';
 
 // var colorutil = require('../src/js/colorutil');
-var colorutil = require('../src').colorutil;
+var colorutil = require('../src/js').colorutil;
 
 describe('colorutil', function() {
     it('isValidRGB() can validate rgb hex string.', function() {

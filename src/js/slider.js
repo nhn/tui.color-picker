@@ -27,6 +27,7 @@ var HUE_WHEEL_MAX = 359.99;
  * @param {object} options - options for view
  *  @param {string} options.cssPrefix - design css prefix
  * @param {HTMLElement} container - container element
+ * @ignore
  */
 function Slider(options, container) {
     container = domutil.appendHTMLElement('div', container, options.cssPrefix + 'slider-container');
@@ -206,7 +207,7 @@ Slider.prototype.moveSaturationAndValue = function(saturation, value, silent) {
  *
  * The number of X, Y must be related value from color slider container
  * @private
- * @param {number} x - the pixel value to move handle 
+ * @param {number} x - the pixel value to move handle
  * @param {number} y - the pixel value to move handle
  */
 Slider.prototype._moveColorSliderByPosition = function(x, y) {
@@ -396,4 +397,3 @@ Slider.prototype._onDragEnd = function() {
 util.CustomEvents.mixin(Slider);
 
 module.exports = Slider;
-

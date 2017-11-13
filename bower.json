@@ -1,28 +1,26 @@
 {
-  "name": "tui-color-picker",
-  "authors": [
-    "NHNEnt FE Development Team <dl_javascript@nhnent.com>"
-  ],
-  "description": "ColorPicker component for web",
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "main": [
-    "dist/tui-color-picker.js",
-    "dist/tui-color-picker.css"
-  ],
-  "keywords": [
-    "colorpicker",
-    "component",
-    "tui"
-  ],
-  "dependencies": {
-    "jquery": "1.8.3",
-    "tui-code-snippet": "^1.2.5"
-  }
+    "name": "tui-color-picker",
+    "authors": [
+        "NHNent. FE Development Lab <dl_javascript@nhnent.com>"
+    ],
+    "main": [
+        "dist/tui-color-picker.js",
+        "dist/tui-color-picker.css"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "examples",
+        "src",
+        "test",
+        "jsdoc.conf.json",
+        "karma.conf.js",
+        "webpack.config.js",
+        "package.json"
+    ],
+    "dependencies": {
+        "tui-code-snippet": "^1.2.5"
+    }
 }

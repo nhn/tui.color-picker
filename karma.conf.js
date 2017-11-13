@@ -1,3 +1,8 @@
+/**
+ * Config file for testing
+ * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
+ */
+
 'use strict';
 
 /* eslint-disable consts-on-top, no-process-env, require-jsdoc */
