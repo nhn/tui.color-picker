@@ -18,7 +18,7 @@
   ],
   "main": "dist/tui-color-picker.js",
   "dependencies": {
-    "tui-code-snippet": "^1.2.8"
+    "tui-code-snippet": "^1.2.5"
   },
   "scripts": {
     "test": "karma start --no-single-run",

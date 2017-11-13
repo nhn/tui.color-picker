@@ -1,5 +1,5 @@
 /**
- * @fileoverview Colorpicker layout module
+ * @fileoverview ColorPicker layout module
  * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
  */
 
@@ -15,6 +15,7 @@ var View = require('./core/view');
  * @param {object} options - option object
  *  @param {string} options.cssPrefix - css prefix for each child elements
  * @param {HTMLDivElement} container - container
+ * @ignore
  */
 function Layout(options, container) {
     /**
@@ -49,4 +50,3 @@ Layout.prototype.render = function(color) {
 };
 
 module.exports = Layout;
-

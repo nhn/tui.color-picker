@@ -15,6 +15,7 @@ var domevent = require('./domevent');
  * @param {object} options - options for drag handler
  * @param {number} [options.distance=10] - distance in pixels after mouse must move before dragging should start
  * @param {HTMLElement} container - container element to bind drag events
+ * @ignore
  */
 function Drag(options, container) {
     domevent.on(container, 'mousedown', this._onMouseDown, this);
@@ -198,4 +199,3 @@ Drag.prototype._onMouseUp = function(mouseUpEvent) {
 util.CustomEvents.mixin(Drag);
 
 module.exports = Drag;
-

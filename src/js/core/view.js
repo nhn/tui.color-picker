@@ -16,6 +16,7 @@ var Collection = require('./collection');
  * @constructor
  * @param {options} options The object for describe view's specs.
  * @param {HTMLElement} container Default container element for view. you can use this element for this.container syntax.
+ * @ignore
  */
 function View(options, container) {
     var id = util.stamp(this);
@@ -40,7 +41,6 @@ function View(options, container) {
      */
     this.container = container;
 
-    /*eslint-disable*/
     /**
      * child views.
      * @type {Collection}
@@ -48,7 +48,6 @@ function View(options, container) {
     this.childs = new Collection(function(view) {
         return util.stamp(view);
     });
-    /*eslint-enable*/
 
     /**
      * parent view instance.
@@ -149,9 +148,9 @@ View.prototype._destroy = function() {
     this.id = this.parent = this.childs = this.container = null;
 };
 
-/*eslint-disable*/
 /**
  * Destroy child view recursively.
+ * @param {boolean} isChildView - Whether it is the child view or not
  */
 View.prototype.destroy = function(isChildView) {
     this.childs.each(function(childView) {
@@ -165,7 +164,6 @@ View.prototype.destroy = function(isChildView) {
 
     this._destroy();
 };
-/*eslint-enable*/
 
 /**
  * Calculate view's container element bound.
@@ -185,4 +183,3 @@ View.prototype.getViewBound = function() {
 };
 
 module.exports = View;
-

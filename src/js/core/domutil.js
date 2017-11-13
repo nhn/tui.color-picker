@@ -11,7 +11,9 @@ var Collection = require('./collection');
 
 var util = snippet,
     posKey = '_pos',
-    domutil;
+    supportSelectStart = 'onselectstart' in document,
+    prevSelectStyle = '',
+    domutil, userSelectProperty;
 
 var CSS_AUTO_REGEX = /^auto$|^$|%/;
 
@@ -531,17 +533,13 @@ domutil = {
     }
 };
 
-/*eslint-disable*/
-var userSelectProperty = domutil.testProp([
-    'userSelect', 
-    'WebkitUserSelect', 
-    'OUserSelect', 
-    'MozUserSelect', 
+userSelectProperty = domutil.testProp([
+    'userSelect',
+    'WebkitUserSelect',
+    'OUserSelect',
+    'MozUserSelect',
     'msUserSelect'
 ]);
-var supportSelectStart = 'onselectstart' in document;
-var prevSelectStyle = '';
-/*eslint-enable*/
 
 /**
  * Disable browser's text selection behaviors.
@@ -592,4 +590,3 @@ domutil.enableImageDrag = function() {
 };
 
 module.exports = domutil;
-

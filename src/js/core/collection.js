@@ -23,6 +23,7 @@ var aps = Array.prototype.slice;
  * if the function is not supplied then it use default function {@link Collection#getItemID}
  * @constructor
  * @param {function} [getItemIDFn] function for get model's id.
+ * @ignore
  */
 function Collection(getItemIDFn) {
     /**
@@ -297,11 +298,11 @@ Collection.prototype.find = function(filter) {
  * @param {function} [groupFunc] - function that return each group's key
  * @returns {object.<string, Collection>} grouped object
  * @example
- * 
+ *
  * // pass `string`, `number`, `boolean` type value then group by property value.
  * collection.groupBy('gender');    // group by 'gender' property value.
  * collection.groupBy(50);          // group by '50' property value.
- * 
+ *
  * // pass `function` then group by return value. each invocation `function` is called with `(item)`.
  * collection.groupBy(function(item) {
  *     if (item.score > 60) {
@@ -429,4 +430,3 @@ Collection.prototype.toArray = function() {
 };
 
 module.exports = Collection;
-

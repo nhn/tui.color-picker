@@ -1,5 +1,5 @@
 /**
- * webpack.config.js created on 2016. 12. 01.
+ * Configs file for bundling
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
 
@@ -28,7 +28,7 @@ module.exports = {
     },
     entry: [
         './src/styl/' + pkg.name + '.styl',
-        './src/index.js'
+        './src/js/index.js'
     ],
     output: {
         library: ['tui', 'colorPicker'],
