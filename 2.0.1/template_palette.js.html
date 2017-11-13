@@ -1,8 +1,10 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home | ColorPicker</title>
+    <title>Source: template/palette.js | ColorPicker</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -55,55 +57,32 @@
 
 
     
-
-
-
-
-
-
-
-
-
-    
-
-
     <section>
-        <article class="readme"><h1>ColorPicker</h1><p>Component that used to select and adjust color values</p>
-<h2>Documentation</h2><ul>
-<li><strong>API</strong> : <a href="https://nhnent.github.io/tui.color-picker/latest">https://nhnent.github.io/tui.color-picker/latest</a></li>
-<li><strong>Tutorial</strong> : <a href="https://github.com/nhnent/tui.color-picker/wiki">https://github.com/nhnent/tui.color-picker/wiki</a></li>
-<li><strong>Example</strong> :
-<a href="https://nhnent.github.io/tui.color-picker/latest/tutorial-example01-basic.html">https://nhnent.github.io/tui.color-picker/latest/tutorial-example01-basic.html</a></li>
-</ul>
-<h2>Dependency</h2><ul>
-<li><a href="https://github.com/nhnent/tui.code-snippet">tui-code-snippet</a> &gt;=1.2.5</li>
-</ul>
-<h2>Tested Browsers</h2><h3>PC</h3><ul>
-<li>IE8~11</li>
-<li>Edge</li>
-<li>Chrome</li>
-<li>Firefox</li>
-<li>Safari</li>
-</ul>
-<h2>Usage</h2><h3>Use <code>npm</code></h3><p>Install the latest version using <code>npm</code> command:</p>
-<pre class="prettyprint source"><code>$ npm install tui-color-picker --save</code></pre><p>or want to install the each version:</p>
-<pre class="prettyprint source"><code>$ npm install tui-color-picker@&lt;version> --save</code></pre><p>To access as module format in your code:</p>
-<pre class="prettyprint source lang-javascript"><code>var colorPicker = require('tui-color-picker');
-var instance = colorPicker.create({
-    container: document.getElementById('color-picker')
-});</code></pre><h3>Use <code>bower</code></h3><p>Install the latest version using <code>bower</code> command:</p>
-<pre class="prettyprint source"><code>$ bower install tui-color-picker</code></pre><p>or want to install the each version:</p>
-<pre class="prettyprint source"><code>$ bower install tui-color-picker#&lt;tag></code></pre><p>To access as namespace format in your code:</p>
-<pre class="prettyprint source lang-javascript"><code>var instance = tui.colorPicker.create({
-    container: document.getElementById('color-picker')
-});</code></pre><h3>Download</h3><ul>
-<li><a href="https://github.com/nhnent/tui.color-pditor/tree/production/dist">Download bundle files from <code>dist</code> folder</a></li>
-<li><a href="https://github.com/nhnent/tui.color-picker/releases">Download all sources for each version</a></li>
-</ul>
-<h2>License</h2><p><a href="https://github.com/nhnent/tui.color-picker/raw/master/LICENSE">MIT LICENSE</a></p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Palette view template
+ * @author NHN Ent. FE Development Team &lt;dl_javascript@nhnent.com>
+ */
+
+'use strict';
+
+var layout = [
+    '&lt;ul class="{{cssPrefix}}clearfix">{{colorList}}&lt;/ul>',
+    '&lt;div class="{{cssPrefix}}clearfix" style="overflow:hidden">',
+        '&lt;input type="button" class="{{cssPrefix}}palette-toggle-slider" value="{{detailTxt}}" />',
+        '&lt;input type="text" class="{{cssPrefix}}palette-hex" value="{{color}}" maxlength="7" />',
+        '&lt;span class="{{cssPrefix}}palette-preview" style="background-color:{{color}};color:{{color}}">{{color}}&lt;/span>',
+    '&lt;/div>'].join('\n');
+
+var item = '&lt;li>&lt;input class="{{cssPrefix}}palette-button{{selected}}" type="button" style="background-color:{{color}};color:{{color}}" title="{{color}}" value="{{color}}" />&lt;/li>';
+
+module.exports = {
+    layout: layout,
+    item: item
+};
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -120,7 +99,7 @@ var instance = colorPicker.create({
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:tui-color-picker_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

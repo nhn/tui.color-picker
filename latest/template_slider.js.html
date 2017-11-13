@@ -1,0 +1,173 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Source: template/slider.js | ColorPicker</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px; height: 13px">
+        
+            <a href="https://github.com/nhnent/tui.jsdoc-template" rel="noopener noreferrer" target="_blank">
+                <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+            </a>
+        
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">ColorPicker</a></h1>
+        
+            <span class="version">v2.0.1</span>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Examples</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example01-basic.html">1. Basic</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example01-basic_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Classes</h3><ul><li><a href="ColorPicker.html">ColorPicker</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="ColorPicker_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="ColorPicker.html#destroy">destroy</a></li><li><a href="ColorPicker.html#getColor">getColor</a></li><li><a href="ColorPicker.html#setColor">setColor</a></li><li><a href="ColorPicker.html#toggle">toggle</a></li></ul><div class="member-type">Events</div><ul class="inner"><li><a href="ColorPicker.html#event:selectColor">selectColor</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Slider template
+ * @author NHN Ent. FE Development Team &lt;dl_javascript@nhnent.com>
+ */
+
+'use strict';
+
+var util = require('tui-code-snippet');
+
+var layout = [
+    '&lt;div class="{{cssPrefix}}slider-left {{cssPrefix}}slider-part">{{slider}}&lt;/div>',
+    '&lt;div class="{{cssPrefix}}slider-right {{cssPrefix}}slider-part">{{huebar}}&lt;/div>'
+].join('\n');
+
+var SVGSlider = [
+    '&lt;svg class="{{cssPrefix}}svg {{cssPrefix}}svg-slider">',
+        '&lt;defs>',
+            '&lt;linearGradient id="{{cssPrefix}}svg-fill-color" x1="0%" y1="0%" x2="100%" y2="0%">',
+                '&lt;stop offset="0%" stop-color="rgb(255,255,255)" />',
+                '&lt;stop class="{{cssPrefix}}slider-basecolor" offset="100%" stop-color="rgb(255,0,0)" />',
+            '&lt;/linearGradient>',
+            '&lt;linearGradient id="{{cssPrefix}}svn-fill-black" x1="0%" y1="0%" x2="0%" y2="100%">',
+                '&lt;stop offset="0%" style="stop-color:rgb(0,0,0);stop-opacity:0" />',
+                '&lt;stop offset="100%" style="stop-color:rgb(0,0,0);stop-opacity:1" />',
+            '&lt;/linearGradient>',
+        '&lt;/defs>',
+        '&lt;rect width="100%" height="100%" fill="url(#{{cssPrefix}}svg-fill-color)">&lt;/rect>',
+        '&lt;rect width="100%" height="100%" fill="url(#{{cssPrefix}}svn-fill-black)">&lt;/rect>',
+        '&lt;path transform="translate(0,0)" class="{{cssPrefix}}slider-handle" d="M0 7.5 L15 7.5 M7.5 15 L7.5 0 M2 7 a5.5 5.5 0 1 1 0 1 Z" stroke="black" stroke-width="0.75" fill="none" />',
+    '&lt;/svg>'].join('\n');
+
+var VMLSlider = [
+    '&lt;div class="{{cssPrefix}}vml-slider">',
+        '&lt;v:rect strokecolor="none" class="{{cssPrefix}}vml {{cssPrefix}}vml-slider-bg">',
+            '&lt;v:fill class="{{cssPrefix}}vml {{cssPrefix}}slider-basecolor" type="gradient" method="none" color="#ff0000" color2="#fff" angle="90" />',
+        '&lt;/v:rect>',
+        '&lt;v:rect strokecolor="#ccc" class="{{cssPrefix}}vml {{cssPrefix}}vml-slider-bg">',
+            '&lt;v:fill type="gradient" method="none" color="black" color2="white" o:opacity2="0%" class="{{cssPrefix}}vml" />',
+        '&lt;/v:rect>',
+        '&lt;v:shape class="{{cssPrefix}}vml {{cssPrefix}}slider-handle" coordsize="1 1" style="width:1px;height:1px;"' +
+            'path="m 0,7 l 14,7 m 7,14 l 7,0 ar 12,12 2,2 z" filled="false" stroked="true" />',
+    '&lt;/div>'].join('\n');
+
+var SVGHuebar = [
+    '&lt;svg class="{{cssPrefix}}svg {{cssPrefix}}svg-huebar">',
+        '&lt;defs>',
+            '&lt;linearGradient id="g" x1="0%" y1="0%" x2="0%" y2="100%">',
+                '&lt;stop offset="0%" stop-color="rgb(255,0,0)" />',
+                '&lt;stop offset="16.666%" stop-color="rgb(255,255,0)" />',
+                '&lt;stop offset="33.333%" stop-color="rgb(0,255,0)" />',
+                '&lt;stop offset="50%" stop-color="rgb(0,255,255)" />',
+                '&lt;stop offset="66.666%" stop-color="rgb(0,0,255)" />',
+                '&lt;stop offset="83.333%" stop-color="rgb(255,0,255)" />',
+                '&lt;stop offset="100%" stop-color="rgb(255,0,0)" />',
+            '&lt;/linearGradient>',
+        '&lt;/defs>',
+        '&lt;rect width="18px" height="100%" fill="url(#g)">&lt;/rect>',
+        '&lt;path transform="translate(-6,-3)" class="{{cssPrefix}}huebar-handle" d="M0 0 L4 4 L0 8 L0 0 Z" fill="black" stroke="none" />',
+    '&lt;/svg>'].join('\n');
+
+var VMLHuebar = [
+    '&lt;div class="{{cssPrefix}}vml-huebar">',
+        '&lt;v:rect strokecolor="#ccc" class="{{cssPrefix}}vml {{cssPrefix}}vml-huebar-bg">',
+            '&lt;v:fill type="gradient" method="none" colors="' +
+            '0% rgb(255,0,0), 16.666% rgb(255,255,0), 33.333% rgb(0,255,0), 50% rgb(0,255,255), 66.666% rgb(0,0,255), 83.333% rgb(255,0,255), 100% rgb(255,0,0)' +
+            '" angle="180" class="{{cssPrefix}}vml" />',
+        '&lt;/v:rect>',
+        '&lt;v:shape class="{{cssPrefix}}vml {{cssPrefix}}huebar-handle" coordsize="1 1" style="width:1px;height:1px;position:absolute;z-index:1;right:22px;top:-3px;"' +
+            'path="m 0,0 l 4,4 l 0,8 l 0,0 z" filled="true" fillcolor="black" stroked="false" />',
+    '&lt;/div>'].join('\n');
+
+var isOldBrowser = util.browser.msie &amp;&amp; (util.browser.version &lt; 9);
+
+if (isOldBrowser) {
+    global.document.namespaces.add('v', 'urn:schemas-microsoft-com:vml');
+}
+
+module.exports = {
+    layout: layout,
+    slider: isOldBrowser ? VMLSlider : SVGSlider,
+    huebar: isOldBrowser ? VMLHuebar : SVGHuebar
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px; height: 13px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        var id = '_sub'.replace(/"/g, '_');
+        var selectedApi = document.getElementById(id); // do not use jquery selector
+        var $selectedApi = $(selectedApi);
+
+        $selectedApi.removeClass('hidden');
+        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        showLnbApi();
+    </script>
+
+</body>
+</html>
