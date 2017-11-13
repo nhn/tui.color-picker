@@ -1,6 +1,6 @@
 /*!
  * Toast UI Colorpicker
- * @version 2.0.0
+ * @version 2.0.1
  * @author NHNEnt FE Development Team <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -124,7 +124,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var util = snippet,
 	    posKey = '_pos',
-	    domutil;
+	    supportSelectStart = 'onselectstart' in document,
+	    prevSelectStyle = '',
+	    domutil,
+	    userSelectProperty;
 
 	var CSS_AUTO_REGEX = /^auto$|^$|%/;
 
@@ -635,11 +638,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 
-	/*eslint-disable*/
-	var userSelectProperty = domutil.testProp(['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
-	var supportSelectStart = 'onselectstart' in document;
-	var prevSelectStyle = '';
-	/*eslint-enable*/
+	userSelectProperty = domutil.testProp(['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
 
 	/**
 	 * Disable browser's text selection behaviors.
@@ -1150,6 +1149,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * if the function is not supplied then it use default function {@link Collection#getItemID}
 	 * @constructor
 	 * @param {function} [getItemIDFn] function for get model's id.
+	 * @ignore
 	 */
 	function Collection(getItemIDFn) {
 	    /**
@@ -1423,11 +1423,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {function} [groupFunc] - function that return each group's key
 	 * @returns {object.<string, Collection>} grouped object
 	 * @example
-	 * 
+	 *
 	 * // pass `string`, `number`, `boolean` type value then group by property value.
 	 * collection.groupBy('gender');    // group by 'gender' property value.
 	 * collection.groupBy(50);          // group by '50' property value.
-	 * 
+	 *
 	 * // pass `function` then group by return value. each invocation `function` is called with `(item)`.
 	 * collection.groupBy(function(item) {
 	 *     if (item.score > 60) {
@@ -1578,6 +1578,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @constructor
 	 * @param {options} options The object for describe view's specs.
 	 * @param {HTMLElement} container Default container element for view. you can use this element for this.container syntax.
+	 * @ignore
 	 */
 	function View(options, container) {
 	    var id = util.stamp(this);
@@ -1602,7 +1603,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    this.container = container;
 
-	    /*eslint-disable*/
 	    /**
 	     * child views.
 	     * @type {Collection}
@@ -1610,7 +1610,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.childs = new Collection(function (view) {
 	        return util.stamp(view);
 	    });
-	    /*eslint-enable*/
 
 	    /**
 	     * parent view instance.
@@ -1711,9 +1710,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.id = this.parent = this.childs = this.container = null;
 	};
 
-	/*eslint-disable*/
 	/**
 	 * Destroy child view recursively.
+	 * @param {boolean} isChildView - Whether it is the child view or not
 	 */
 	View.prototype.destroy = function (isChildView) {
 	    this.childs.each(function (childView) {
@@ -1727,7 +1726,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    this._destroy();
 	};
-	/*eslint-enable*/
 
 	/**
 	 * Calculate view's container element bound.
@@ -1769,6 +1767,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {object} options - options for drag handler
 	 * @param {number} [options.distance=10] - distance in pixels after mouse must move before dragging should start
 	 * @param {HTMLElement} container - container element to bind drag events
+	 * @ignore
 	 */
 	function Drag(options, container) {
 	    domevent.on(container, 'mousedown', this._onMouseDown, this);
@@ -1958,7 +1957,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
-	 * @fileoverview Colorpicker factory module
+	 * @fileoverview ColorPicker factory module
 	 * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
 	 */
 
@@ -1980,21 +1979,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *  @param {string} [options.cssPrefix='tui-colorpicker-'] - css prefix text for each child elements
 	 *  @param {string} [options.detailTxt='Detail'] - text for detail button.
 	 * @example
-	 * var colorpicker = tui.component.colorpicker({
-	 *   container: document.getElementById('colorpicker')
-	 * });
+	 * var colorPicker = tui.colorPicker; // or require('tui-color-picker')
 	 *
-	 * colorpicker.getColor();    // '#ffffff'
+	 * colorPicker.create({
+	 *   container: document.getElementById('color-picker')
+	 * });
 	 */
-	function Colorpicker(options) {
+	function ColorPicker(options) {
 	    var layout;
 
-	    if (!(this instanceof Colorpicker)) {
-	        return new Colorpicker(options);
+	    if (!(this instanceof ColorPicker)) {
+	        return new ColorPicker(options);
 	    }
 	    /**
 	     * Option object
 	     * @type {object}
+	     * @private
 	     */
 	    options = this.options = util.extend({
 	        container: null,
@@ -2005,7 +2005,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, options);
 
 	    if (!options.container) {
-	        throw new Error('Colorpicker(): need container option.');
+	        throw new Error('ColorPicker(): need container option.');
 	    }
 
 	    /**********
@@ -2014,6 +2014,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * @type {Layout}
+	     * @private
 	     */
 	    layout = this.layout = new Layout(options, options.container);
 
@@ -2044,10 +2045,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Handler method for Palette#_selectColor event
 	 * @private
-	 * @fires Colorpicker#selectColor
+	 * @fires ColorPicker#selectColor
 	 * @param {object} selectColorEventData - event data
 	 */
-	Colorpicker.prototype._onSelectColorInPalette = function (selectColorEventData) {
+	ColorPicker.prototype._onSelectColorInPalette = function (selectColorEventData) {
 	    var color = selectColorEventData.color,
 	        opt = this.options;
 
@@ -2058,8 +2059,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    /**
-	     * @api
-	     * @event Colorpicker#selectColor
+	     * @event ColorPicker#selectColor
 	     * @type {object}
 	     * @property {string} color - selected color (hex string)
 	     * @property {string} origin - flags for represent the source of event fires.
@@ -2081,26 +2081,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Handler method for Palette#_toggleSlider event
 	 * @private
 	 */
-	Colorpicker.prototype._onToggleSlider = function () {
+	ColorPicker.prototype._onToggleSlider = function () {
 	    this.slider.toggle(!this.slider.isVisible());
 	};
 
 	/**
 	 * Handler method for Slider#_selectColor event
 	 * @private
-	 * @fires Colorpicker#selectColor
+	 * @fires ColorPicker#selectColor
 	 * @param {object} selectColorEventData - event data
 	 */
-	Colorpicker.prototype._onSelectColorInSlider = function (selectColorEventData) {
+	ColorPicker.prototype._onSelectColorInSlider = function (selectColorEventData) {
 	    var color = selectColorEventData.color,
 	        opt = this.options;
 
 	    /**
-	     * @api
-	     * @event Colorpicker#selectColor
+	     * @event ColorPicker#selectColor
 	     * @type {object}
 	     * @property {string} color - selected color (hex string)
 	     * @property {string} origin - flags for represent the source of event fires.
+	     * @ignore
 	     */
 	    this.fire('selectColor', {
 	        color: color,
@@ -2122,14 +2122,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Set color to colorpicker instance.<br>
 	 * The string parameter must be hex color value
-	 * @api
 	 * @param {string} hexStr - hex formatted color string
 	 * @example
 	 * colorPicker.setColor('#ffff00');
 	 */
-	Colorpicker.prototype.setColor = function (hexStr) {
+	ColorPicker.prototype.setColor = function (hexStr) {
 	    if (!colorutil.isValidRGB(hexStr)) {
-	        throw new Error('Colorpicker#setColor(): need valid hex string color value');
+	        throw new Error('ColorPicker#setColor(): need valid hex string color value');
 	    }
 
 	    this.options.color = hexStr;
@@ -2138,53 +2137,51 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * Get hex color string of current selected color in colorpicker instance.
-	 * @api
 	 * @returns {string} hex string formatted color
 	 * @example
 	 * colorPicker.setColor('#ffff00');
 	 * colorPicker.getColor(); // '#ffff00';
 	 */
-	Colorpicker.prototype.getColor = function () {
+	ColorPicker.prototype.getColor = function () {
 	    return this.options.color;
 	};
 
 	/**
 	 * Toggle colorpicker element. set true then reveal colorpicker view.
-	 * @api
 	 * @param {boolean} [isShow=false] - A flag to show
 	 * @example
 	 * colorPicker.toggle(false); // hide
 	 * colorPicker.toggle(); // hide
 	 * colorPicker.toggle(true); // show
 	 */
-	Colorpicker.prototype.toggle = function (isShow) {
+	ColorPicker.prototype.toggle = function (isShow) {
 	    this.layout.container.style.display = !!isShow ? 'block' : 'none';
 	};
 
 	/**
 	 * Render colorpicker
 	 * @param {string} [color] - selected color
+	 * @ignore
 	 */
-	Colorpicker.prototype.render = function (color) {
+	ColorPicker.prototype.render = function (color) {
 	    this.layout.render(color || this.options.color);
 	};
 
 	/**
 	 * Destroy colorpicker instance.
-	 * @api
 	 * @example
 	 * colorPicker.destroy(); // DOM-element is removed
 	 */
-	Colorpicker.prototype.destroy = function () {
+	ColorPicker.prototype.destroy = function () {
 	    this.layout.destroy();
 	    this.options.container.innerHTML = '';
 
 	    this.layout = this.slider = this.palette = this.options = null;
 	};
 
-	util.CustomEvents.mixin(Colorpicker);
+	util.CustomEvents.mixin(ColorPicker);
 
-	module.exports = Colorpicker;
+	module.exports = ColorPicker;
 
 /***/ }),
 /* 14 */
@@ -2366,7 +2363,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
-	 * @fileoverview Colorpicker layout module
+	 * @fileoverview ColorPicker layout module
 	 * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
 	 */
 
@@ -2382,6 +2379,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {object} options - option object
 	 *  @param {string} options.cssPrefix - css prefix for each child elements
 	 * @param {HTMLDivElement} container - container
+	 * @ignore
 	 */
 	function Layout(options, container) {
 	    /**
@@ -2437,6 +2435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {object} options - options for color palette view
 	 *  @param {string[]} options.preset - color list
 	 * @param {HTMLDivElement} container - container element
+	 * @ignore
 	 */
 	function Palette(options, container) {
 	    /**
@@ -2618,6 +2617,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param {object} options - options for view
 	 *  @param {string} options.cssPrefix - design css prefix
 	 * @param {HTMLElement} container - container element
+	 * @ignore
 	 */
 	function Slider(options, container) {
 	    container = domutil.appendHTMLElement('div', container, options.cssPrefix + 'slider-container');
@@ -2794,7 +2794,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * The number of X, Y must be related value from color slider container
 	 * @private
-	 * @param {number} x - the pixel value to move handle 
+	 * @param {number} x - the pixel value to move handle
 	 * @param {number} y - the pixel value to move handle
 	 */
 	Slider.prototype._moveColorSliderByPosition = function (x, y) {
