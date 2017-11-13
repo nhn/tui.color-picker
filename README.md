@@ -1,19 +1,18 @@
-# Colorpicker
-Component - ColorPicker for web
-
-![Colorpicker Screenshot](https://github.com/nhnent/tui.color-picker/raw/master/screenshot.png)
+# ColorPicker
+Component that used to select and adjust color values
 
 ## Documentation
-* **API** : https://nhnent.github.io/tui.color-picker/latest
-* **Tutorial** : https://github.com/nhnent/tui.color-picker/wiki
-* **Sample** :
-http://nhnent.github.io/tui.color-picker/latest/tutorial-sample1.html
+* **API** : [https://nhnent.github.io/tui.color-picker/latest](https://nhnent.github.io/tui.color-picker/latest)
+* **Tutorial** : [https://github.com/nhnent/tui.color-picker/wiki](https://github.com/nhnent/tui.color-picker/wiki)
+* **Example** :
+[https://nhnent.github.io/tui.color-picker/latest/tutorial-example01-basic.html](https://nhnent.github.io/tui.color-picker/latest/tutorial-example01-basic.html)
 
 ## Dependency
-* [tui.code-snippet: 1.2.8](https://github.com/nhnent/tui.code-snippet/releases/tag/v1.2.8)
+* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.2.5
 
 ## Tested Browsers
-* IE7+
+### PC
+* IE8~11
 * Edge
 * Chrome
 * Firefox
@@ -38,7 +37,7 @@ To access as module format in your code:
 ```javascript
 var colorPicker = require('tui-color-picker');
 var instance = colorPicker.create({
-    container: document.getElementById('colorpicker')
+    container: document.getElementById('color-picker')
 });
 ```
 
@@ -59,7 +58,7 @@ To access as namespace format in your code:
 
 ```javascript
 var instance = tui.colorPicker.create({
-    container: document.getElementById('colorpicker')
+    container: document.getElementById('color-picker')
 });
 ```
 ### Download

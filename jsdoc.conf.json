@@ -1,47 +1,31 @@
 {
-    "source": {
-        "include": [
-            "src/js", "README.md"
-        ],
-        "exclude": [],
-        "includePattern": ".+\\.js(doc)?$",
-        "excludePattern": "(^|\\/|\\\\)_"
-    },
-    "plugins": [
-        "plugins/markdown"
+  "source": {
+    "include": [
+      "src",
+      "README.md"
     ],
-    "templates": {
-        "name": "ColorPicker",
-        "logo": {
-            "url": "https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png",
-            "width": "150px",
-            "height": "13px",
-            "link": "https://github.com/nhnent/tui.jsdoc-template"
-        },
-        "cleverLinks": true,
-        "monospaceLinks": true,
-        "default": {
-            "outputSourceFiles" : true
-        },
-        "applicationName": "ColorPicker",
-        "meta": {
-            "title": "",
-            "description": "",
-            "keyword": ""
-        },
-        "linenums": false
-    },
-    "markdown": {
-        "parser": "gfm",
-        "hardwrap": true
-    },
-    "opts": {
-        "private": false,
-        "recurse": true,
-        "destination": "doc",
-        "name": "Color Picker",
-        "tutorials": "examples",
-        "template": "./node_modules/tui-jsdoc-template",
-        "package": "package.json"
+    "exclude": [],
+    "includePattern": ".+\\.js(doc)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "name": "ColorPicker",
+    "logo": {
+      "url": "https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png",
+      "width": "150px",
+      "height": "13px",
+      "link": "https://github.com/nhnent/tui.jsdoc-template"
     }
+  },
+  "opts": {
+    "private": false,
+    "recurse": true,
+    "destination": "doc",
+    "tutorials": "examples",
+    "template": "./node_modules/tui-jsdoc-template",
+    "package": "package.json"
+  }
 }

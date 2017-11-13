@@ -1,6 +1,6 @@
 {
   "name": "tui-color-picker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "NHNEnt FE Development Team <dl_javascript@nhnent.com>",
   "license": "MIT",
   "description": "Colorpicker component for web",
@@ -18,7 +18,7 @@
   ],
   "main": "dist/tui-color-picker.js",
   "dependencies": {
-    "tui-code-snippet": "^1.2.8"
+    "tui-code-snippet": "^1.2.5"
   },
   "scripts": {
     "test": "karma start --no-single-run",
