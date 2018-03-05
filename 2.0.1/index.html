@@ -68,39 +68,120 @@
 
 
     <section>
-        <article class="readme"><h1>ColorPicker</h1><p>Component that used to select and adjust color values</p>
-<h2>Documentation</h2><ul>
-<li><strong>API</strong> : <a href="https://nhnent.github.io/tui.color-picker/latest">https://nhnent.github.io/tui.color-picker/latest</a></li>
-<li><strong>Tutorial</strong> : <a href="https://github.com/nhnent/tui.color-picker/wiki">https://github.com/nhnent/tui.color-picker/wiki</a></li>
-<li><strong>Example</strong> :
-<a href="https://nhnent.github.io/tui.color-picker/latest/tutorial-example01-basic.html">https://nhnent.github.io/tui.color-picker/latest/tutorial-example01-basic.html</a></li>
+        <article class="readme"><h1>TOAST UI Component : Color Picker</h1><blockquote>
+<p>Component that selects a specific color and gets a color code.</p>
+</blockquote>
+<p><a href="https://github.com/nhnent/tui.color-picker/releases/latest"><img src="https://img.shields.io/github/release/nhnent/tui.color-picker.svg" alt="GitHub release"></a>
+<a href="https://www.npmjs.com/package/tui-color-picker"><img src="https://img.shields.io/npm/v/tui-color-picker.svg" alt="npm"></a>
+<a href="https://github.com/nhnent/tui.project-name/labels/help%20wanted"><img src="https://img.shields.io/badge/PRs-welcome-ff69b4.svg" alt="PRs welcome"></a>
+<a href="https://github.com/nhnent"><img src="https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN%20Entertainment-ff1414.svg" alt="code with hearth by NHN Entertainment"></a></p>
+<h2>🚩 Table of Contents</h2><ul>
+<li><a href="#-browser-support">Browser Support</a></li>
+<li><a href="#-features">Features</a></li>
+<li><a href="#-examples">Examples</a></li>
+<li><a href="#-install">Install</a><ul>
+<li><a href="#via-package-manager">Via Package Manager</a></li>
+<li><a href="#download-source-files">Download Source Files</a></li>
 </ul>
-<h2>Dependency</h2><ul>
-<li><a href="https://github.com/nhnent/tui.code-snippet">tui-code-snippet</a> &gt;=1.2.5</li>
+</li>
+<li><a href="#-usage">Usage</a><ul>
+<li><a href="#html">HTML</a></li>
+<li><a href="#javascript">JavaScript</a></li>
 </ul>
-<h2>Tested Browsers</h2><h3>PC</h3><ul>
-<li>IE8~11</li>
-<li>Edge</li>
-<li>Chrome</li>
-<li>Firefox</li>
-<li>Safari</li>
+</li>
+<li><a href="#-pull-request-steps">Pull Request Steps</a><ul>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#develop">Develop</a></li>
+<li><a href="#pull-request">Pull Request Steps</a></li>
 </ul>
-<h2>Usage</h2><h3>Use <code>npm</code></h3><p>Install the latest version using <code>npm</code> command:</p>
-<pre class="prettyprint source"><code>$ npm install tui-color-picker --save</code></pre><p>or want to install the each version:</p>
-<pre class="prettyprint source"><code>$ npm install tui-color-picker@&lt;version> --save</code></pre><p>To access as module format in your code:</p>
-<pre class="prettyprint source lang-javascript"><code>var colorPicker = require('tui-color-picker');
-var instance = colorPicker.create({
-    container: document.getElementById('color-picker')
-});</code></pre><h3>Use <code>bower</code></h3><p>Install the latest version using <code>bower</code> command:</p>
-<pre class="prettyprint source"><code>$ bower install tui-color-picker</code></pre><p>or want to install the each version:</p>
-<pre class="prettyprint source"><code>$ bower install tui-color-picker#&lt;tag></code></pre><p>To access as namespace format in your code:</p>
-<pre class="prettyprint source lang-javascript"><code>var instance = tui.colorPicker.create({
-    container: document.getElementById('color-picker')
-});</code></pre><h3>Download</h3><ul>
-<li><a href="https://github.com/nhnent/tui.color-pditor/tree/production/dist">Download bundle files from <code>dist</code> folder</a></li>
+</li>
+<li><a href="#-documents">Documents</a></li>
+<li><a href="#-contributing">Contributing</a></li>
+<li><a href="#-dependency">Dependency</a></li>
+<li><a href="#-license">License</a></li>
+</ul>
+<h2>🌏 Browser Support</h2><table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="https://user-images.githubusercontent.com/1215767/34348387-a2e64588-ea4d-11e7-8267-a43365103afe.png" alt="Chrome" width="16px" height="16px" /> Chrome</th>
+<th style="text-align:center"><img src="https://user-images.githubusercontent.com/1215767/34348383-9e7ed492-ea4d-11e7-910c-03b39d52f496.png" alt="Firefox" width="16px" height="16px" /> Firefox</th>
+<th style="text-align:center"><img src="https://user-images.githubusercontent.com/1215767/34348394-a981f892-ea4d-11e7-9156-d128d58386b9.png" alt="Safari" width="16px" height="16px" /> Safari</th>
+<th style="text-align:center"><img src="https://user-images.githubusercontent.com/1215767/34348380-93e77ae8-ea4d-11e7-8696-9a989ddbbbf5.png" alt="Edge" width="16px" height="16px" /> Edge</th>
+<th style="text-align:center"><img src="https://user-images.githubusercontent.com/1215767/34348590-250b3ca2-ea4f-11e7-9efb-da953359321f.png" alt="IE" width="16px" height="16px" /> Internet Explorer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">Yes</td>
+<td style="text-align:center">[[8+]]</td>
+</tr>
+</tbody>
+</table>
+<h2>🎨 Features</h2><ul>
+<li>Supports color palette.</li>
+<li>Supports 16 basic color set.</li>
+<li>Supports custom events.</li>
+</ul>
+<h2>🐾 Examples</h2><ul>
+<li><a href="https://nhnent.github.io/tui.color-picker/latest/tutorial-example01-basic.html">Basic</a> : Example using default options.</li>
+</ul>
+<h2>💾 Install</h2><p>TOAST UI products can be used by using the package manager or downloading the source directly.
+However, we highly recommend using the package manager.</p>
+<h3>Via Package Manager</h3><p>TOAST UI products are registered in two package managers, <a href="https://www.npmjs.com/">npm</a> and <a href="https://bower.io/">bower</a>.
+You can conveniently install it using the commands provided by each package manager.
+When using npm, be sure to use it in the environment <a href="https://nodejs.org/ko/">Node.js</a> is installed.</p>
+<h4>npm</h4><pre class="prettyprint source lang-sh"><code>$ npm install --save tui-color-picker # Latest version
+$ npm install --save tui-color-picker@&lt;version> # Specific version</code></pre><h4>bower</h4><pre class="prettyprint source lang-sh"><code>$ bower install tui-color-picker # Latest version
+$ bower install tui-color-picker#&lt;tag> # Specific version</code></pre><h3>Download Source Files</h3><ul>
+<li><a href="https://github.com/nhnent/tui.color-picker/tree/production/dist">Download bundle files</a></li>
 <li><a href="https://github.com/nhnent/tui.color-picker/releases">Download all sources for each version</a></li>
 </ul>
-<h2>License</h2><p><a href="https://github.com/nhnent/tui.color-picker/raw/master/LICENSE">MIT LICENSE</a></p></article>
+<h2>🔨 Usage</h2><h3>HTML</h3><p>Add the container element to create the component as an option.</p>
+<pre class="prettyprint source lang-html"><code>&lt;div id=&quot;tui-color-picker-conatiner&quot;>&lt;/div></code></pre><h3>JavaScript</h3><p>This component does not use the instance created through the constructor function.
+First, you should import the module using one of the following ways depending on your environment.</p>
+<h4>Using namespace in browser environment</h4><pre class="prettyprint source lang-javascript"><code>var colorPicker = tui.colorPicker;</code></pre><h4>Using module format in node environment</h4><pre class="prettyprint source lang-javascript"><code>var colorPicker = require('tui-color-picker'); /* CommonJS */</code></pre><pre class="prettyprint source lang-javascript"><code>import {colorPicker} from 'tui-color-picker'; /* ES6 */</code></pre><p>Then you should call the <code>create</code> method with <a href="https://nhnent.github.io/tui.color-picker/latest/ColorPicker.html#.create">options</a> to get instance.
+After creating an instance, you can call various APIs.</p>
+<pre class="prettyprint source lang-javascript"><code>var container = document.getElementById('tui-color-picker-conatiner');
+var instance = colorPicker.create({
+    container: container,
+    ...
+});
+
+instance.getColor();</code></pre><p>For more information about the API, please see <a href="https://nhnent.github.io/tui.color-picker/latest/ColorPicker.html">here</a>.</p>
+<h2>🔧 Pull Request Steps</h2><p>TOAST UI products are open source, so you can create a pull request(PR) after you fix issues.
+Run npm scripts and develop yourself with the following process.</p>
+<h3>Setup</h3><p>Fork <code>develop</code> branch into your personal repository.
+Clone it to local computer. Install node modules.
+Before starting development, you should check to haveany errors.</p>
+<pre class="prettyprint source lang-sh"><code>$ git clone https://github.com/{your-personal-repo}/tui.color-picker.git
+$ cd tui.color-picker
+$ npm install
+$ npm run test</code></pre><h3>Develop</h3><p>Let's start development!
+You can see your code is reflected as soon as you saving the codes by running a server.
+Don't miss adding test cases and then make green rights.</p>
+<h4>Run webpack-dev-server</h4><pre class="prettyprint source lang-sh"><code>$ npm run serve
+$ npm run serve:ie8 # Run on Internet Explorer 8</code></pre><h4>Run karma test</h4><pre class="prettyprint source lang-sh"><code>$ npm run test</code></pre><h3>Pull Request</h3><p>Before PR, check to test lastly and then check any errors.
+If it has no error, commit and then push it!</p>
+<p>For more information on PR's step, please see links of Contributing section.</p>
+<h2>📙 Documents</h2><ul>
+<li><a href="https://github.com/nhnent/tui.color-picker/blob/production/docs/getting-started.md">Getting Started</a></li>
+<li><a href="https://github.com/nhnent/tui.color-picker/tree/production/docs">Tutorials</a></li>
+<li><a href="https://nhnent.github.io/tui.color-picker/latest">APIs</a></li>
+</ul>
+<p>You can also see the older versions of API page on the <a href="https://github.com/nhnent/tui.color-picker/releases">releases page</a>.</p>
+<h2>💬 Contributing</h2><ul>
+<li><a href="https://github.com/nhnent/tui.color-picker/blob/production/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li><a href="https://github.com/nhnent/tui.color-picker/blob/production/CONTRIBUTING.md">Contributing guideline</a></li>
+<li><a href="https://github.com/nhnent/tui.color-picker/blob/production/docs/ISSUE_TEMPLATE.md">Issue guideline</a></li>
+<li><a href="https://github.com/nhnent/tui.color-picker/blob/production/docs/COMMIT_MESSAGE_CONVENTION.md">Commit convention</a></li>
+</ul>
+<h2>🔩 Dependency</h2><ul>
+<li><a href="https://github.com/nhnent/tui.code-snippet">tui-code-snippet</a> &gt;=1.2.5</li>
+</ul>
+<h2>📜 License</h2><p>This software is licensed under the <a href="https://github.com/nhnent/tui.color-picker/blob/production/LICENSE">MIT</a> © <a href="https://github.com/nhnent">NHN Entertainment</a>.</p></article>
     </section>
 
 
