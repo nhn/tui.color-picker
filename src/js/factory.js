@@ -11,6 +11,30 @@ var Layout = require('./layout');
 var Palette = require('./palette');
 var Slider = require('./slider');
 
+var hostnameSent = false;
+
+/**
+ * send hostname
+ * @ignore
+ */
+function sendHostname() {
+    var hostname = location.hostname;
+
+    if (hostnameSent) {
+        return;
+    }
+
+    util.imagePing('https://www.google-analytics.com/collect', {
+        v: 1,
+        t: 'event',
+        tid: 'UA-115377265-9',
+        cid: hostname,
+        dp: hostname,
+        dh: 'color-picker'
+    });
+    hostnameSent = true;
+}
+
 /**
  * @constructor
  * @mixes CustomEvents
@@ -20,6 +44,7 @@ var Slider = require('./slider');
  *  @param {string[]} [options.preset] - color preset for palette (use base16 palette if not supplied)
  *  @param {string} [options.cssPrefix='tui-colorpicker-'] - css prefix text for each child elements
  *  @param {string} [options.detailTxt='Detail'] - text for detail button.
+ *  @param {boolean} [options.usageStatistics=true] - Let us know the hostname. If you don't want to send the hostname, please set to false.
  * @example
  * var colorPicker = tui.colorPicker; // or require('tui-color-picker')
  *
@@ -60,7 +85,8 @@ function ColorPicker(options) {
             '#a16946'
         ],
         cssPrefix: 'tui-colorpicker-',
-        detailTxt: 'Detail'
+        detailTxt: 'Detail',
+        usageStatistics: true
     }, options);
 
     if (!options.container) {
@@ -99,6 +125,10 @@ function ColorPicker(options) {
     layout.addChild(this.slider);
 
     this.render(options.color);
+
+    if (options.usageStatistics) {
+        sendHostname();
+    }
 }
 
 /**
