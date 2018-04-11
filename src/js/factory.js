@@ -23,6 +23,7 @@ function sendHostname() {
     if (hostnameSent) {
         return;
     }
+    hostnameSent = true;
 
     util.imagePing('https://www.google-analytics.com/collect', {
         v: 1,
@@ -32,7 +33,6 @@ function sendHostname() {
         dp: hostname,
         dh: 'color-picker'
     });
-    hostnameSent = true;
 }
 
 /**
