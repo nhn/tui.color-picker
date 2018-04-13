@@ -76,6 +76,7 @@ You can use the CDN as below.
 
 ```html
 <script src="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.js"></script>
+<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui-color-picker/latest/tui-color-picker.css">
 ```
 
 If you want to use a specific version, use the tag name instead of `latest` in the url's path.
@@ -86,8 +87,9 @@ The CDN directory has the following structure.
 tui-color-picker/
 ├─ latest/
 │  ├─ tui-color-picker.js
-│  └─ tui-color-picker.min.js
-├─ v3.3.0/
+│  ├─ tui-color-picker.min.js
+│  └─ tui-color-picker.css
+├─ v2.1.0/
 │  ├─ ...
 ```
 
