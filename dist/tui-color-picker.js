@@ -1,6 +1,6 @@
 /*!
  * Toast UI Colorpicker
- * @version 2.0.1
+ * @version 2.1.0
  * @author NHNEnt FE Development Team <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -1969,6 +1969,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Palette = __webpack_require__(16);
 	var Slider = __webpack_require__(18);
 
+	var hostnameSent = false;
+
+	/**
+	 * send hostname
+	 * @ignore
+	 */
+	function sendHostname() {
+	    var hostname = location.hostname;
+
+	    if (hostnameSent) {
+	        return;
+	    }
+	    hostnameSent = true;
+
+	    util.imagePing('https://www.google-analytics.com/collect', {
+	        v: 1,
+	        t: 'event',
+	        tid: 'UA-115377265-9',
+	        cid: hostname,
+	        dp: hostname,
+	        dh: 'color-picker'
+	    });
+	}
+
 	/**
 	 * @constructor
 	 * @mixes CustomEvents
@@ -1978,6 +2002,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *  @param {string[]} [options.preset] - color preset for palette (use base16 palette if not supplied)
 	 *  @param {string} [options.cssPrefix='tui-colorpicker-'] - css prefix text for each child elements
 	 *  @param {string} [options.detailTxt='Detail'] - text for detail button.
+	 *  @param {boolean} [options.usageStatistics=true] - Let us know the hostname. If you don't want to send the hostname, please set to false.
 	 * @example
 	 * var colorPicker = tui.colorPicker; // or require('tui-color-picker')
 	 *
@@ -2001,7 +2026,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        color: '#f8f8f8',
 	        preset: ['#181818', '#282828', '#383838', '#585858', '#b8b8b8', '#d8d8d8', '#e8e8e8', '#f8f8f8', '#ab4642', '#dc9656', '#f7ca88', '#a1b56c', '#86c1b9', '#7cafc2', '#ba8baf', '#a16946'],
 	        cssPrefix: 'tui-colorpicker-',
-	        detailTxt: 'Detail'
+	        detailTxt: 'Detail',
+	        usageStatistics: true
 	    }, options);
 
 	    if (!options.container) {
@@ -2040,6 +2066,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    layout.addChild(this.slider);
 
 	    this.render(options.color);
+
+	    if (options.usageStatistics) {
+	        sendHostname();
+	    }
 	}
 
 	/**
