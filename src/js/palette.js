@@ -7,6 +7,7 @@
 
 var util = require('tui-code-snippet');
 var domutil = require('./core/domutil');
+var colorutil = require('./colorutil');
 var domevent = require('./core/domevent');
 var View = require('./core/view');
 var tmpl = require('../template/palette');
@@ -151,7 +152,15 @@ Palette.prototype.render = function(color) {
     this._toggleEvent(false);
 
     html = tmpl.layout.replace('{{colorList}}', util.map(options.preset, function(_color) {
-        var itemHtml = tmpl.item.replace(/{{color}}/g, _color);
+        var itemHtml = '';
+        var style = '';
+        if (colorutil.isValidRGB(_color)) {
+            style = tmpl.itemStyle.replace(/{{color}}/g, _color);
+        }
+
+        itemHtml = tmpl.item.replace(/{{itemStyle}}/g, style);
+        itemHtml = itemHtml.replace(/{{itemClass}}/g, (!_color) ? 'color-transparent' : '');
+        itemHtml = itemHtml.replace(/{{color}}/g, _color);
         itemHtml = itemHtml.replace('{{selected}}', _color === color ? (' ' + options.cssPrefix + 'selected') : '');
 
         return itemHtml;

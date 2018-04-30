@@ -141,7 +141,7 @@ ColorPicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
     var color = selectColorEventData.color,
         opt = this.options;
 
-    if (!colorutil.isValidRGB(color)) {
+    if (!colorutil.isValidRGB(color) && color !== '') {
         this.render();
 
         return;

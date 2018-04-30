@@ -129,6 +129,10 @@ Slider.prototype.render = function(colorStr) {
         rgb,
         hsv;
 
+    if (!colorutil.isValidRGB(colorStr)) {
+        return;
+    }
+
     html = html.replace(/{{slider}}/, tmpl.slider);
     html = html.replace(/{{huebar}}/, tmpl.huebar);
     html = html.replace(/{{cssPrefix}}/g, options.cssPrefix);
