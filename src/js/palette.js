@@ -7,6 +7,7 @@
 
 var util = require('tui-code-snippet');
 var domutil = require('./core/domutil');
+var colorutil = require('./colorutil');
 var domevent = require('./core/domevent');
 var View = require('./core/view');
 var tmpl = require('../template/palette');
@@ -150,16 +151,30 @@ Palette.prototype.render = function(color) {
 
     this._toggleEvent(false);
 
-    html = tmpl.layout.replace('{{colorList}}', util.map(options.preset, function(_color) {
-        var itemHtml = tmpl.item.replace(/{{color}}/g, _color);
-        itemHtml = itemHtml.replace('{{selected}}', _color === color ? (' ' + options.cssPrefix + 'selected') : '');
+    html = tmpl.layout.replace('{{colorList}}', util.map(options.preset, function(itemColor) {
+        var itemHtml = '';
+        var style = '';
+
+        if (colorutil.isValidRGB(itemColor)) {
+            style = domutil.applyTemplate(tmpl.itemStyle, {color: itemColor});
+        }
+
+        itemHtml = domutil.applyTemplate(tmpl.item, {
+            itemStyle: style,
+            itemClass: (!itemColor) ? ' ' + options.cssPrefix + 'color-transparent' : '',
+            color: itemColor,
+            cssPrefix: options.cssPrefix,
+            selected: itemColor === color ? (' ' + options.cssPrefix + 'selected') : ''
+        });
 
         return itemHtml;
     }).join(''));
 
-    html = html.replace(/{{cssPrefix}}/g, options.cssPrefix)
-        .replace('{{detailTxt}}', options.detailTxt)
-        .replace(/{{color}}/g, color);
+    html = domutil.applyTemplate(html, {
+        cssPrefix: options.cssPrefix,
+        detailTxt: options.detailTxt,
+        color: color
+    });
 
     this.container.innerHTML = html;
 
