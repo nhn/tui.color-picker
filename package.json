@@ -1,6 +1,6 @@
 {
   "name": "tui-color-picker",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "NHNEnt FE Development Team <dl_javascript@nhnent.com>",
   "license": "MIT",
   "description": "Colorpicker component for web",

@@ -589,4 +589,18 @@ domutil.enableImageDrag = function() {
     domevent.off(window, 'dragstart', domevent.preventDefault);
 };
 
+/**
+ * Replace matched property with template
+ * @param {string} template - String of template
+ * @param {Object} propObj - Properties
+ * @returns {string} Replaced template string
+ */
+domutil.applyTemplate = function(template, propObj) {
+    var newTemplate = template.replace(/\{\{(\w*)\}\}/g, function(value, prop) {
+        return propObj.hasOwnProperty(prop) ? propObj[prop] : '';
+    });
+
+    return newTemplate;
+};
+
 module.exports = domutil;
