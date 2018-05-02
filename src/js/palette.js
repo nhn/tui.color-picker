@@ -151,24 +151,30 @@ Palette.prototype.render = function(color) {
 
     this._toggleEvent(false);
 
-    html = tmpl.layout.replace('{{colorList}}', util.map(options.preset, function(_color) {
+    html = tmpl.layout.replace('{{colorList}}', util.map(options.preset, function(itemColor) {
         var itemHtml = '';
         var style = '';
-        if (colorutil.isValidRGB(_color)) {
-            style = tmpl.itemStyle.replace(/{{color}}/g, _color);
+
+        if (colorutil.isValidRGB(itemColor)) {
+            style = domutil.applyTemplate(tmpl.itemStyle, {color: itemColor});
         }
 
-        itemHtml = tmpl.item.replace(/{{itemStyle}}/g, style);
-        itemHtml = itemHtml.replace(/{{itemClass}}/g, (!_color) ? 'color-transparent' : '');
-        itemHtml = itemHtml.replace(/{{color}}/g, _color);
-        itemHtml = itemHtml.replace('{{selected}}', _color === color ? (' ' + options.cssPrefix + 'selected') : '');
+        itemHtml = domutil.applyTemplate(tmpl.item, {
+            itemStyle: style,
+            itemClass: (!itemColor) ? 'color-transparent' : '',
+            color: itemColor,
+            cssPrefix: options.cssPrefix,
+            selected: itemColor === color ? (' ' + options.cssPrefix + 'selected') : ''
+        });
 
         return itemHtml;
     }).join(''));
 
-    html = html.replace(/{{cssPrefix}}/g, options.cssPrefix)
-        .replace('{{detailTxt}}', options.detailTxt)
-        .replace(/{{color}}/g, color);
+    html = domutil.applyTemplate(html, {
+        cssPrefix: options.cssPrefix,
+        detailTxt: options.detailTxt,
+        color: color
+    });
 
     this.container.innerHTML = html;
 
