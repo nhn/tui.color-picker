@@ -161,7 +161,7 @@ Palette.prototype.render = function(color) {
 
         itemHtml = domutil.applyTemplate(tmpl.item, {
             itemStyle: style,
-            itemClass: (!itemColor) ? 'color-transparent' : '',
+            itemClass: (!itemColor) ? ' ' + options.cssPrefix + 'color-transparent' : '',
             color: itemColor,
             cssPrefix: options.cssPrefix,
             selected: itemColor === color ? (' ' + options.cssPrefix + 'selected') : ''

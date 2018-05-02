@@ -14,7 +14,7 @@ var layout = [
     '</div>'
 ].join('\n');
 
-var item = '<li><input class="{{cssPrefix}}palette-button{{selected}} {{cssPrefix}}{{itemClass}}" type="button" style="{{itemStyle}}" title="{{color}}" value="{{color}}" /></li>';
+var item = '<li><input class="{{cssPrefix}}palette-button{{selected}}{{itemClass}}" type="button" style="{{itemStyle}}" title="{{color}}" value="{{color}}" /></li>';
 var itemStyle = 'background-color:{{color}};color:{{color}}';
 
 module.exports = {
