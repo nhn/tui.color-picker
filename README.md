@@ -153,7 +153,7 @@ After creating an instance, you can call various APIs.
 
 ``` javascript
 var container = document.getElementById('tui-color-picker-conatiner');
-var instance = new ColorPicker({
+var instance = colorPicker.create({
     container: container,
     ...
 });
