@@ -26,7 +26,8 @@
     "bundle": "webpack && webpack -p",
     "serve": "webpack-dev-server --inline --hot -d",
     "cpy-dist2doc": "mkdir -p doc/dist && cp -f -r dist doc",
-    "doc": "jsdoc -c jsdoc.conf.json && npm run cpy-dist2doc"
+    "doc": "jsdoc -c jsdoc.conf.json && npm run cpy-dist2doc",
+    "note": "tuie --tag=$(git describe --tags)"
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
