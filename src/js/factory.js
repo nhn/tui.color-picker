@@ -11,30 +11,6 @@ var Layout = require('./layout');
 var Palette = require('./palette');
 var Slider = require('./slider');
 
-var hostnameSent = false;
-
-/**
- * send hostname
- * @ignore
- */
-function sendHostname() {
-    var hostname = location.hostname;
-
-    if (hostnameSent) {
-        return;
-    }
-    hostnameSent = true;
-
-    util.imagePing('https://www.google-analytics.com/collect', {
-        v: 1,
-        t: 'event',
-        tid: 'UA-115377265-9',
-        cid: hostname,
-        dp: hostname,
-        dh: 'color-picker'
-    });
-}
-
 /**
  * @constructor
  * @mixes CustomEvents
@@ -127,7 +103,7 @@ function ColorPicker(options) {
     this.render(options.color);
 
     if (options.usageStatistics) {
-        sendHostname();
+        util.sendHostname('color-picker', 'UA-129987462-1');
     }
 }
 

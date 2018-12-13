@@ -10,25 +10,25 @@ describe('ColorPicker', function() {
         var colorPicker, el;
 
         beforeEach(function() {
-            spyOn(snippet, 'imagePing');
+            spyOn(snippet, 'sendHostname');
             el = document.createElement('div');
         });
 
-        xit('should send hostname by default', function() {
+        it('should send hostname by default', function() {
             colorPicker = new ColorPicker({
                 container: el
             });
 
-            expect(snippet.imagePing).toHaveBeenCalled();
+            expect(snippet.sendHostname).toHaveBeenCalled();
         });
 
-        xit('should not send hostname on usageStatistics option false', function() {
+        it('should not send hostname on usageStatistics option false', function() {
             colorPicker = new ColorPicker({
                 container: el,
                 usageStatistics: false
             });
 
-            expect(snippet.imagePing).not.toHaveBeenCalled();
+            expect(snippet.sendHostname).not.toHaveBeenCalled();
         });
     });
 });
