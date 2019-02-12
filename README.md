@@ -148,7 +148,7 @@ import colorPicker from 'tui-color-picker'; /* ES6 */
 ```
 
 
-Then you should call the `create` method with [options](https://nhnent.github.io/tui.color-picker/latest/ColorPicker#create) to get instance.
+Then you should call the `create` method with [options](https://nhnent.github.io/tui.color-picker/latest/ColorPicker) to get instance.
 After creating an instance, you can call various APIs.
 
 ``` javascript
