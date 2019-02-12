@@ -13,7 +13,6 @@ var Slider = require('./slider');
 
 /**
  * @constructor
- * @mixes CustomEvents
  * @param {object} options - options for colorpicker component
  *  @param {HTMLDivElement} options.container - container element
  *  @param {string} [options.color='#ffffff'] - default selected color
@@ -23,8 +22,8 @@ var Slider = require('./slider');
  *  @param {boolean} [options.usageStatistics=true] - Let us know the hostname. If you don't want to send the hostname, please set to false.
  * @example
  * var colorPicker = tui.colorPicker; // or require('tui-color-picker')
- *
- * colorPicker.create({
+ * 
+ * var instance = colorPicker.create({
  *   container: document.getElementById('color-picker')
  * });
  */
@@ -189,7 +188,7 @@ ColorPicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
  * The string parameter must be hex color value
  * @param {string} hexStr - hex formatted color string
  * @example
- * colorPicker.setColor('#ffff00');
+ * instance.setColor('#ffff00');
  */
 ColorPicker.prototype.setColor = function(hexStr) {
     if (!colorutil.isValidRGB(hexStr)) {
@@ -204,8 +203,8 @@ ColorPicker.prototype.setColor = function(hexStr) {
  * Get hex color string of current selected color in colorpicker instance.
  * @returns {string} hex string formatted color
  * @example
- * colorPicker.setColor('#ffff00');
- * colorPicker.getColor(); // '#ffff00';
+ * instance.setColor('#ffff00');
+ * instance.getColor(); // '#ffff00';
  */
 ColorPicker.prototype.getColor = function() {
     return this.options.color;
@@ -215,9 +214,9 @@ ColorPicker.prototype.getColor = function() {
  * Toggle colorpicker element. set true then reveal colorpicker view.
  * @param {boolean} [isShow=false] - A flag to show
  * @example
- * colorPicker.toggle(false); // hide
- * colorPicker.toggle(); // hide
- * colorPicker.toggle(true); // show
+ * instance.toggle(false); // hide
+ * instance.toggle(); // hide
+ * instance.toggle(true); // show
  */
 ColorPicker.prototype.toggle = function(isShow) {
     this.layout.container.style.display = !!isShow ? 'block' : 'none';
@@ -235,7 +234,7 @@ ColorPicker.prototype.render = function(color) {
 /**
  * Destroy colorpicker instance.
  * @example
- * colorPicker.destroy(); // DOM-element is removed
+ * instance.destroy(); // DOM-element is removed
  */
 ColorPicker.prototype.destroy = function() {
     this.layout.destroy();

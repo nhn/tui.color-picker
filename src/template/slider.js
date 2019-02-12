@@ -27,7 +27,8 @@ var SVGSlider = [
         '<rect width="100%" height="100%" fill="url(#{{cssPrefix}}svg-fill-color)"></rect>',
         '<rect width="100%" height="100%" fill="url(#{{cssPrefix}}svn-fill-black)"></rect>',
         '<path transform="translate(0,0)" class="{{cssPrefix}}slider-handle" d="M0 7.5 L15 7.5 M7.5 15 L7.5 0 M2 7 a5.5 5.5 0 1 1 0 1 Z" stroke="black" stroke-width="0.75" fill="none" />',
-    '</svg>'].join('\n');
+    '</svg>'
+  ].join('\n');
 
 var VMLSlider = [
     '<div class="{{cssPrefix}}vml-slider">',
@@ -39,7 +40,8 @@ var VMLSlider = [
         '</v:rect>',
         '<v:shape class="{{cssPrefix}}vml {{cssPrefix}}slider-handle" coordsize="1 1" style="width:1px;height:1px;"' +
             'path="m 0,7 l 14,7 m 7,14 l 7,0 ar 12,12 2,2 z" filled="false" stroked="true" />',
-    '</div>'].join('\n');
+    '</div>'
+  ].join('\n');
 
 var SVGHuebar = [
     '<svg class="{{cssPrefix}}svg {{cssPrefix}}svg-huebar">',
@@ -56,7 +58,8 @@ var SVGHuebar = [
         '</defs>',
         '<rect width="18px" height="100%" fill="url(#g)"></rect>',
         '<path transform="translate(-6,-3)" class="{{cssPrefix}}huebar-handle" d="M0 0 L4 4 L0 8 L0 0 Z" fill="black" stroke="none" />',
-    '</svg>'].join('\n');
+    '</svg>'
+  ].join('\n');
 
 var VMLHuebar = [
     '<div class="{{cssPrefix}}vml-huebar">',
@@ -67,7 +70,8 @@ var VMLHuebar = [
         '</v:rect>',
         '<v:shape class="{{cssPrefix}}vml {{cssPrefix}}huebar-handle" coordsize="1 1" style="width:1px;height:1px;position:absolute;z-index:1;right:22px;top:-3px;"' +
             'path="m 0,0 l 4,4 l 0,8 l 0,0 z" filled="true" fillcolor="black" stroked="false" />',
-    '</div>'].join('\n');
+    '</div>'
+  ].join('\n');
 
 var isOldBrowser = util.browser.msie && (util.browser.version < 9);
 

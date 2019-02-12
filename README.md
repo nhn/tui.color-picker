@@ -61,7 +61,7 @@ tui.usageStatistics = false;
 
 
 ## 🐾 Examples
-* [Basic](https://nhnent.github.io/tui.color-picker/latest/tutorial-example01-basic.html) : Example using default options.
+* [Basic](https://nhnent.github.io/tui.color-picker/latest/tutorial-example01-basic) : Example using default options.
 
 
 ## 💾 Install
@@ -135,25 +135,25 @@ First, you should import the module using one of the following ways depending on
 
 #### Using namespace in browser environment
 ``` javascript
-var colorPicker = tui.colorPicker;
+var ColorPicker = tui.colorPicker;
 ```
 
 #### Using module format in node environment
 ``` javascript
-var colorPicker = require('tui-color-picker'); /* CommonJS */
+var ColorPicker = require('tui-color-picker'); /* CommonJS */
 ```
 
 ``` javascript
-import {colorPicker} from 'tui-color-picker'; /* ES6 */
+import ColorPicker from 'tui-color-picker'; /* ES6 */
 ```
 
 
-Then you should call the `create` method with [options](https://nhnent.github.io/tui.color-picker/latest/ColorPicker.html#.create) to get instance.
+Then you should call the `create` method with [options](https://nhnent.github.io/tui.color-picker/latest/ColorPicker) to get instance.
 After creating an instance, you can call various APIs.
 
 ``` javascript
 var container = document.getElementById('tui-color-picker-conatiner');
-var instance = colorPicker.create({
+var instance = ColorPicker.create({
     container: container,
     ...
 });
@@ -161,7 +161,7 @@ var instance = colorPicker.create({
 instance.getColor();
 ```
 
-For more information about the API, please see [here](https://nhnent.github.io/tui.color-picker/latest/ColorPicker.html).
+For more information about the API, please see [here](https://nhnent.github.io/tui.color-picker/latest/ColorPicker).
 
 
 ## 🔧 Pull Request Steps
