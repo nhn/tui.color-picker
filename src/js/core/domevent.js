@@ -406,10 +406,10 @@ var domevent = {
      * @returns {number} - The value of meaning which button is clicked?
      */
     getMouseButton: function(mouseEvent) {
-        var button,
-            primary = '0,1,3,5,7',
-            secondary = '2,6',
-            wheel = '4';
+        var primary = '0,1,3,5,7';
+        var secondary = '2,6';
+        var wheel = '4';
+        var button, result;
 
         /* istanbul ignore else */
         if (document.implementation.hasFeature('MouseEvents', '2.0')) {
@@ -418,14 +418,15 @@ var domevent = {
 
         button = mouseEvent.button + '';
         if (~primary.indexOf(button)) {
-            return 0;
+            result = 0;
         } else if (~secondary.indexOf(button)) {
-            return 2;
+            result = 2;
         } else if (~wheel.indexOf(button)) {
-            return 1;
+            result = 1;
         }
+
+        return result;
     }
 };
 
 module.exports = domevent;
-

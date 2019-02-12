@@ -73,16 +73,17 @@ domutil = {
      * @returns {boolean} match?
      */
     _matcher: function(el, selector) {
-        var cssClassSelector = /^\./,
-            idSelector = /^#/;
+        var cssClassSelector = /^\./;
+        var idSelector = /^#/;
+        var reuslt = el.nodeName.toLowerCase() === selector.toLowerCase();
 
         if (cssClassSelector.test(selector)) {
-            return domutil.hasClass(el, selector.replace('.', ''));
+            reuslt = domutil.hasClass(el, selector.replace('.', ''));
         } else if (idSelector.test(selector)) {
-            return el.id === selector.replace('#', '');
+            reuslt = el.id === selector.replace('#', '');
         }
 
-        return el.nodeName.toLowerCase() === selector.toLowerCase();
+        return reuslt;
     },
 
     /**
