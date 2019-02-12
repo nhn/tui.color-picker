@@ -135,25 +135,25 @@ First, you should import the module using one of the following ways depending on
 
 #### Using namespace in browser environment
 ``` javascript
-var ColorPicker = tui.colorPicker;
+var colorPicker = tui.colorPicker;
 ```
 
 #### Using module format in node environment
 ``` javascript
-var ColorPicker = require('tui-color-picker'); /* CommonJS */
+var colorPicker = require('tui-color-picker'); /* CommonJS */
 ```
 
 ``` javascript
-import ColorPicker from 'tui-color-picker'; /* ES6 */
+import colorPicker from 'tui-color-picker'; /* ES6 */
 ```
 
 
-Then you should call the `create` method with [options](https://nhnent.github.io/tui.color-picker/latest/ColorPicker) to get instance.
+Then you should call the `create` method with [options](https://nhnent.github.io/tui.color-picker/latest/ColorPicker#create) to get instance.
 After creating an instance, you can call various APIs.
 
 ``` javascript
 var container = document.getElementById('tui-color-picker-conatiner');
-var instance = ColorPicker.create({
+var instance = colorPicker.create({
     container: container,
     ...
 });
