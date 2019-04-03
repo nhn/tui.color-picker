@@ -1,6 +1,6 @@
 /**
  * @fileoverview Utility module for handling DOM events.
- * @author NHN Ent. FE Development Team <dl_javascript@nhnent.com>
+ * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 'use strict';
