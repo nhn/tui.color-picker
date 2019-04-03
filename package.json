@@ -1,6 +1,6 @@
 {
   "name": "tui-color-picker",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "author": "NHN FE Development Team <dl_javascript@nhn.com>",
   "license": "MIT",
   "description": "Colorpicker component for web",
@@ -14,7 +14,8 @@
     "component",
     "color",
     "picker",
-    "svgvml"
+    "svgvml",
+    "nhn"
   ],
   "main": "dist/tui-color-picker.js",
   "files": [
