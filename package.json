@@ -1,37 +1,33 @@
 {
   "name": "tui-color-picker",
   "version": "2.2.2",
-  "author": "NHN FE Development Team <dl_javascript@nhn.com>",
-  "license": "MIT",
+  "main": "dist/tui-color-picker.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "karma start --no-single-run",
+    "test:ne": "KARMA_SERVER=ne karma start",
+    "bundle": "webpack && webpack -p",
+    "serve": "webpack-dev-server --inline --hot -d",
+    "doc": "tuidoc && tuidoc --serv",
+    "note": "tuie --tag=$(git describe --tags)"
+  },
   "description": "Colorpicker component for web",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nhnent/tui.color-picker.git"
+    "url": "https://github.com/nhn/tui.color-picker.git"
   },
   "keywords": [
-    "nhnent",
+    "nhn",
     "tui",
     "component",
     "color",
     "picker",
     "svgvml"
   ],
-  "main": "dist/tui-color-picker.js",
-  "files": [
-    "dist"
-  ],
-  "dependencies": {
-    "tui-code-snippet": "^1.5.0"
-  },
-  "scripts": {
-    "test": "karma start --no-single-run",
-    "test:ne": "KARMA_SERVER=ne karma start",
-    "bundle": "webpack && webpack -p",
-    "serve": "webpack-dev-server --inline --hot -d",
-    "doc:dev": "tuidoc --dev",
-    "doc": "tuidoc",
-    "note": "tuie --tag=$(git describe --tags)"
-  },
+  "author": "NHN FE Development Team <dl_javascript@nhn.com>",
+  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.0",
@@ -57,7 +53,7 @@
     "karma-jquery": "^0.2.2",
     "karma-junit-reporter": "^0.3.8",
     "karma-sourcemap-loader": "^0.3.7",
-    "karma-webdriver-launcher": "git+https://github.com/nhnent/karma-webdriver-launcher.git#v1.1.0",
+    "karma-webdriver-launcher": "git+https://github.com/nhn/karma-webdriver-launcher.git#v1.1.0",
     "karma-webpack": "^1.8.1",
     "preprocess-loader": "^0.2.2",
     "preprocessify": "^1.0.1",
@@ -66,8 +62,11 @@
     "style-loader": "^0.18.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
-    "tui-release-notes": "github:nhnent/tui.release-notes#v1.0.0",
+    "tui-release-notes": "github:nhn/tui.release-notes#v1.0.0",
     "webpack": "^1.15.0",
     "webpack-dev-server": "^1.16.5"
+  },
+  "dependencies": {
+    "tui-code-snippet": "^1.5.0"
   }
 }
