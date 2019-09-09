@@ -16,12 +16,6 @@ var webdriverConfig = {
 function setConfig(defaultConfig, server) {
   if (server === 'ne') {
     defaultConfig.customLaunchers = {
-      IE7: {
-        base: 'WebDriver',
-        config: webdriverConfig,
-        browserName: 'internet explorer',
-        version: '7'
-      },
       IE8: {
         base: 'WebDriver',
         config: webdriverConfig,
@@ -103,7 +97,7 @@ function setConfig(defaultConfig, server) {
       suite: ''
     };
   } else {
-    defaultConfig.browsers = ['Chrome'];
+    defaultConfig.browsers = ['ChromeHeadless'];
   }
 }
 
