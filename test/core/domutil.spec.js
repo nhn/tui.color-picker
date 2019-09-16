@@ -195,6 +195,7 @@ describe('module:domutil', function() {
       domutil.setData(div, 'test', 13);
 
       expect(div.getAttribute('data-test') + '').toBe('13');
+      domutil.remove(div);
     });
 
     it('getData()', function() {
@@ -202,6 +203,7 @@ describe('module:domutil', function() {
       div.innerHTML = '<div data-test="good"></div>';
 
       expect(domutil.getData(div.childNodes[0], 'test')).toBe('good');
+      domutil.remove(div);
     });
   });
 
@@ -215,6 +217,8 @@ describe('module:domutil', function() {
       expect(div.nodeName).toBe('DIV');
       expect(image.nodeName).toBe('IMG');
       expect(document.getElementById('freshDiv')).toBe(div);
+      domutil.remove(image);
+      domutil.remove(div);
     });
 
     it('엘리먼트를 특정 엘리먼트의 자식으로 바로 생성할 수 있다', function() {
@@ -225,12 +229,16 @@ describe('module:domutil', function() {
       var img = domutil.appendHTMLElement('img', wrap);
 
       expect(document.getElementById('freshWrapDiv').childNodes[0]).toBe(img);
+
+      domutil.remove(img);
+      domutil.remove(wrap);
     });
 
     it('엘리먼트 생성과 동시에 cssClass를 할당할 수 있다', function() {
       var el = domutil.appendHTMLElement('div', null, 'my-wrap');
 
       expect(domutil.getClass(el)).toBe('my-wrap');
+      domutil.remove(el);
     });
   });
 

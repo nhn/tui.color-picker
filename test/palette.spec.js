@@ -15,6 +15,10 @@ describe('view:Palette', function() {
     inst.render();
   });
 
+  afterEach(function() {
+    inst.destroy();
+  });
+
   it('render() makes button for each palette colors.', function() {
     expect($('li').length).toBe(3);
   });
