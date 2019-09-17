@@ -18,23 +18,22 @@ var View = require('./core/view');
  * @ignore
  */
 function Layout(options, container) {
-    /**
-     * option object
-     * @type {object}
-     */
-    this.options = util.extend({
-        cssPrefix: 'tui-colorpicker-'
-    }, options);
+  /**
+   * option object
+   * @type {object}
+   */
+  this.options = util.extend(
+    {
+      cssPrefix: 'tui-colorpicker-'
+    },
+    options
+  );
 
-    container = domutil.appendHTMLElement(
-        'div',
-        container,
-        this.options.cssPrefix + 'container'
-    );
+  container = domutil.appendHTMLElement('div', container, this.options.cssPrefix + 'container');
 
-    View.call(this, options, container);
+  View.call(this, options, container);
 
-    this.render();
+  this.render();
 }
 
 util.inherit(Layout, View);
@@ -44,9 +43,9 @@ util.inherit(Layout, View);
  * @param {string} [color] - selected color
  */
 Layout.prototype.render = function(color) {
-    this.recursive(function(view) {
-        view.render(color);
-    }, true);
+  this.recursive(function(view) {
+    view.render(color);
+  }, true);
 };
 
 module.exports = Layout;

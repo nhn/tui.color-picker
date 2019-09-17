@@ -10,42 +10,43 @@ var domevent = require('./domevent');
 var Collection = require('./collection');
 
 var util = snippet,
-    posKey = '_pos',
-    supportSelectStart = 'onselectstart' in document,
-    prevSelectStyle = '',
-    domutil, userSelectProperty;
+  posKey = '_pos',
+  supportSelectStart = 'onselectstart' in document,
+  prevSelectStyle = '',
+  domutil,
+  userSelectProperty;
 
 var CSS_AUTO_REGEX = /^auto$|^$|%/;
 
 function trim(str) {
-    return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+  return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
 
 domutil = {
-    /**
-     * Create DOM element and return it.
-     * @param {string} tagName Tag name to append.
-     * @param {HTMLElement} [container] HTML element will be parent to created element.
-     * if not supplied, will use **document.body**
-     * @param {string} [className] Design class names to appling created element.
-     * @returns {HTMLElement} HTML element created.
-     */
-    appendHTMLElement: function(tagName, container, className) {
-        var el;
+  /**
+   * Create DOM element and return it.
+   * @param {string} tagName Tag name to append.
+   * @param {HTMLElement} [container] HTML element will be parent to created element.
+   * if not supplied, will use **document.body**
+   * @param {string} [className] Design class names to appling created element.
+   * @returns {HTMLElement} HTML element created.
+   */
+  appendHTMLElement: function(tagName, container, className) {
+    var el;
 
-        className = className || '';
+    className = className || '';
 
-        el = document.createElement(tagName);
-        el.className = className;
+    el = document.createElement(tagName);
+    el.className = className;
 
-        if (container) {
-            container.appendChild(el);
-        } else {
-            document.body.appendChild(el);
-        }
+    if (container) {
+      container.appendChild(el);
+    } else {
+      document.body.appendChild(el);
+    }
 
-        return el;
-    },
+    return el;
+  },
 
     /**
      * Remove element from parent node.
@@ -108,438 +109,454 @@ domutil = {
             root = domutil.get(root);
         }
 
-        root = root || window.document.body;
+    root = root || window.document.body;
 
-        function recurse(el, selector) {
-            var childNodes = el.childNodes,
-                i = 0,
-                len = childNodes.length,
-                cursor;
+    function recurse(el, selector) {
+      var childNodes = el.childNodes,
+        i = 0,
+        len = childNodes.length,
+        cursor;
 
-            for (; i < len; i += 1) {
-                cursor = childNodes[i];
+      for (; i < len; i += 1) {
+        cursor = childNodes[i];
 
-                if (cursor.nodeName === '#text') {
-                    continue;
-                }
-
-                if (domutil._matcher(cursor, selector)) {
-                    if ((isFilter && multiple(cursor)) || !isFilter) {
-                        result.push(cursor);
-                    }
-
-                    if (isFirst) {
-                        found = true;
-                        break;
-                    }
-                } else if (cursor.childNodes.length > 0) {
-                    recurse(cursor, selector);
-                    if (found) {
-                        break;
-                    }
-                }
-            }
+        if (cursor.nodeName === '#text') {
+          continue;
         }
 
-        recurse(root, selector);
+        if (domutil._matcher(cursor, selector)) {
+          if ((isFilter && multiple(cursor)) || !isFilter) {
+            result.push(cursor);
+          }
 
-        return isFirst ? (result[0] || null) : result;
-    },
-
-    /**
-     * Find parent element recursively.
-     * @param {HTMLElement} el - base element to start find.
-     * @param {string} selector - selector string for find
-     * @returns {HTMLElement} - element finded or undefined.
-     */
-    closest: function(el, selector) {
-        var parent = el.parentNode;
-
-        if (domutil._matcher(el, selector)) {
-            return el;
+          if (isFirst) {
+            found = true;
+            break;
+          }
+        } else if (cursor.childNodes.length > 0) {
+          recurse(cursor, selector);
+          if (found) {
+            break;
+          }
         }
-
-        while (parent && parent !== window.document.body) {
-            if (domutil._matcher(parent, selector)) {
-                return parent;
-            }
-
-            parent = parent.parentNode;
-        }
-    },
-
-    /**
-     * Return texts inside element.
-     * @param {HTMLElement} el target element
-     * @returns {string} text inside node
-     */
-    text: function(el) {
-        var ret = '',
-            i = 0,
-            nodeType = el.nodeType;
-
-        if (nodeType) {
-            if (nodeType === 1 || nodeType === 9 || nodeType === 11) {
-                // nodes that available contain other nodes
-                if (typeof el.textContent === 'string') {
-                    return el.textContent;
-                }
-
-                for (el = el.firstChild; el; el = el.nextSibling) {
-                    ret += domutil.text(el);
-                }
-            } else if (nodeType === 3 || nodeType === 4) {
-                // TEXT, CDATA SECTION
-                return el.nodeValue;
-            }
-        } else {
-            for (; el[i]; i += 1) {
-                ret += domutil.text(el[i]);
-            }
-        }
-
-        return ret;
-    },
-
-    /**
-     * Set data attribute to target element
-     * @param {HTMLElement} el - element to set data attribute
-     * @param {string} key - key
-     * @param {string|number} data - data value
-     */
-    setData: function(el, key, data) {
-        if ('dataset' in el) {
-            el.dataset[key] = data;
-
-            return;
-        }
-
-        el.setAttribute('data-' + key, data);
-    },
-
-    /**
-     * Get data value from data-attribute
-     * @param {HTMLElement} el - target element
-     * @param {string} key - key
-     * @returns {string} value
-     */
-    getData: function(el, key) {
-        if ('dataset' in el) {
-            return el.dataset[key];
-        }
-
-        return el.getAttribute('data-' + key);
-    },
-
-    /**
-     * Check element has specific design class name.
-     * @param {HTMLElement} el target element
-     * @param {string} name css class
-     * @returns {boolean} return true when element has that css class name
-     */
-    hasClass: function(el, name) {
-        var className;
-
-        if (!util.isUndefined(el.classList)) {
-            return el.classList.contains(name);
-        }
-
-        className = domutil.getClass(el);
-
-        return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
-    },
-
-    /**
-     * Add design class to HTML element.
-     * @param {HTMLElement} el target element
-     * @param {string} name css class name
-     */
-    addClass: function(el, name) {
-        var className;
-
-        if (!util.isUndefined(el.classList)) {
-            util.forEachArray(name.split(' '), function(value) {
-                el.classList.add(value);
-            });
-        } else if (!domutil.hasClass(el, name)) {
-            className = domutil.getClass(el);
-            domutil.setClass(el, (className ? className + ' ' : '') + name);
-        }
-    },
-
-    /**
-     *
-     * Overwrite design class to HTML element.
-     * @param {HTMLElement} el target element
-     * @param {string} name css class name
-     */
-    setClass: function(el, name) {
-        if (util.isUndefined(el.className.baseVal)) {
-            el.className = name;
-        } else {
-            el.className.baseVal = name;
-        }
-    },
-
-    /**
-     * Element에 cssClass속성을 제거하는 메서드
-     * Remove specific design class from HTML element.
-     * @param {HTMLElement} el target element
-     * @param {string} name class name to remove
-     */
-    removeClass: function(el, name) {
-        var removed = '';
-
-        if (!util.isUndefined(el.classList)) {
-            el.classList.remove(name);
-        } else {
-            removed = (' ' + domutil.getClass(el) + ' ').replace(' ' + name + ' ', ' ');
-            domutil.setClass(el, trim(removed));
-        }
-    },
-
-    /**
-     * Get HTML element's design classes.
-     * @param {HTMLElement} el target element
-     * @returns {string} element css class name
-     */
-    getClass: function(el) {
-        if (!el || !el.className) {
-            return '';
-        }
-
-        return util.isUndefined(el.className.baseVal) ? el.className : el.className.baseVal;
-    },
-
-    /**
-     * Get specific CSS style value from HTML element.
-     * @param {HTMLElement} el target element
-     * @param {string} style css attribute name
-     * @returns {(string|null)} css style value
-     */
-    getStyle: function(el, style) {
-        var value = el.style[style] || (el.currentStyle && el.currentStyle[style]),
-            css;
-
-        if ((!value || value === 'auto') && document.defaultView) {
-            css = document.defaultView.getComputedStyle(el, null);
-            value = css ? css[style] : null;
-        }
-
-        return value === 'auto' ? null : value;
-    },
-
-    /**
-     * get element's computed style values.
-     *
-     * in lower IE8. use polyfill function that return object. it has only one function 'getPropertyValue'
-     * @param {HTMLElement} el - element want to get style.
-     * @returns {object} virtual CSSStyleDeclaration object.
-     */
-    getComputedStyle: function(el) {
-        var defaultView = document.defaultView;
-
-        if (!defaultView || !defaultView.getComputedStyle) {
-            return {
-                getPropertyValue: function(prop) {
-                    var re = /(\-([a-z]){1})/g;
-                    if (prop === 'float') {
-                        prop = 'styleFloat';
-                    }
-
-                    if (re.test(prop)) {
-                        prop = prop.replace(re, function() {
-                            return arguments[2].toUpperCase();
-                        });
-                    }
-
-                    return el.currentStyle[prop] ? el.currentStyle[prop] : null;
-                }
-            };
-        }
-
-        return document.defaultView.getComputedStyle(el);
-    },
-
-    /**
-     * Set position CSS style.
-     * @param {HTMLElement} el target element
-     * @param {number} [x=0] left pixel value.
-     * @param {number} [y=0] top pixel value.
-     */
-    setPosition: function(el, x, y) {
-        x = util.isUndefined(x) ? 0 : x;
-        y = util.isUndefined(y) ? 0 : y;
-
-        el[posKey] = [x, y];
-
-        el.style.left = x + 'px';
-        el.style.top = y + 'px';
-    },
-
-    /**
-     * Get position from HTML element.
-     * @param {HTMLElement} el target element
-     * @param {boolean} [clear=false] clear cache before calculating position.
-     * @returns {number[]} point
-     */
-    getPosition: function(el, clear) {
-        var left,
-            top,
-            bound;
-
-        if (clear) {
-            el[posKey] = null;
-        }
-
-        if (el[posKey]) {
-            return el[posKey];
-        }
-
-        left = 0;
-        top = 0;
-
-        if ((CSS_AUTO_REGEX.test(el.style.left) || CSS_AUTO_REGEX.test(el.style.top)) &&
-            'getBoundingClientRect' in el) {
-            // 엘리먼트의 left또는 top이 'auto'일 때 수단
-            bound = el.getBoundingClientRect();
-
-            left = bound.left;
-            top = bound.top;
-        } else {
-            left = parseFloat(el.style.left || 0);
-            top = parseFloat(el.style.top || 0);
-        }
-
-        return [left, top];
-    },
-
-    /**
-     * Return element's size
-     * @param {HTMLElement} el target element
-     * @returns {number[]} width, height
-     */
-    getSize: function(el) {
-        var bound,
-            width = domutil.getStyle(el, 'width'),
-            height = domutil.getStyle(el, 'height');
-
-        if ((CSS_AUTO_REGEX.test(width) || CSS_AUTO_REGEX.test(height)) &&
-            'getBoundingClientRect' in el) {
-            bound = el.getBoundingClientRect();
-            width = bound.width;
-            height = bound.height;
-        } else {
-            width = parseFloat(width || 0);
-            height = parseFloat(height || 0);
-        }
-
-        return [width, height];
-    },
-
-    /**
-     * Check specific CSS style is available.
-     * @param {array} props property name to testing
-     * @returns {(string|boolean)} return true when property is available
-     * @example
-     * var props = ['transform', '-webkit-transform'];
-     * domutil.testProp(props);    // 'transform'
-     */
-    testProp: function(props) {
-        var style = document.documentElement.style,
-            i = 0,
-            len = props.length;
-
-        for (; i < len; i += 1) {
-            if (props[i] in style) {
-                return props[i];
-            }
-        }
-
-        return false;
-    },
-
-    /**
-     * Get form data
-     * @param {HTMLFormElement} formElement - form element to extract data
-     * @returns {object} form data
-     */
-    getFormData: function(formElement) {
-        var groupedByName = new Collection(function() {
-                return this.length;
-            }),
-            noDisabledFilter = function(el) {
-                return !el.disabled;
-            },
-            output = {};
-
-        groupedByName.add.apply(
-            groupedByName,
-            domutil.find('input', formElement, noDisabledFilter)
-                .concat(domutil.find('select', formElement, noDisabledFilter))
-                .concat(domutil.find('textarea', formElement, noDisabledFilter))
-        );
-
-        groupedByName = groupedByName.groupBy(function(el) {
-            return el && el.getAttribute('name') || '_other';
-        });
-
-        util.forEach(groupedByName, function(elements, name) {
-            if (name === '_other') {
-                return;
-            }
-
-            elements.each(function(el) {
-                var nodeName = el.nodeName.toLowerCase(),
-                    type = el.type,
-                    result = [];
-
-                if (type === 'radio') {
-                    result = [elements.find(function(el) {
-                        return el.checked;
-                    }).toArray().pop()];
-                } else if (type === 'checkbox') {
-                    result = elements.find(function(el) {
-                        return el.checked;
-                    }).toArray();
-                } else if (nodeName === 'select') {
-                    elements.find(function(el) {
-                        return !!el.childNodes.length;
-                    }).each(function(el) {
-                        result = result.concat(domutil.find('option', el, function(opt) {
-                            return opt.selected;
-                        }));
-                    });
-                } else {
-                    result = elements.find(function(el) {
-                        return el.value !== '';
-                    }).toArray();
-                }
-
-                result = util.map(result, function(el) {
-                    return el.value;
-                });
-
-                if (!result.length) {
-                    result = '';
-                } else if (result.length === 1) {
-                    result = result[0];
-                }
-
-                output[name] = result;
-            });
-        });
-
-        return output;
+      }
     }
+
+    recurse(root, selector);
+
+    return isFirst ? result[0] || null : result;
+  },
+
+  /**
+   * Find parent element recursively.
+   * @param {HTMLElement} el - base element to start find.
+   * @param {string} selector - selector string for find
+   * @returns {HTMLElement} - element finded or undefined.
+   */
+  closest: function(el, selector) {
+    var parent = el.parentNode;
+
+    if (domutil._matcher(el, selector)) {
+      return el;
+    }
+
+    while (parent && parent !== window.document.body) {
+      if (domutil._matcher(parent, selector)) {
+        return parent;
+      }
+
+      parent = parent.parentNode;
+    }
+  },
+
+  /**
+   * Return texts inside element.
+   * @param {HTMLElement} el target element
+   * @returns {string} text inside node
+   */
+  text: function(el) {
+    var ret = '',
+      i = 0,
+      nodeType = el.nodeType;
+
+    if (nodeType) {
+      if (nodeType === 1 || nodeType === 9 || nodeType === 11) {
+        // nodes that available contain other nodes
+        if (typeof el.textContent === 'string') {
+          return el.textContent;
+        }
+
+        for (el = el.firstChild; el; el = el.nextSibling) {
+          ret += domutil.text(el);
+        }
+      } else if (nodeType === 3 || nodeType === 4) {
+        // TEXT, CDATA SECTION
+        return el.nodeValue;
+      }
+    } else {
+      for (; el[i]; i += 1) {
+        ret += domutil.text(el[i]);
+      }
+    }
+
+    return ret;
+  },
+
+  /**
+   * Set data attribute to target element
+   * @param {HTMLElement} el - element to set data attribute
+   * @param {string} key - key
+   * @param {string|number} data - data value
+   */
+  setData: function(el, key, data) {
+    if ('dataset' in el) {
+      el.dataset[key] = data;
+
+      return;
+    }
+
+    el.setAttribute('data-' + key, data);
+  },
+
+  /**
+   * Get data value from data-attribute
+   * @param {HTMLElement} el - target element
+   * @param {string} key - key
+   * @returns {string} value
+   */
+  getData: function(el, key) {
+    if ('dataset' in el) {
+      return el.dataset[key];
+    }
+
+    return el.getAttribute('data-' + key);
+  },
+
+  /**
+   * Check element has specific design class name.
+   * @param {HTMLElement} el target element
+   * @param {string} name css class
+   * @returns {boolean} return true when element has that css class name
+   */
+  hasClass: function(el, name) {
+    var className;
+
+    if (!util.isUndefined(el.classList)) {
+      return el.classList.contains(name);
+    }
+
+    className = domutil.getClass(el);
+
+    return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
+  },
+
+  /**
+   * Add design class to HTML element.
+   * @param {HTMLElement} el target element
+   * @param {string} name css class name
+   */
+  addClass: function(el, name) {
+    var className;
+
+    if (!util.isUndefined(el.classList)) {
+      util.forEachArray(name.split(' '), function(value) {
+        el.classList.add(value);
+      });
+    } else if (!domutil.hasClass(el, name)) {
+      className = domutil.getClass(el);
+      domutil.setClass(el, (className ? className + ' ' : '') + name);
+    }
+  },
+
+  /**
+   *
+   * Overwrite design class to HTML element.
+   * @param {HTMLElement} el target element
+   * @param {string} name css class name
+   */
+  setClass: function(el, name) {
+    if (util.isUndefined(el.className.baseVal)) {
+      el.className = name;
+    } else {
+      el.className.baseVal = name;
+    }
+  },
+
+  /**
+   * Element에 cssClass속성을 제거하는 메서드
+   * Remove specific design class from HTML element.
+   * @param {HTMLElement} el target element
+   * @param {string} name class name to remove
+   */
+  removeClass: function(el, name) {
+    var removed = '';
+
+    if (!util.isUndefined(el.classList)) {
+      el.classList.remove(name);
+    } else {
+      removed = (' ' + domutil.getClass(el) + ' ').replace(' ' + name + ' ', ' ');
+      domutil.setClass(el, trim(removed));
+    }
+  },
+
+  /**
+   * Get HTML element's design classes.
+   * @param {HTMLElement} el target element
+   * @returns {string} element css class name
+   */
+  getClass: function(el) {
+    if (!el || !el.className) {
+      return '';
+    }
+
+    return util.isUndefined(el.className.baseVal) ? el.className : el.className.baseVal;
+  },
+
+  /**
+   * Get specific CSS style value from HTML element.
+   * @param {HTMLElement} el target element
+   * @param {string} style css attribute name
+   * @returns {(string|null)} css style value
+   */
+  getStyle: function(el, style) {
+    var value = el.style[style] || (el.currentStyle && el.currentStyle[style]),
+      css;
+
+    if ((!value || value === 'auto') && document.defaultView) {
+      css = document.defaultView.getComputedStyle(el, null);
+      value = css ? css[style] : null;
+    }
+
+    return value === 'auto' ? null : value;
+  },
+
+  /**
+   * get element's computed style values.
+   *
+   * in lower IE8. use polyfill function that return object. it has only one function 'getPropertyValue'
+   * @param {HTMLElement} el - element want to get style.
+   * @returns {object} virtual CSSStyleDeclaration object.
+   */
+  getComputedStyle: function(el) {
+    var defaultView = document.defaultView;
+
+    if (!defaultView || !defaultView.getComputedStyle) {
+      return {
+        getPropertyValue: function(prop) {
+          var re = /(\-([a-z]){1})/g;
+          if (prop === 'float') {
+            prop = 'styleFloat';
+          }
+
+          if (re.test(prop)) {
+            prop = prop.replace(re, function() {
+              return arguments[2].toUpperCase();
+            });
+          }
+
+          return el.currentStyle[prop] ? el.currentStyle[prop] : null;
+        }
+      };
+    }
+
+    return document.defaultView.getComputedStyle(el);
+  },
+
+  /**
+   * Set position CSS style.
+   * @param {HTMLElement} el target element
+   * @param {number} [x=0] left pixel value.
+   * @param {number} [y=0] top pixel value.
+   */
+  setPosition: function(el, x, y) {
+    x = util.isUndefined(x) ? 0 : x;
+    y = util.isUndefined(y) ? 0 : y;
+
+    el[posKey] = [x, y];
+
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+  },
+
+  /**
+   * Get position from HTML element.
+   * @param {HTMLElement} el target element
+   * @param {boolean} [clear=false] clear cache before calculating position.
+   * @returns {number[]} point
+   */
+  getPosition: function(el, clear) {
+    var left, top, bound;
+
+    if (clear) {
+      el[posKey] = null;
+    }
+
+    if (el[posKey]) {
+      return el[posKey];
+    }
+
+    left = 0;
+    top = 0;
+
+    if (
+      (CSS_AUTO_REGEX.test(el.style.left) || CSS_AUTO_REGEX.test(el.style.top)) &&
+      'getBoundingClientRect' in el
+    ) {
+      // 엘리먼트의 left또는 top이 'auto'일 때 수단
+      bound = el.getBoundingClientRect();
+
+      left = bound.left;
+      top = bound.top;
+    } else {
+      left = parseFloat(el.style.left || 0);
+      top = parseFloat(el.style.top || 0);
+    }
+
+    return [left, top];
+  },
+
+  /**
+   * Return element's size
+   * @param {HTMLElement} el target element
+   * @returns {number[]} width, height
+   */
+  getSize: function(el) {
+    var bound,
+      width = domutil.getStyle(el, 'width'),
+      height = domutil.getStyle(el, 'height');
+
+    if (
+      (CSS_AUTO_REGEX.test(width) || CSS_AUTO_REGEX.test(height)) &&
+      'getBoundingClientRect' in el
+    ) {
+      bound = el.getBoundingClientRect();
+      width = bound.width;
+      height = bound.height;
+    } else {
+      width = parseFloat(width || 0);
+      height = parseFloat(height || 0);
+    }
+
+    return [width, height];
+  },
+
+  /**
+   * Check specific CSS style is available.
+   * @param {array} props property name to testing
+   * @returns {(string|boolean)} return true when property is available
+   * @example
+   * var props = ['transform', '-webkit-transform'];
+   * domutil.testProp(props);    // 'transform'
+   */
+  testProp: function(props) {
+    var style = document.documentElement.style,
+      i = 0,
+      len = props.length;
+
+    for (; i < len; i += 1) {
+      if (props[i] in style) {
+        return props[i];
+      }
+    }
+
+    return false;
+  },
+
+  /**
+   * Get form data
+   * @param {HTMLFormElement} formElement - form element to extract data
+   * @returns {object} form data
+   */
+  getFormData: function(formElement) {
+    var groupedByName = new Collection(function() {
+        return this.length;
+      }),
+      noDisabledFilter = function(el) {
+        return !el.disabled;
+      },
+      output = {};
+
+    groupedByName.add.apply(
+      groupedByName,
+      domutil
+        .find('input', formElement, noDisabledFilter)
+        .concat(domutil.find('select', formElement, noDisabledFilter))
+        .concat(domutil.find('textarea', formElement, noDisabledFilter))
+    );
+
+    groupedByName = groupedByName.groupBy(function(el) {
+      return (el && el.getAttribute('name')) || '_other';
+    });
+
+    util.forEach(groupedByName, function(elements, name) {
+      if (name === '_other') {
+        return;
+      }
+
+      elements.each(function(el) {
+        var nodeName = el.nodeName.toLowerCase(),
+          type = el.type,
+          result = [];
+
+        if (type === 'radio') {
+          result = [
+            elements
+              .find(function(el) {
+                return el.checked;
+              })
+              .toArray()
+              .pop()
+          ];
+        } else if (type === 'checkbox') {
+          result = elements
+            .find(function(el) {
+              return el.checked;
+            })
+            .toArray();
+        } else if (nodeName === 'select') {
+          elements
+            .find(function(el) {
+              return !!el.childNodes.length;
+            })
+            .each(function(el) {
+              result = result.concat(
+                domutil.find('option', el, function(opt) {
+                  return opt.selected;
+                })
+              );
+            });
+        } else {
+          result = elements
+            .find(function(el) {
+              return el.value !== '';
+            })
+            .toArray();
+        }
+
+        result = util.map(result, function(el) {
+          return el.value;
+        });
+
+        if (!result.length) {
+          result = '';
+        } else if (result.length === 1) {
+          result = result[0];
+        }
+
+        output[name] = result;
+      });
+    });
+
+    return output;
+  }
 };
 
 userSelectProperty = domutil.testProp([
-    'userSelect',
-    'WebkitUserSelect',
-    'OUserSelect',
-    'MozUserSelect',
-    'msUserSelect'
+  'userSelect',
+  'WebkitUserSelect',
+  'OUserSelect',
+  'MozUserSelect',
+  'msUserSelect'
 ]);
 
 /**
@@ -547,17 +564,17 @@ userSelectProperty = domutil.testProp([
  * @method
  */
 domutil.disableTextSelection = (function() {
-    if (supportSelectStart) {
-        return function() {
-            domevent.on(window, 'selectstart', domevent.preventDefault);
-        };
-    }
-
+  if (supportSelectStart) {
     return function() {
-        var style = document.documentElement.style;
-        prevSelectStyle = style[userSelectProperty];
-        style[userSelectProperty] = 'none';
+      domevent.on(window, 'selectstart', domevent.preventDefault);
     };
+  }
+
+  return function() {
+    var style = document.documentElement.style;
+    prevSelectStyle = style[userSelectProperty];
+    style[userSelectProperty] = 'none';
+  };
 })();
 
 /**
@@ -565,29 +582,29 @@ domutil.disableTextSelection = (function() {
  * @method
  */
 domutil.enableTextSelection = (function() {
-    if (supportSelectStart) {
-        return function() {
-            domevent.off(window, 'selectstart', domevent.preventDefault);
-        };
-    }
-
+  if (supportSelectStart) {
     return function() {
-        document.documentElement.style[userSelectProperty] = prevSelectStyle;
+      domevent.off(window, 'selectstart', domevent.preventDefault);
     };
+  }
+
+  return function() {
+    document.documentElement.style[userSelectProperty] = prevSelectStyle;
+  };
 })();
 
 /**
  * Disable browser's image drag behaviors.
  */
 domutil.disableImageDrag = function() {
-    domevent.on(window, 'dragstart', domevent.preventDefault);
+  domevent.on(window, 'dragstart', domevent.preventDefault);
 };
 
 /**
  * Enable browser's image drag behaviors.
  */
 domutil.enableImageDrag = function() {
-    domevent.off(window, 'dragstart', domevent.preventDefault);
+  domevent.off(window, 'dragstart', domevent.preventDefault);
 };
 
 /**
@@ -597,11 +614,11 @@ domutil.enableImageDrag = function() {
  * @returns {string} Replaced template string
  */
 domutil.applyTemplate = function(template, propObj) {
-    var newTemplate = template.replace(/\{\{(\w*)\}\}/g, function(value, prop) {
-        return propObj.hasOwnProperty(prop) ? propObj[prop] : '';
-    });
+  var newTemplate = template.replace(/\{\{(\w*)\}\}/g, function(value, prop) {
+    return propObj.hasOwnProperty(prop) ? propObj[prop] : '';
+  });
 
-    return newTemplate;
+  return newTemplate;
 };
 
 module.exports = domutil;
