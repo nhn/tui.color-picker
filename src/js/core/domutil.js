@@ -48,66 +48,66 @@ domutil = {
     return el;
   },
 
-  /**
-   * Remove element from parent node.
-   * @param {HTMLElement} el - element to remove.
-   */
-  remove: function(el) {
-    if (el && el.parentNode) {
-      el.parentNode.removeChild(el);
-    }
-  },
+    /**
+     * Remove element from parent node.
+     * @param {HTMLElement} el - element to remove.
+     */
+    remove: function(el) {
+        if (el && el.parentNode) {
+            el.parentNode.removeChild(el);
+        }
+    },
 
-  /**
-   * Get element by id
-   * @param {string} id element id attribute
-   * @returns {HTMLElement} element
-   */
-  get: function(id) {
-    return document.getElementById(id);
-  },
+    /**
+     * Get element by id
+     * @param {string} id element id attribute
+     * @returns {HTMLElement} element
+     */
+    get: function(id) {
+        return document.getElementById(id);
+    },
 
-  /**
-   * Check supplied element is matched selector.
-   * @param {HTMLElement} el - element to check
-   * @param {string} selector - selector string to check
-   * @returns {boolean} match?
-   */
-  _matcher: function(el, selector) {
-    var cssClassSelector = /^\./;
-    var idSelector = /^#/;
-    var reuslt = el.nodeName.toLowerCase() === selector.toLowerCase();
+    /**
+     * Check supplied element is matched selector.
+     * @param {HTMLElement} el - element to check
+     * @param {string} selector - selector string to check
+     * @returns {boolean} match?
+     */
+    _matcher: function(el, selector) {
+        var cssClassSelector = /^\./;
+        var idSelector = /^#/;
+        var result = el.nodeName.toLowerCase() === selector.toLowerCase();
 
-    if (cssClassSelector.test(selector)) {
-      reuslt = domutil.hasClass(el, selector.replace('.', ''));
-    } else if (idSelector.test(selector)) {
-      reuslt = el.id === selector.replace('#', '');
-    }
+        if (cssClassSelector.test(selector)) {
+            result = domutil.hasClass(el, selector.replace('.', ''));
+        } else if (idSelector.test(selector)) {
+            result = el.id === selector.replace('#', '');
+        }
 
-    return reuslt;
-  },
+        return result;
+    },
 
-  /**
-   * Find DOM element by specific selectors.
-   * below three selector only supported.
-   *
-   * 1. css selector
-   * 2. id selector
-   * 3. nodeName selector
-   * @param {string} selector selector
-   * @param {(HTMLElement|string)} [root] You can assign root element to find. if not supplied, document.body will use.
-   * @param {boolean|function} [multiple=false] - set true then return all elements that meet condition, if set function then use it filter function.
-   * @returns {HTMLElement} HTML element finded.
-   */
-  find: function(selector, root, multiple) {
-    var result = [],
-      found = false,
-      isFirst = util.isUndefined(multiple) || multiple === false,
-      isFilter = util.isFunction(multiple);
+    /**
+     * Find DOM element by specific selectors.
+     * below three selector only supported.
+     *
+     * 1. css selector
+     * 2. id selector
+     * 3. nodeName selector
+     * @param {string} selector selector
+     * @param {(HTMLElement|string)} [root] You can assign root element to find. if not supplied, document.body will use.
+     * @param {boolean|function} [multiple=false] - set true then return all elements that meet condition, if set function then use it filter function.
+     * @returns {HTMLElement} HTML element finded.
+     */
+    find: function(selector, root, multiple) {
+        var result = [],
+            found = false,
+            isFirst = util.isUndefined(multiple) || multiple === false,
+            isFilter = util.isFunction(multiple);
 
-    if (util.isString(root)) {
-      root = domutil.get(root);
-    }
+        if (util.isString(root)) {
+            root = domutil.get(root);
+        }
 
     root = root || window.document.body;
 
