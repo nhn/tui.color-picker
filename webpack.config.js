@@ -8,74 +8,74 @@
 var path = require('path');
 var pkg = require('./package.json');
 var webpack = require('webpack');
-var SafeUmdPlugin = require('safe-umd-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-var isProduction = process.argv.indexOf('-p') > -1;
-
-var FILENAME = pkg.name + (isProduction ? '.min.js' : '.js');
-var CSS_FILENAME = pkg.name + (isProduction ? '.min.css' : '.css');
-var BANNER = [
-    'Toast UI Colorpicker',
+module.exports = function(env, argv) {
+  var isProduction = argv.mode === 'production';
+  var FILENAME = pkg.name + (isProduction ? '.min.js' : '.js');
+  var CSS_FILENAME = pkg.name + (isProduction ? '.min.css' : '.css');
+  var BANNER = [
+    'TOAST UI Color Picker',
     '@version ' + pkg.version,
     '@author ' + pkg.author,
     '@license ' + pkg.license
-].join('\n');
+  ].join('\n');
 
-module.exports = {
-    eslint: {
-        failOnError: isProduction
-    },
-    entry: [
-        './src/styl/' + pkg.name + '.styl',
-        './src/js/index.js'
-    ],
+  return {
+    mode: 'development',
+    entry: ['./src/styl/' + pkg.name + '.styl', './src/js/index.js'],
     output: {
-        library: ['tui', 'colorPicker'],
-        libraryTarget: 'umd',
-        path: 'dist',
-        publicPath: 'dist',
-        filename: FILENAME
+      library: ['tui', 'colorPicker'],
+      libraryTarget: 'umd',
+      path: path.resolve(__dirname, 'dist'),
+      publicPath: 'dist',
+      filename: FILENAME
     },
     externals: {
-        'tui-code-snippet': {
-            'commonjs': 'tui-code-snippet',
-            'commonjs2': 'tui-code-snippet',
-            'amd': 'tui-code-snippet',
-            'root': ['tui', 'util']
-        }
+      'tui-code-snippet': {
+        commonjs: 'tui-code-snippet',
+        commonjs2: 'tui-code-snippet',
+        amd: 'tui-code-snippet',
+        root: ['tui', 'util']
+      }
     },
     module: {
-        preLoaders: [
-            {
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'eslint-loader'
-            }
-        ],
-        loaders: [
-            {
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'babel'
-            },
-            {
-                test: /\.styl$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!stylus-loader'),
-                include: path.join(__dirname, 'src/styl')
-            }
-        ]
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /(node_modules|bower_components)/,
+          loader: 'eslint-loader',
+          enforce: 'pre',
+          options: {
+            failOnError: isProduction
+          }
+        },
+        {
+          test: /\.js$/,
+          exclude: /(node_modules|bower_components)/,
+          loader: 'babel-loader'
+        },
+        {
+          test: /\.styl$/,
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+            'stylus-loader'
+          ],
+          include: path.join(__dirname, 'src/styl')
+        }
+      ]
     },
     plugins: [
-        new ExtractTextPlugin(CSS_FILENAME),
-        new webpack.BannerPlugin(BANNER),
-        new SafeUmdPlugin()
+      new MiniCssExtractPlugin({filename: CSS_FILENAME}),
+      new webpack.BannerPlugin(BANNER)
     ],
     devServer: {
-        historyApiFallback: false,
-        progress: true,
-        inline: true,
-        host: '0.0.0.0',
-        disableHostCheck: true
+      historyApiFallback: false,
+      progress: true,
+      inline: true,
+      host: '0.0.0.0',
+      disableHostCheck: true
     }
+  };
 };

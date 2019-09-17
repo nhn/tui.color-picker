@@ -22,88 +22,94 @@ var Slider = require('./slider');
  *  @param {boolean} [options.usageStatistics=true] - Let us know the hostname. If you don't want to send the hostname, please set to false.
  * @example
  * var colorPicker = tui.colorPicker; // or require('tui-color-picker')
- * 
+ *
  * var instance = colorPicker.create({
  *   container: document.getElementById('color-picker')
  * });
  */
 function ColorPicker(options) {
-    var layout;
+  var layout;
 
-    if (!(this instanceof ColorPicker)) {
-        return new ColorPicker(options);
-    }
-    /**
-     * Option object
-     * @type {object}
-     * @private
-     */
-    options = this.options = util.extend({
-        container: null,
-        color: '#f8f8f8',
-        preset: [
-            '#181818',
-            '#282828',
-            '#383838',
-            '#585858',
-            '#b8b8b8',
-            '#d8d8d8',
-            '#e8e8e8',
-            '#f8f8f8',
-            '#ab4642',
-            '#dc9656',
-            '#f7ca88',
-            '#a1b56c',
-            '#86c1b9',
-            '#7cafc2',
-            '#ba8baf',
-            '#a16946'
-        ],
-        cssPrefix: 'tui-colorpicker-',
-        detailTxt: 'Detail',
-        usageStatistics: true
-    }, options);
+  if (!(this instanceof ColorPicker)) {
+    return new ColorPicker(options);
+  }
+  /**
+   * Option object
+   * @type {object}
+   * @private
+   */
+  options = this.options = util.extend(
+    {
+      container: null,
+      color: '#f8f8f8',
+      preset: [
+        '#181818',
+        '#282828',
+        '#383838',
+        '#585858',
+        '#b8b8b8',
+        '#d8d8d8',
+        '#e8e8e8',
+        '#f8f8f8',
+        '#ab4642',
+        '#dc9656',
+        '#f7ca88',
+        '#a1b56c',
+        '#86c1b9',
+        '#7cafc2',
+        '#ba8baf',
+        '#a16946'
+      ],
+      cssPrefix: 'tui-colorpicker-',
+      detailTxt: 'Detail',
+      usageStatistics: true
+    },
+    options
+  );
 
-    if (!options.container) {
-        throw new Error('ColorPicker(): need container option.');
-    }
+  if (!options.container) {
+    throw new Error('ColorPicker(): need container option.');
+  }
 
-    /**********
-     * Create layout view
-     **********/
+  /**********
+   * Create layout view
+   **********/
 
-    /**
-     * @type {Layout}
-     * @private
-     */
-    layout = this.layout = new Layout(options, options.container);
+  /**
+   * @type {Layout}
+   * @private
+   */
+  layout = this.layout = new Layout(options, options.container);
 
-    /**********
-     * Create palette view
-     **********/
-    this.palette = new Palette(options, layout.container);
-    this.palette.on({
-        '_selectColor': this._onSelectColorInPalette,
-        '_toggleSlider': this._onToggleSlider
-    }, this);
+  /**********
+   * Create palette view
+   **********/
+  this.palette = new Palette(options, layout.container);
+  this.palette.on(
+    {
+      _selectColor: this._onSelectColorInPalette,
+      _toggleSlider: this._onToggleSlider
+    },
+    this
+  );
 
-    /**********
-     * Create slider view
-     **********/
-    this.slider = new Slider(options, layout.container);
-    this.slider.on('_selectColor', this._onSelectColorInSlider, this);
+  /**********
+   * Create slider view
+   **********/
+  this.slider = new Slider(options, layout.container);
+  this.slider.on('_selectColor', this._onSelectColorInSlider, this);
 
-    /**********
-     * Add child views
-     **********/
-    layout.addChild(this.palette);
-    layout.addChild(this.slider);
+  /**********
+   * Add child views
+   **********/
+  layout.addChild(this.palette);
+  layout.addChild(this.slider);
 
-    this.render(options.color);
+  this.render(options.color);
 
-    if (options.usageStatistics) {
-        util.sendHostname('color-picker', 'UA-129987462-1');
-    }
+  if (options.usageStatistics) {
+    util.sendHostname('color-picker', 'UA-129987462-1');
+  }
 }
 
 /**
@@ -113,32 +119,32 @@ function ColorPicker(options) {
  * @param {object} selectColorEventData - event data
  */
 ColorPicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
-    var color = selectColorEventData.color,
-        opt = this.options;
+  var color = selectColorEventData.color,
+    opt = this.options;
 
-    if (!colorutil.isValidRGB(color) && color !== '') {
-        this.render();
+  if (!colorutil.isValidRGB(color) && color !== '') {
+    this.render();
 
-        return;
-    }
+    return;
+  }
 
-    /**
-     * @event ColorPicker#selectColor
-     * @type {object}
-     * @property {string} color - selected color (hex string)
-     * @property {string} origin - flags for represent the source of event fires.
-     */
-    this.fire('selectColor', {
-        color: color,
-        origin: 'palette'
-    });
+  /**
+   * @event ColorPicker#selectColor
+   * @type {object}
+   * @property {string} color - selected color (hex string)
+   * @property {string} origin - flags for represent the source of event fires.
+   */
+  this.fire('selectColor', {
+    color: color,
+    origin: 'palette'
+  });
 
-    if (opt.color === color) {
-        return;
-    }
+  if (opt.color === color) {
+    return;
+  }
 
-    opt.color = color;
-    this.render(color);
+  opt.color = color;
+  this.render(color);
 };
 
 /**
@@ -146,7 +152,7 @@ ColorPicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
  * @private
  */
 ColorPicker.prototype._onToggleSlider = function() {
-    this.slider.toggle(!this.slider.isVisible());
+  this.slider.toggle(!this.slider.isVisible());
 };
 
 /**
@@ -156,27 +162,27 @@ ColorPicker.prototype._onToggleSlider = function() {
  * @param {object} selectColorEventData - event data
  */
 ColorPicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
-    var color = selectColorEventData.color,
-        opt = this.options;
+  var color = selectColorEventData.color,
+    opt = this.options;
 
-    /**
-     * @event ColorPicker#selectColor
-     * @type {object}
-     * @property {string} color - selected color (hex string)
-     * @property {string} origin - flags for represent the source of event fires.
-     * @ignore
-     */
-    this.fire('selectColor', {
-        color: color,
-        origin: 'slider'
-    });
+  /**
+   * @event ColorPicker#selectColor
+   * @type {object}
+   * @property {string} color - selected color (hex string)
+   * @property {string} origin - flags for represent the source of event fires.
+   * @ignore
+   */
+  this.fire('selectColor', {
+    color: color,
+    origin: 'slider'
+  });
 
-    if (opt.color === color) {
-        return;
-    }
+  if (opt.color === color) {
+    return;
+  }
 
-    opt.color = color;
-    this.palette.render(color);
+  opt.color = color;
+  this.palette.render(color);
 };
 
 /**********
@@ -191,12 +197,12 @@ ColorPicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
  * instance.setColor('#ffff00');
  */
 ColorPicker.prototype.setColor = function(hexStr) {
-    if (!colorutil.isValidRGB(hexStr)) {
-        throw new Error('ColorPicker#setColor(): need valid hex string color value');
-    }
+  if (!colorutil.isValidRGB(hexStr)) {
+    throw new Error('ColorPicker#setColor(): need valid hex string color value');
+  }
 
-    this.options.color = hexStr;
-    this.render(hexStr);
+  this.options.color = hexStr;
+  this.render(hexStr);
 };
 
 /**
@@ -207,7 +213,7 @@ ColorPicker.prototype.setColor = function(hexStr) {
  * instance.getColor(); // '#ffff00';
  */
 ColorPicker.prototype.getColor = function() {
-    return this.options.color;
+  return this.options.color;
 };
 
 /**
@@ -219,7 +225,7 @@ ColorPicker.prototype.getColor = function() {
  * instance.toggle(true); // show
  */
 ColorPicker.prototype.toggle = function(isShow) {
-    this.layout.container.style.display = !!isShow ? 'block' : 'none';
+  this.layout.container.style.display = !!isShow ? 'block' : 'none';
 };
 
 /**
@@ -228,7 +234,7 @@ ColorPicker.prototype.toggle = function(isShow) {
  * @ignore
  */
 ColorPicker.prototype.render = function(color) {
-    this.layout.render(color || this.options.color);
+  this.layout.render(color || this.options.color);
 };
 
 /**
@@ -237,11 +243,10 @@ ColorPicker.prototype.render = function(color) {
  * instance.destroy(); // DOM-element is removed
  */
 ColorPicker.prototype.destroy = function() {
-    this.layout.destroy();
-    this.options.container.innerHTML = '';
+  this.layout.destroy();
+  this.options.container.innerHTML = '';
 
-    this.layout = this.slider = this.palette =
-        this.options = null;
+  this.layout = this.slider = this.palette = this.options = null;
 };
 
 util.CustomEvents.mixin(ColorPicker);

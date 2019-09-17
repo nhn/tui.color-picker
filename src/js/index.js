@@ -12,17 +12,17 @@ var colorutil = require('./colorutil');
 var svgvml = require('./svgvml');
 
 var colorPicker = {
-    domutil: domutil,
-    domevent: domevent,
-    Collection: Collection,
-    View: View,
-    Drag: Drag,
+  domutil: domutil,
+  domevent: domevent,
+  Collection: Collection,
+  View: View,
+  Drag: Drag,
 
-    create: create,
-    Palette: Palette,
-    Slider: Slider,
-    colorutil: colorutil,
-    svgvml: svgvml
+  create: create,
+  Palette: Palette,
+  Slider: Slider,
+  colorutil: colorutil,
+  svgvml: svgvml
 };
 
 module.exports = colorPicker;
