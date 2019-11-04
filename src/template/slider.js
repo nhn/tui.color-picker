@@ -15,17 +15,17 @@ var layout = [
 var SVGSlider = [
   '<svg class="{{cssPrefix}}svg {{cssPrefix}}svg-slider">',
     '<defs>',
-      '<linearGradient id="{{cssPrefix}}svg-fill-color-{{random}}" x1="0%" y1="0%" x2="100%" y2="0%">',
+      '<linearGradient id="{{cssPrefix}}svg-fill-color-{{id}}" x1="0%" y1="0%" x2="100%" y2="0%">',
         '<stop offset="0%" stop-color="rgb(255,255,255)" />',
         '<stop class="{{cssPrefix}}slider-basecolor" offset="100%" stop-color="rgb(255,0,0)" />',
       '</linearGradient>',
-      '<linearGradient id="{{cssPrefix}}svn-fill-black-{{random}}" x1="0%" y1="0%" x2="0%" y2="100%">',
+      '<linearGradient id="{{cssPrefix}}svn-fill-black-{{id}}" x1="0%" y1="0%" x2="0%" y2="100%">',
         '<stop offset="0%" style="stop-color:rgb(0,0,0);stop-opacity:0" />',
         '<stop offset="100%" style="stop-color:rgb(0,0,0);stop-opacity:1" />',
       '</linearGradient>',
     '</defs>',
-    '<rect width="100%" height="100%" fill="url(#{{cssPrefix}}svg-fill-color-{{random}})"></rect>',
-    '<rect width="100%" height="100%" fill="url(#{{cssPrefix}}svn-fill-black-{{random}})"></rect>',
+    '<rect width="100%" height="100%" fill="url(#{{cssPrefix}}svg-fill-color-{{id}})"></rect>',
+    '<rect width="100%" height="100%" fill="url(#{{cssPrefix}}svn-fill-black-{{id}})"></rect>',
     '<path transform="translate(0,0)" class="{{cssPrefix}}slider-handle" d="M0 7.5 L15 7.5 M7.5 15 L7.5 0 M2 7 a5.5 5.5 0 1 1 0 1 Z" stroke="black" stroke-width="0.75" fill="none" />',
   '</svg>'
 ].join('\n');
@@ -46,7 +46,7 @@ var VMLSlider = [
 var SVGHuebar = [
   '<svg class="{{cssPrefix}}svg {{cssPrefix}}svg-huebar">',
     '<defs>',
-      '<linearGradient id="g-{{random}}" x1="0%" y1="0%" x2="0%" y2="100%">',
+      '<linearGradient id="g-{{id}}" x1="0%" y1="0%" x2="0%" y2="100%">',
         '<stop offset="0%" stop-color="rgb(255,0,0)" />',
         '<stop offset="16.666%" stop-color="rgb(255,255,0)" />',
         '<stop offset="33.333%" stop-color="rgb(0,255,0)" />',
@@ -56,7 +56,7 @@ var SVGHuebar = [
         '<stop offset="100%" stop-color="rgb(255,0,0)" />',
       '</linearGradient>',
     '</defs>',
-    '<rect width="18px" height="100%" fill="url(#g-{{random}})"></rect>',
+    '<rect width="18px" height="100%" fill="url(#g-{{id}})"></rect>',
     '<path transform="translate(-6,-3)" class="{{cssPrefix}}huebar-handle" d="M0 0 L4 4 L0 8 L0 0 Z" fill="black" stroke="none" />',
   '</svg>'
 ].join('\n');
