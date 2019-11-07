@@ -12,7 +12,7 @@
     "serve": "webpack-dev-server --inline --hot -d",
     "doc:serve": "tuidoc --serv",
     "doc": "tuidoc",
-    "note": "tuie --tag=$(git describe --tags)"
+    "note": "tui-note"
   },
   "description": "Colorpicker component for web",
   "repository": {
@@ -31,6 +31,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@toast-ui/release-notes": "^2.0.0",
     "babel-eslint": "^7.1.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^0.28.7",
@@ -63,7 +64,6 @@
     "style-loader": "^0.18.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
-    "tui-release-notes": "github:nhn/tui.release-notes#v1.0.0",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0"
