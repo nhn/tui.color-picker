@@ -149,6 +149,7 @@ Slider.prototype.render = function(colorStr) {
   html = html.replace(/{{slider}}/, tmpl.slider);
   html = html.replace(/{{huebar}}/, tmpl.huebar);
   html = html.replace(/{{cssPrefix}}/g, options.cssPrefix);
+  html = html.replace(/{{id}}/g, options.id);
 
   that.container.innerHTML = html;
 

@@ -12,6 +12,17 @@ var Palette = require('./palette');
 var Slider = require('./slider');
 
 /**
+ * Create an unique id for a color-picker instance.
+ * @private
+ */
+var currentId = 0;
+function generateId() {
+  currentId += 1;
+
+  return currentId;
+}
+
+/**
  * @constructor
  * @param {object} options - options for colorpicker component
  *  @param {HTMLDivElement} options.container - container element
@@ -62,6 +73,7 @@ function ColorPicker(options) {
       ],
       cssPrefix: 'tui-colorpicker-',
       detailTxt: 'Detail',
+      id: generateId(),
       usageStatistics: true
     },
     options
