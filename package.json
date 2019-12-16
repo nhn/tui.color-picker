@@ -8,13 +8,13 @@
   "scripts": {
     "test": "karma start --no-single-run",
     "test:ne": "KARMA_SERVER=ne karma start",
-    "bundle": "webpack && webpack -p",
+    "bundle": "webpack --mode=production & webpack --mode=production --minify",
     "serve": "webpack-dev-server --inline --hot -d",
     "doc:serve": "tuidoc --serv",
     "doc": "tuidoc",
     "note": "tui-note"
   },
-  "description": "Colorpicker component for web",
+  "description": "TOAST UI Components: Colorpicker",
   "repository": {
     "type": "git",
     "url": "https://github.com/nhn/tui.color-picker.git"
@@ -31,7 +31,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.5.5",
-    "@toast-ui/release-notes": "^2.0.0",
+    "@toast-ui/release-notes": "^2.0.1",
     "babel-eslint": "^7.1.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^0.28.7",
@@ -57,13 +57,12 @@
     "karma-webdriver-launcher": "git+https://github.com/nhn/karma-webdriver-launcher.git#v1.2.0",
     "karma-webpack": "^4.0.2",
     "mini-css-extract-plugin": "^0.8.0",
-    "preprocess-loader": "^0.2.2",
-    "preprocessify": "^1.0.1",
-    "preprocessor-loader": "^1.0.5",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "prettier": "^1.18.2",
     "style-loader": "^0.18.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
+    "terser-webpack-plugin": "^2.3.0",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0"
