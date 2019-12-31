@@ -7,6 +7,7 @@
 
 var forEach = require('tui-code-snippet/collection/forEach');
 var forEachArray = require('tui-code-snippet/collection/forEachArray');
+var forEachOwnProperties = require('tui-code-snippet/collection/forEachOwnProperties');
 var sendHostname = require('tui-code-snippet/request/sendHostname');
 
 var currentId = 0;
@@ -24,12 +25,10 @@ var utils = {
    */
   getLength: function(obj) {
     var length = 0;
-    var key;
 
-    // eslint-disable-next-line guard-for-in
-    for (key in obj) {
-      length += obj.hasOwnProperty(key);
-    }
+    forEachOwnProperties(obj, function() {
+      length += 1;
+    });
 
     return length;
   },

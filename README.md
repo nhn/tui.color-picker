@@ -30,11 +30,11 @@
 TOAST UI ColorPicker applies Google Analytics (GA) to collect statistics on the use of open source, in order to identify how widely TOAST UI ColorPicker is used throughout the world. It also serves as important index to determine the future course of projects. location.hostname (e.g. > “ui.toast.com") is to be collected and the sole purpose is nothing but to measure statistics on the usage. To disable GA, use the following `usageStatistics` options when creating the instance.
 
 ```js
-var options = {
+const options = {
     ...
     usageStatistics: false
 }
-var instance = tui.colorPicker.create(options);
+const instance = tui.colorPicker.create(options);
 ```
 
 Or, include `tui-code-snippet.js` (**v2.2.0** or **later**) and then immediately write the options as follows:
@@ -104,9 +104,10 @@ The CDN directory has the following structure.
 ```
 tui-color-picker/
 ├─ latest/
+│  ├─ tui-color-picker.css
 │  ├─ tui-color-picker.js
-│  ├─ tui-color-picker.min.js
-│  └─ tui-color-picker.css
+│  ├─ tui-color-picker.min.css
+│  └─ tui-color-picker.min.js
 ├─ v2.1.0/
 │  ├─ ...
 ```
@@ -133,16 +134,16 @@ First, you should import the module using one of the following ways depending on
 
 #### Using namespace in browser environment
 ``` javascript
-var colorPicker = tui.colorPicker;
+var ColorPicker = tui.colorPicker;
 ```
 
 #### Using module format in node environment
 ``` javascript
-var colorPicker = require('tui-color-picker'); /* CommonJS */
+const ColorPicker = require('tui-color-picker'); /* CommonJS */
 ```
 
 ``` javascript
-import colorPicker from 'tui-color-picker'; /* ES6 */
+import ColorPicker from 'tui-color-picker'; /* ES6 */
 ```
 
 
@@ -150,8 +151,8 @@ Then you should call the `create` method with [options](https://nhn.github.io/tu
 After creating an instance, you can call various APIs.
 
 ``` javascript
-var container = document.getElementById('tui-color-picker-conatiner');
-var instance = colorPicker.create({
+const container = document.getElementById('tui-color-picker-conatiner');
+const instance = ColorPicker.create({
     container: container,
     ...
 });

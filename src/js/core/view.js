@@ -137,7 +137,7 @@ View.prototype.resize = function() {
 /**
  * Invoking method before destroying.
  */
-View.prototype._beforeDestroy = function() {}; // TODO: question
+View.prototype._beforeDestroy = function() {};
 
 /**
  * Clear properties
