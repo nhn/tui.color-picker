@@ -5,10 +5,16 @@
 
 'use strict';
 
-var util = require('tui-code-snippet');
-var domutil = require('./core/domutil');
-var colorutil = require('./colorutil');
-var domevent = require('./core/domevent');
+var CustomEvents = require('tui-code-snippet/customEvents/customEvents');
+var getTarget = require('tui-code-snippet/domEvent/getTarget');
+var off = require('tui-code-snippet/domEvent/off');
+var on = require('tui-code-snippet/domEvent/on');
+var hasClass = require('tui-code-snippet/domUtil/hasClass');
+var extend = require('tui-code-snippet/object/extend');
+var inherit = require('tui-code-snippet/inheritance/inherit');
+
+var domUtil = require('./core/domUtil');
+var colorUtil = require('./colorUtil');
 var View = require('./core/view');
 var tmpl = require('../template/palette');
 
@@ -26,7 +32,7 @@ function Palette(options, container) {
    * option object
    * @type {object}
    */
-  this.options = util.extend(
+  this.options = extend(
     {
       cssPrefix: 'tui-colorpicker-',
       preset: [
@@ -52,7 +58,7 @@ function Palette(options, container) {
     options
   );
 
-  container = domutil.appendHTMLElement(
+  container = domUtil.appendHTMLElement(
     'div',
     container,
     this.options.cssPrefix + 'palette-container'
@@ -61,7 +67,7 @@ function Palette(options, container) {
   View.call(this, options, container);
 }
 
-util.inherit(Palette, View);
+inherit(Palette, View);
 
 /**
  * Mouse click event handler
@@ -71,10 +77,10 @@ util.inherit(Palette, View);
  */
 Palette.prototype._onClick = function(clickEvent) {
   var options = this.options,
-    target = clickEvent.srcElement || clickEvent.target,
+    target = getTarget(clickEvent),
     eventData = {};
 
-  if (domutil.hasClass(target, options.cssPrefix + 'palette-button')) {
+  if (hasClass(target, options.cssPrefix + 'palette-button')) {
     eventData.color = target.value;
 
     /**
@@ -87,7 +93,7 @@ Palette.prototype._onClick = function(clickEvent) {
     return;
   }
 
-  if (domutil.hasClass(target, options.cssPrefix + 'palette-toggle-slider')) {
+  if (hasClass(target, options.cssPrefix + 'palette-toggle-slider')) {
     /**
      * @event Palette#_toggleSlider
      */
@@ -102,10 +108,10 @@ Palette.prototype._onClick = function(clickEvent) {
  */
 Palette.prototype._onChange = function(changeEvent) {
   var options = this.options,
-    target = changeEvent.srcElement || changeEvent.target,
+    target = getTarget(changeEvent),
     eventData = {};
 
-  if (domutil.hasClass(target, options.cssPrefix + 'palette-hex')) {
+  if (hasClass(target, options.cssPrefix + 'palette-hex')) {
     eventData.color = target.value;
 
     /**
@@ -127,20 +133,20 @@ Palette.prototype._beforeDestroy = function() {
 
 /**
  * Toggle view DOM events
- * @param {boolean} [onOff=false] - true to bind event.
+ * @param {boolean} [toBind=false] - true to bind event.
  */
-Palette.prototype._toggleEvent = function(onOff) {
+Palette.prototype._toggleEvent = function(toBind) {
   var options = this.options,
     container = this.container,
-    method = domevent[!!onOff ? 'on' : 'off'],
+    handleEvent = toBind ? on : off,
     hexTextBox;
 
-  method(container, 'click', this._onClick, this);
+  handleEvent(container, 'click', this._onClick, this);
 
-  hexTextBox = domutil.find('.' + options.cssPrefix + 'palette-hex', container);
+  hexTextBox = container.querySelector('.' + options.cssPrefix + 'palette-hex', container);
 
   if (hexTextBox) {
-    method(hexTextBox, 'change', this._onChange, this);
+    handleEvent(hexTextBox, 'change', this._onChange, this);
   }
 };
 
@@ -154,41 +160,24 @@ Palette.prototype.render = function(color) {
 
   this._toggleEvent(false);
 
-  html = tmpl.layout.replace(
-    '{{colorList}}',
-    util
-      .map(options.preset, function(itemColor) {
-        var itemHtml = '';
-        var style = '';
-
-        if (colorutil.isValidRGB(itemColor)) {
-          style = domutil.applyTemplate(tmpl.itemStyle, {color: itemColor});
-        }
-
-        itemHtml = domutil.applyTemplate(tmpl.item, {
-          itemStyle: style,
-          itemClass: !itemColor ? ' ' + options.cssPrefix + 'color-transparent' : '',
-          color: itemColor,
-          cssPrefix: options.cssPrefix,
-          selected: itemColor === color ? ' ' + options.cssPrefix + 'selected' : ''
-        });
-
-        return itemHtml;
-      })
-      .join('')
-  );
-
-  html = domutil.applyTemplate(html, {
+  html = tmpl({
     cssPrefix: options.cssPrefix,
+    preset: options.preset,
     detailTxt: options.detailTxt,
-    color: color
+    color: color,
+    isValidRGB: colorUtil.isValidRGB,
+    getItemClass: function(itemColor) {
+      return !itemColor ? ' ' + options.cssPrefix + 'color-transparent' : '';
+    },
+    isSelected: function(itemColor) {
+      return itemColor === color ? ' ' + options.cssPrefix + 'selected' : '';
+    }
   });
-
   this.container.innerHTML = html;
 
   this._toggleEvent(true);
 };
 
-util.CustomEvents.mixin(Palette);
+CustomEvents.mixin(Palette);
 
 module.exports = Palette;

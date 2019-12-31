@@ -5,9 +5,13 @@
 
 'use strict';
 
-var util = require('tui-code-snippet');
-var domutil = require('./domutil');
+var addClass = require('tui-code-snippet/domUtil/addClass');
+var isFunction = require('tui-code-snippet/type/isFunction');
+var isNumber = require('tui-code-snippet/type/isNumber');
+var isUndefined = require('tui-code-snippet/type/isUndefined');
+var domUtil = require('./domUtil');
 var Collection = require('./collection');
+var util = require('../util');
 
 /**
  * Base class of views.
@@ -19,15 +23,15 @@ var Collection = require('./collection');
  * @ignore
  */
 function View(options, container) {
-  var id = util.stamp(this);
+  var id = util.generateId();
 
   options = options || {};
 
-  if (util.isUndefined(container)) {
-    container = domutil.appendHTMLElement('div');
+  if (isUndefined(container)) {
+    container = domUtil.appendHTMLElement('div');
   }
 
-  domutil.addClass(container, 'tui-view-' + id);
+  addClass(container, 'tui-view-' + id);
 
   /**
    * unique id
@@ -46,7 +50,7 @@ function View(options, container) {
    * @type {Collection}
    */
   this.childs = new Collection(function(view) {
-    return util.stamp(view);
+    return view.id;
   });
 
   /**
@@ -77,15 +81,13 @@ View.prototype.addChild = function(view, fn) {
  * @param {function} [fn] Function for invoke before remove. parent view class is supplied first arguments.
  */
 View.prototype.removeChild = function(id, fn) {
-  var view = util.isNumber(id) ? this.childs.items[id] : id;
-
-  id = util.stamp(view);
+  var view = isNumber(id) ? this.childs.items[id] : id;
 
   if (fn) {
     fn.call(view, this);
   }
 
-  this.childs.remove(id);
+  this.childs.remove(view.id);
 };
 
 /**
@@ -103,7 +105,7 @@ View.prototype.render = function() {
  * @param {boolean} [skipThis=false] - set true then skip invoke with this(root) view.
  */
 View.prototype.recursive = function(fn, skipThis) {
-  if (!util.isFunction(fn)) {
+  if (!isFunction(fn)) {
     return;
   }
 
@@ -124,7 +126,7 @@ View.prototype.resize = function() {
     parent = this.parent;
 
   while (parent) {
-    if (util.isFunction(parent._onResize)) {
+    if (isFunction(parent._onResize)) {
       parent._onResize.apply(parent, args);
     }
 
@@ -135,14 +137,13 @@ View.prototype.resize = function() {
 /**
  * Invoking method before destroying.
  */
-View.prototype._beforeDestroy = function() {};
+View.prototype._beforeDestroy = function() {}; // TODO: question
 
 /**
  * Clear properties
  */
 View.prototype._destroy = function() {
   this._beforeDestroy();
-  this.childs.clear();
   this.container.innerHTML = '';
 
   this.id = this.parent = this.childs = this.container = null;
@@ -153,10 +154,13 @@ View.prototype._destroy = function() {
  * @param {boolean} isChildView - Whether it is the child view or not
  */
 View.prototype.destroy = function(isChildView) {
-  this.childs.each(function(childView) {
-    childView.destroy(true);
-    childView._destroy();
-  });
+  if (this.childs) {
+    this.childs.each(function(childView) {
+      childView.destroy(true);
+      childView._destroy();
+    });
+    this.childs.clear();
+  }
 
   if (isChildView) {
     return;
@@ -170,15 +174,13 @@ View.prototype.destroy = function(isChildView) {
  * @returns {object} The bound of container element.
  */
 View.prototype.getViewBound = function() {
-  var container = this.container,
-    position = domutil.getPosition(container),
-    size = domutil.getSize(container);
+  var bound = this.container.getBoundingClientRect();
 
   return {
-    x: position[0],
-    y: position[1],
-    width: size[0],
-    height: size[1]
+    x: bound.left,
+    y: bound.top,
+    width: bound.right - bound.left,
+    height: bound.bottom - bound.top
   };
 };
 

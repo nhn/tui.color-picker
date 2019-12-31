@@ -5,7 +5,9 @@
 
 'use strict';
 
-var util = require('tui-code-snippet');
+var browser = require('tui-code-snippet/browser/browser');
+var isExisty = require('tui-code-snippet/type/isExisty');
+
 var PARSE_TRANSLATE_NUM_REGEX = /[\.\-0-9]+/g;
 var SVG_HUE_HANDLE_RIGHT_POS = -6;
 
@@ -18,8 +20,8 @@ var svgvml = {
   isOldBrowser: function() {
     var _isOldBrowser = svgvml._isOldBrowser;
 
-    if (!util.isExisty(_isOldBrowser)) {
-      svgvml._isOldBrowser = _isOldBrowser = util.browser.msie && util.browser.version < 9;
+    if (!isExisty(_isOldBrowser)) {
+      svgvml._isOldBrowser = _isOldBrowser = browser.msie && browser.version < 9;
     }
 
     return _isOldBrowser;

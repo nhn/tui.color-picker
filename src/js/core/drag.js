@@ -5,9 +5,15 @@
 
 'use strict';
 
-var util = require('tui-code-snippet');
-var domutil = require('./domutil');
-var domevent = require('./domevent');
+var CustomEvents = require('tui-code-snippet/customEvents/customEvents');
+var disableTextSelection = require('tui-code-snippet/domUtil/disableTextSelection');
+var enableTextSelection = require('tui-code-snippet/domUtil/enableTextSelection');
+var getMouseButton = require('tui-code-snippet/domEvent/getMouseButton');
+var getTarget = require('tui-code-snippet/domEvent/getTarget');
+var off = require('tui-code-snippet/domEvent/off');
+var on = require('tui-code-snippet/domEvent/on');
+var preventDefault = require('tui-code-snippet/domEvent/preventDefault');
+var extend = require('tui-code-snippet/object/extend');
 
 /**
  * @constructor
@@ -18,9 +24,9 @@ var domevent = require('./domevent');
  * @ignore
  */
 function Drag(options, container) {
-  domevent.on(container, 'mousedown', this._onMouseDown, this);
+  on(container, 'mousedown', this._onMouseDown, this);
 
-  this.options = util.extend(
+  this.options = extend(
     {
       distance: 10
     },
@@ -58,7 +64,7 @@ function Drag(options, container) {
  * Destroy method.
  */
 Drag.prototype.destroy = function() {
-  domevent.off(this.container, 'mousedown', this._onMouseDown, this);
+  off(this.container, 'mousedown', this._onMouseDown);
 
   this.options
     = this.container
@@ -74,28 +80,30 @@ Drag.prototype.destroy = function() {
  * @param {boolean} toBind - bind events related with dragging when supplied "true"
  */
 Drag.prototype._toggleDragEvent = function(toBind) {
-  var container = this.container,
-    domMethod,
-    method;
+  var container = this.container;
 
   if (toBind) {
-    domMethod = 'on';
-    method = 'disable';
+    disableTextSelection(container);
+    on(window, 'dragstart', preventDefault);
+    on(
+      global.document,
+      {
+        mousemove: this._onMouseMove,
+        mouseup: this._onMouseUp
+      },
+      this
+    );
   } else {
-    domMethod = 'off';
-    method = 'enable';
+    enableTextSelection(container);
+    off(window, 'dragstart', preventDefault);
+    off(
+      global.document,
+      {
+        mousemove: this._onMouseMove,
+        mouseup: this._onMouseUp
+      }
+    );
   }
-
-  domutil[method + 'TextSelection'](container);
-  domutil[method + 'ImageDrag'](container);
-  domevent[domMethod](
-    global.document,
-    {
-      mousemove: this._onMouseMove,
-      mouseup: this._onMouseUp
-    },
-    this
-  );
 };
 
 /**
@@ -105,7 +113,7 @@ Drag.prototype._toggleDragEvent = function(toBind) {
  */
 Drag.prototype._getEventData = function(mouseEvent) {
   return {
-    target: mouseEvent.target || mouseEvent.srcElement,
+    target: getTarget(mouseEvent),
     originEvent: mouseEvent
   };
 };
@@ -116,7 +124,7 @@ Drag.prototype._getEventData = function(mouseEvent) {
  */
 Drag.prototype._onMouseDown = function(mouseDownEvent) {
   // only primary button can start drag.
-  if (domevent.getMouseButton(mouseDownEvent) !== 0) {
+  if (getMouseButton(mouseDownEvent) !== 0) {
     return;
   }
 
@@ -136,7 +144,7 @@ Drag.prototype._onMouseDown = function(mouseDownEvent) {
 Drag.prototype._onMouseMove = function(mouseMoveEvent) {
   var distance = this.options.distance;
   // prevent automatic scrolling.
-  domevent.preventDefault(mouseMoveEvent);
+  preventDefault(mouseMoveEvent);
 
   this._isMoved = true;
 
@@ -208,6 +216,6 @@ Drag.prototype._onMouseUp = function(mouseUpEvent) {
   this.fire('click', this._getEventData(mouseUpEvent));
 };
 
-util.CustomEvents.mixin(Drag);
+CustomEvents.mixin(Drag);
 
 module.exports = Drag;

@@ -5,7 +5,7 @@
 
 'use strict';
 
-var util = require('tui-code-snippet');
+var browser = require('tui-code-snippet/browser/browser');
 
 var layout = [
   '<div class="{{cssPrefix}}slider-left {{cssPrefix}}slider-part">{{slider}}</div>',
@@ -73,7 +73,7 @@ var VMLHuebar = [
   '</div>'
 ].join('\n');
 
-var isOldBrowser = util.browser.msie && util.browser.version < 9;
+var isOldBrowser = browser.msie && browser.version < 9;
 
 if (isOldBrowser) {
   global.document.namespaces.add('v', 'urn:schemas-microsoft-com:vml');

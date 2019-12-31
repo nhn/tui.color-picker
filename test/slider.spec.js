@@ -2,10 +2,10 @@
 
 var Slider = require('../src/js/slider');
 var svgvml = require('../src/js/svgvml');
-var colorutil = require('../src/js/colorutil');
+var colorUtil = require('../src/js/colorUtil');
 
 var undef = (function() {})();
-describe('view:Slider', function() {
+describe('Slider', function() {
   var inst;
   var colorslider = {name: 'colorslider'};
   var huehandle = {name: 'huehandle'};
@@ -22,8 +22,6 @@ describe('view:Slider', function() {
     spyOn(svgvml, 'setStrokeColor');
     spyOn(svgvml, 'getTranslateXY');
     spyOn(inst, 'fire');
-
-    // svgvml = svgvml;
   });
 
   describe('_moveColorSliderHandle()', function() {
@@ -31,20 +29,20 @@ describe('view:Slider', function() {
       svgvml.getTranslateXY.and.returnValue([0, 0]);
     });
 
-    it('move color slider handle by supplied position.', function() {
+    it('should move the selected point of the slider by supplied position', function() {
       inst._moveColorSliderHandle(10, 10);
 
       expect(svgvml.setTranslateXY).toHaveBeenCalledWith(colorslider, 10, 10);
     });
 
-    it('change colorslider handle stroke color for increase visibility.', function() {
+    it('should change stroke color of the slider for the visibility', function() {
       // The value exceeded 50% then set strokecolor white
       inst._moveColorSliderHandle(10, 60);
 
       expect(svgvml.setStrokeColor).toHaveBeenCalledWith(colorslider, 'white');
     });
 
-    it('can silence firing custom events', function() {
+    it('should silence firing custom events', function() {
       inst._moveColorSliderHandle(10, 10, true);
 
       expect(inst.fire).not.toHaveBeenCalled();
@@ -56,7 +54,7 @@ describe('view:Slider', function() {
       spyOn(inst, '_moveColorSliderHandle');
     });
 
-    it('move colorslider handle properly by supplied s, v values.', function() {
+    it('should move the selected point of the slider by supplied s, v values.', function() {
       // saturation 0%, value 0%
       inst.moveSaturationAndValue(0, 0);
 
@@ -73,20 +71,20 @@ describe('view:Slider', function() {
       svgvml.getTranslateXY.and.returnValue([0, 0]);
     });
 
-    it('move hue handle properly.', function() {
+    it('should move the selected point of the hue slider by supplied pixel value', function() {
       inst._moveHueHandle(10);
 
       expect(svgvml.setTranslateY).toHaveBeenCalledWith(huehandle, 10);
     });
 
-    it("change colorslider's base gradient color properly.", function() {
-      spyOn(colorutil, 'rgbToHEX').and.returnValue('good');
+    it('should change the base gradient color of the slider', function() {
+      spyOn(colorUtil, 'rgbToHEX').and.returnValue('good');
       inst._moveHueHandle(30);
 
       expect(svgvml.setGradientColorStop).toHaveBeenCalledWith(gradient, 'good');
     });
 
-    it('can silence firing custom events.', function() {
+    it('should silence firing custom events', function() {
       inst._moveHueHandle(30, true);
 
       expect(inst.fire).not.toHaveBeenCalled();
@@ -98,7 +96,7 @@ describe('view:Slider', function() {
       spyOn(inst, '_moveHueHandle');
     });
 
-    it('move hue handle by supplied degree.', function() {
+    it('should move the selected point of the hue slider by supplied degree', function() {
       // hue 30 degree -> 9.58px
       // 118(huebar height + handler height half) * 30(hue degree) / 359.99(max hue degree) = 9.833
       // 9.83 - 3 (handler height half)

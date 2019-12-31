@@ -37,7 +37,7 @@ var options = {
 var instance = tui.colorPicker.create(options);
 ```
 
-Or, include `tui-code-snippet.js` (**v1.5.0** or **later**) and then immediately write the options as follows:
+Or, include `tui-code-snippet.js` (**v2.2.0** or **later**) and then immediately write the options as follows:
 
 ```js
 tui.usageStatistics = false;
@@ -201,7 +201,7 @@ $ npm run test
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
+* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >= 2.2.0
 
 
 ## 🌏 Browser Support
