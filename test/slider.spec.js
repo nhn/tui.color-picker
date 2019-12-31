@@ -54,7 +54,7 @@ describe('Slider', function() {
       spyOn(inst, '_moveColorSliderHandle');
     });
 
-    it('should move the selected point of the slider by supplied s, v values.', function() {
+    it('should move the selected point of the slider by supplied s, v values', function() {
       // saturation 0%, value 0%
       inst.moveSaturationAndValue(0, 0);
 

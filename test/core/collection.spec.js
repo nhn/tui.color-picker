@@ -142,7 +142,7 @@ hello: 'world'});
       expect(c.has(14)).toBe(false);
     });
 
-    it('should use the filter function instead of id.', function() {
+    it('should use the filter function instead of id', function() {
       var callCount = 0;
 
       expect(
@@ -183,7 +183,7 @@ hello: 'world'});
       c.add(item1, item2, item3);
     });
 
-    it('should return new collection that filled with filtered items.', function() {
+    it('should return new collection that filled with filtered items', function() {
       var filtered = c.find(function(item) {
         return item.value >= 20;
       });
@@ -465,7 +465,7 @@ hello: 'world'});
       c.add(item1, item2, item3);
     });
 
-    it('should not happen anything when compareFunction not supplied.', function() {
+    it('should not happen anything when compareFunction not supplied', function() {
       var arr = c.sort();
 
       expect(arr).toEqual([item1, item2, item3]);

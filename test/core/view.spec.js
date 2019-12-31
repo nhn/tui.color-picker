@@ -134,7 +134,7 @@ describe('View', function() {
       expect(view.childs.length).toBe(0);
     });
 
-    it('should remove child view by instance itself.', function() {
+    it('should remove child view by instance itself', function() {
       view.removeChild(view2);
       expect(view.childs.length).toBe(0);
     });
@@ -159,7 +159,7 @@ describe('View', function() {
       view.destroy();
     });
 
-    it('should invoke render method recursivly.', function() {
+    it('should invoke render method recursivly', function() {
       spyOn(view2, 'render');
       view.render();
       expect(view2.render).toHaveBeenCalled();
