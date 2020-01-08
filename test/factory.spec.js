@@ -1,7 +1,7 @@
 'use strict';
 
-var util = require('../src/js/util');
-var ColorPicker = require('../src/js/factory');
+var util = require('@/util');
+var ColorPicker = require('@/factory');
 
 describe('ColorPicker', function() {
   describe('usageStatistics', function() {

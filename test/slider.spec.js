@@ -1,15 +1,15 @@
 'use strict';
 
-var Slider = require('../src/js/slider');
-var svgvml = require('../src/js/svgvml');
-var colorUtil = require('../src/js/colorUtil');
+var Slider = require('@/slider');
+var svgvml = require('@/svgvml');
+var colorUtil = require('@/colorUtil');
 
 var undef = (function() {})();
 describe('Slider', function() {
   var inst;
-  var colorslider = {name: 'colorslider'};
-  var huehandle = {name: 'huehandle'};
-  var gradient = {name: 'gradient'};
+  var colorslider = { name: 'colorslider' };
+  var huehandle = { name: 'huehandle' };
+  var gradient = { name: 'gradient' };
 
   beforeEach(function() {
     var el = document.createElement('div');

@@ -1,8 +1,8 @@
 'use strict';
 
-var domUtil = require('../../src/js/core/domUtil');
+var domUtil = require('@/core/domUtil');
 
-describe('domutil', function() {
+describe('domUtil', function() {
   describe('appendHTMLElement()', function() {
     it('should append a newly created element to document.body', function() {
       var div = domUtil.appendHTMLElement('div');

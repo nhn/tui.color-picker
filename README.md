@@ -31,8 +31,8 @@ TOAST UI ColorPicker applies Google Analytics (GA) to collect statistics on the 
 
 ```js
 const options = {
-    ...
-    usageStatistics: false
+  ...
+  usageStatistics: false
 }
 const instance = tui.colorPicker.create(options);
 ```
@@ -134,16 +134,16 @@ First, you should import the module using one of the following ways depending on
 
 #### Using namespace in browser environment
 ``` javascript
-var ColorPicker = tui.colorPicker;
+var colorPicker = tui.colorPicker;
 ```
 
 #### Using module format in node environment
 ``` javascript
-const ColorPicker = require('tui-color-picker'); /* CommonJS */
+const colorPicker = require('tui-color-picker'); /* CommonJS */
 ```
 
 ``` javascript
-import ColorPicker from 'tui-color-picker'; /* ES6 */
+import colorPicker from 'tui-color-picker'; /* ES6 */
 ```
 
 
@@ -152,9 +152,9 @@ After creating an instance, you can call various APIs.
 
 ``` javascript
 const container = document.getElementById('tui-color-picker-conatiner');
-const instance = ColorPicker.create({
-    container: container,
-    ...
+const instance = colorPicker.create({
+  container: container,
+  ...
 });
 
 instance.getColor();
@@ -202,7 +202,7 @@ $ npm run test
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >= 2.2.0
+* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=2.2.0
 
 
 ## 🌏 Browser Support

@@ -66,13 +66,7 @@ function Drag(options, container) {
 Drag.prototype.destroy = function() {
   off(this.container, 'mousedown', this._onMouseDown);
 
-  this.options
-    = this.container
-    = this._isMoved
-    = this._distance
-    = this._dragStartFired
-    = this._dragStartEventData
-    = null;
+  this.options = this.container = this._isMoved = this._distance = this._dragStartFired = this._dragStartEventData = null;
 };
 
 /**
@@ -96,13 +90,10 @@ Drag.prototype._toggleDragEvent = function(toBind) {
   } else {
     enableTextSelection(container);
     off(window, 'dragstart', preventDefault);
-    off(
-      global.document,
-      {
-        mousemove: this._onMouseMove,
-        mouseup: this._onMouseUp
-      }
-    );
+    off(global.document, {
+      mousemove: this._onMouseMove,
+      mouseup: this._onMouseUp
+    });
   }
 };
 

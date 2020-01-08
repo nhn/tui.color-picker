@@ -85,8 +85,8 @@ Collection.or = function(filters) {
   cnt = filters.length;
 
   return function(item) {
-    var i = 1,
-      result = filters[0].call(null, item);
+    var i = 1;
+    var result = filters[0].call(null, item);
 
     for (; i < cnt; i += 1) {
       result = result || filters[i].call(null, item);
@@ -164,9 +164,8 @@ Collection.prototype.add = function(item) {
  * @returns {array} deleted model list.
  */
 Collection.prototype.remove = function(id) {
-  var removed = [],
-    ownItems,
-    itemToRemove;
+  var removed = [];
+  var ownItems, itemToRemove;
 
   if (!this.length) {
     return removed;
@@ -330,11 +329,10 @@ Collection.prototype.find = function(filter) {
  * });
  */
 Collection.prototype.groupBy = function(key, groupFunc) {
-  var result = {},
-    collection,
-    baseValue,
-    keyIsFunc = isFunction(key),
-    getItemIDFn = this.getItemID;
+  var result = {};
+  var keyIsFunc = isFunction(key);
+  var getItemIDFn = this.getItemID;
+  var collection, baseValue;
 
   if (isArray(key)) {
     forEachArray(key, function(k) {

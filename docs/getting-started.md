@@ -1,7 +1,6 @@
 ## Install
 
 ``` sh
-# npm
 $ npm install --save tui-color-picker # Latest version
 $ npm install --save tui-color-picker@<version> # Specific version
 ```
@@ -11,11 +10,10 @@ It can also be installed by using bower or downloaded by CDN. Please refer to th
 ## Usage
 
 ```javascript
-// ES6
-import ColorPicker from 'tui-color-picker';
+import colorPicker from 'tui-color-picker';
 import 'tui-color-picker/dist/tui-color-picker.css';
 
-const colorpicker = ColorPicker.create({
+const colorpicker = colorPicker.create({
   container: document.getElementById('color-picker-container'),
   color: '#f9f9f9',
   preset: ['#181818', '#292929', '#393939'],

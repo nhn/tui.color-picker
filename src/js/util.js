@@ -5,6 +5,7 @@
 
 'use strict';
 
+var browser = require('tui-code-snippet/browser/browser');
 var forEach = require('tui-code-snippet/collection/forEach');
 var forEachArray = require('tui-code-snippet/collection/forEachArray');
 var forEachOwnProperties = require('tui-code-snippet/collection/forEachOwnProperties');
@@ -78,6 +79,13 @@ var utils = {
 
     return currentId;
   },
+
+  /**
+   * True when browser is below IE8.
+   */
+  isOldBrowser: (function() {
+    return browser.msie && browser.version < 9;
+  })(),
 
   /**
    * send host name

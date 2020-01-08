@@ -5,6 +5,8 @@
 
 'use strict';
 
+var path = require('path');
+
 /* eslint-disable consts-on-top, no-process-env, require-jsdoc */
 /* eslint-disable no-process-env, require-jsdoc */
 var webdriverConfig = {
@@ -144,6 +146,11 @@ module.exports = function(config) {
             enforce: 'pre'
           }
         ]
+      },
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, './src/js')
+        }
       }
     },
     port: 9876,

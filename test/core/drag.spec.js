@@ -1,6 +1,6 @@
 'use strict';
 
-var Drag = require('../../src/js/core/drag');
+var Drag = require('@/core/drag');
 
 describe('Drag', function() {
   var mockTarget, mockMouseEvent;
@@ -57,7 +57,6 @@ describe('Drag', function() {
       };
 
       Drag.prototype._onMouseDown.call(mock, mockMouseEvent);
-      // Suppose that it moves 9px.
       mock._distance = 9;
       Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
       Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
@@ -82,7 +81,6 @@ describe('Drag', function() {
 
       mock.invoke.and.returnValue(true);
       Drag.prototype._onMouseDown.call(mock, mockMouseEvent);
-      // Suppose that it moves 10px.
       mock._distance = 10;
       Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
 

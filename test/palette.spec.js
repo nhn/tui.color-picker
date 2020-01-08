@@ -1,6 +1,6 @@
 'use strict';
 
-var Palette = require('../src/js/palette');
+var Palette = require('@/palette');
 
 describe('Palette', function() {
   var inst;
@@ -23,22 +23,22 @@ describe('Palette', function() {
   });
 
   it('should attach the tranparent class to an empty color', function() {
-    var li = document.getElementsByTagName('li');
-    var lastLi = li[li.length - 1];
-    var input = lastLi.getElementsByTagName('input')[0];
-    expect(input.className).toContain('tui-colorpicker-color-transparent');
+    var colorItem = document.getElementsByTagName('li');
+    var lastColorItem = colorItem[colorItem.length - 1];
+    var paletteButton = lastColorItem.getElementsByTagName('input')[0];
+    expect(paletteButton.className).toContain('tui-colorpicker-color-transparent');
   });
 
   it('customEvent should also work for the empty color(transparent)', function() {
-    var li = document.getElementsByTagName('li');
-    var lastLi = li[li.length - 1];
-    var input = lastLi.getElementsByTagName('input')[0];
+    var colorItem = document.getElementsByTagName('li');
+    var lastColorItem = colorItem[colorItem.length - 1];
+    var paletteButton = lastColorItem.getElementsByTagName('input')[0];
     var callbackFunction = jasmine.createSpy('callbackFunction');
 
     inst.on('_selectColor', callbackFunction);
 
     inst._onClick({
-      target: input
+      target: paletteButton
     });
 
     expect(callbackFunction.calls.argsFor(0)[0].color).toBe('');

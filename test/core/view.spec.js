@@ -1,6 +1,6 @@
 'use strict';
 
-var View = require('../../src/js/core/view');
+var View = require('@/core/view');
 
 describe('View', function() {
   var view;
@@ -159,7 +159,7 @@ describe('View', function() {
       view.destroy();
     });
 
-    it('should invoke render method recursivly', function() {
+    it('should invoke render method recursively', function() {
       spyOn(view2, 'render');
       view.render();
       expect(view2.render).toHaveBeenCalled();

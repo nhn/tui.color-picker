@@ -134,8 +134,8 @@ function ColorPicker(options) {
  * @param {object} selectColorEventData - event data
  */
 ColorPicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
-  var color = selectColorEventData.color,
-    opt = this.options;
+  var color = selectColorEventData.color;
+  var opt = this.options;
 
   if (!colorUtil.isValidRGB(color) && color !== '') {
     this.render();
@@ -177,8 +177,8 @@ ColorPicker.prototype._onToggleSlider = function() {
  * @param {object} selectColorEventData - event data
  */
 ColorPicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
-  var color = selectColorEventData.color,
-    opt = this.options;
+  var color = selectColorEventData.color;
+  var opt = this.options;
 
   /**
    * @event ColorPicker#selectColor

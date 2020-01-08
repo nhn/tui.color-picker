@@ -122,8 +122,8 @@ View.prototype.recursive = function(fn, skipThis) {
  * Resize view recursively to parent.
  */
 View.prototype.resize = function() {
-  var args = Array.prototype.slice.call(arguments),
-    parent = this.parent;
+  var args = Array.prototype.slice.call(arguments);
+  var parent = this.parent;
 
   while (parent) {
     if (isFunction(parent._onResize)) {

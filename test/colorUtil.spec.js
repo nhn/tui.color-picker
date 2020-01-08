@@ -1,8 +1,8 @@
 'use strict';
 
-var colorUtil = require('../src/js/colorUtil');
+var colorUtil = require('@/colorUtil');
 
-describe('colorutil', function() {
+describe('colorUtil', function() {
   it('isValidRGB() should check whether it is valid hex codes', function() {
     expect(colorUtil.isValidRGB('werwerwer')).toBe(false);
     expect(colorUtil.isValidRGB('a[]2199')).toBe(false);

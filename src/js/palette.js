@@ -23,7 +23,7 @@ var tmpl = require('../template/palette');
  * @extends {View}
  * @mixes CustomEvents
  * @param {object} options - options for color palette view
- *  @param {string[]} options.preset - color list
+ * @param {string[]} options.preset - color list
  * @param {HTMLDivElement} container - container element
  * @ignore
  */
@@ -76,9 +76,9 @@ inherit(Palette, View);
  * @param {MouseEvent} clickEvent - mouse event object
  */
 Palette.prototype._onClick = function(clickEvent) {
-  var options = this.options,
-    target = getTarget(clickEvent),
-    eventData = {};
+  var options = this.options;
+  var target = getTarget(clickEvent);
+  var eventData = {};
 
   if (hasClass(target, options.cssPrefix + 'palette-button')) {
     eventData.color = target.value;
@@ -107,9 +107,9 @@ Palette.prototype._onClick = function(clickEvent) {
  * @param {Event} changeEvent - change event object
  */
 Palette.prototype._onChange = function(changeEvent) {
-  var options = this.options,
-    target = getTarget(changeEvent),
-    eventData = {};
+  var options = this.options;
+  var target = getTarget(changeEvent);
+  var eventData = {};
 
   if (hasClass(target, options.cssPrefix + 'palette-hex')) {
     eventData.color = target.value;
@@ -136,10 +136,10 @@ Palette.prototype._beforeDestroy = function() {
  * @param {boolean} [toBind=false] - true to bind event.
  */
 Palette.prototype._toggleEvent = function(toBind) {
-  var options = this.options,
-    container = this.container,
-    handleEvent = toBind ? on : off,
-    hexTextBox;
+  var options = this.options;
+  var container = this.container;
+  var handleEvent = toBind ? on : off;
+  var hexTextBox;
 
   handleEvent(container, 'click', this._onClick, this);
 
@@ -155,8 +155,8 @@ Palette.prototype._toggleEvent = function(toBind) {
  * @override
  */
 Palette.prototype.render = function(color) {
-  var options = this.options,
-    html = '';
+  var options = this.options;
+  var html = '';
 
   this._toggleEvent(false);
 

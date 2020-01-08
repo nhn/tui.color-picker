@@ -1,6 +1,6 @@
 'use strict';
 
-var Collection = require('../../src/js/core/collection');
+var Collection = require('@/core/collection');
 
 describe('Collection', function() {
   var c;
@@ -15,39 +15,38 @@ describe('Collection', function() {
         return item.myID;
       });
 
-      col.add({myID: 3});
-      expect(col.items['3']).toEqual({myID: 3});
+      col.add({ myID: 3 });
+      expect(col.items['3']).toEqual({ myID: 3 });
     });
   });
 
   describe('getItemID()', function() {
     it('should get ID from the item', function() {
-      var item = {_id: 7};
+      var item = { _id: 7 };
       expect(c.getItemID(item)).toBe('7');
     });
   });
 
   describe('add()', function() {
     it('should add an item to the collection', function() {
-      c.add({_id: 25});
+      c.add({ _id: 25 });
       expect(c.length).toBe(1);
       expect(c.items['25']).toBeDefined();
     });
 
     it('should overwrite duplicated model', function() {
-      c.add({_id: 25});
-      c.add({_id: 25,
-hello: 'world'});
+      c.add({ _id: 25 });
+      c.add({ _id: 25, hello: 'world' });
       expect(c.items['25'].hello).toBe('world');
     });
 
     it('should add multiple items at once', function() {
-      c.add({_id: 2}, {_id: 4});
+      c.add({ _id: 2 }, { _id: 4 });
 
       expect(c.length).toBe(2);
       expect(c.items).toEqual({
-        '2': {_id: 2},
-        '4': {_id: 4}
+        '2': { _id: 2 },
+        '4': { _id: 4 }
       });
     });
   });
@@ -56,9 +55,9 @@ hello: 'world'});
     var item1, item2, item3;
 
     beforeEach(function() {
-      item1 = {_id: 1};
-      item2 = {_id: 2};
-      item3 = {_id: 4};
+      item1 = { _id: 1 };
+      item2 = { _id: 2 };
+      item3 = { _id: 4 };
 
       c.add(item1, item2, item3);
     });
@@ -96,9 +95,9 @@ hello: 'world'});
     var item1, item2, item3;
 
     beforeEach(function() {
-      item1 = {_id: 1};
-      item2 = {_id: 2};
-      item3 = {_id: 4};
+      item1 = { _id: 1 };
+      item2 = { _id: 2 };
+      item3 = { _id: 4 };
 
       c.add(item1, item2, item3);
     });
@@ -120,9 +119,9 @@ hello: 'world'});
     var item1, item2, item3;
 
     beforeEach(function() {
-      item1 = {_id: 1};
-      item2 = {_id: 2};
-      item3 = {_id: 4};
+      item1 = { _id: 1 };
+      item2 = { _id: 2 };
+      item3 = { _id: 4 };
 
       c.add(item1, item2, item3);
     });
@@ -198,7 +197,7 @@ hello: 'world'});
       var col = new Collection(cust);
       var filtered;
 
-      col.add({ID: 3});
+      col.add({ ID: 3 });
 
       filtered = col.find(function(item) {
         return item.ID === 3;
@@ -311,7 +310,7 @@ hello: 'world'});
         value: 20,
         isGood: false,
         '30': 'a',
-        'true': 'c',
+        'true': 'c', // eslint-disable-line prettier/prettier
         no: function() {
           return this.value;
         }
@@ -321,7 +320,7 @@ hello: 'world'});
         value: 50,
         isGood: true,
         '30': 'b',
-        'true': 'c',
+        'true': 'c', // eslint-disable-line prettier/prettier
         no: function() {
           return this.value;
         }
@@ -331,7 +330,7 @@ hello: 'world'});
         value: 2,
         isGood: true,
         '30': 'b',
-        'true': 'd',
+        'true': 'd', // eslint-disable-line prettier/prettier
         no: function() {
           return this.value;
         }
@@ -381,8 +380,8 @@ hello: 'world'});
       c2.add(item2, item3);
 
       expect(grouped).toEqual({
-        'false': c1,
-        'true': c2
+        'false': c1, // eslint-disable-line prettier/prettier
+        'true': c2 // eslint-disable-line prettier/prettier
       });
     });
 
@@ -516,11 +515,15 @@ hello: 'world'});
       c.each(spy);
 
       expect(spy.calls.argsFor(2)).toEqual(
-        jasmine.arrayContaining([{
-          _id: 4,
-          value: 2
-        }, '4']));
-      });
+        jasmine.arrayContaining([
+          {
+            _id: 4,
+            value: 2
+          },
+          '4'
+        ])
+      );
+    });
 
     it('should break loop when iteratee returns false', function() {
       spy.and.callFake(function(item) {
@@ -538,7 +541,7 @@ hello: 'world'});
 
   describe('doWhenHas()', function() {
     it('should invoke the supplied method when collection has model', function() {
-      var item1 = {_id: 1};
+      var item1 = { _id: 1 };
       var spy1 = jasmine.createSpy('spy1');
       var spy2 = jasmine.createSpy('spy2');
 
@@ -554,9 +557,9 @@ hello: 'world'});
 
   describe('single()', function() {
     it('should return single element in collection', function() {
-      var item1 = {_id: 1},
-        item2 = {_id: 2},
-        item3 = {_id: 5};
+      var item1 = { _id: 1 };
+      var item2 = { _id: 2 };
+      var item3 = { _id: 5 };
 
       c.add(item3, item2, item1);
 
@@ -566,10 +569,10 @@ hello: 'world'});
 
   describe('merge()', function() {
     it('should return new collection with merged supplied collections', function() {
-      var item1 = {_id: 1},
-        item2 = {_id: 2},
-        item3 = {_id: 5},
-        c2 = new Collection();
+      var item1 = { _id: 1 };
+      var item2 = { _id: 2 };
+      var item3 = { _id: 5 };
+      var c2 = new Collection();
       var merged;
 
       c.add(item1);
@@ -585,10 +588,10 @@ hello: 'world'});
     });
 
     it('should newly create collection has same getItemIDFn with first argumented collection', function() {
-      var item1 = {_id: 1},
-        item2 = {_id: 2},
-        item3 = {_id: 5},
-        c2 = new Collection();
+      var item1 = { _id: 1 };
+      var item2 = { _id: 2 };
+      var item3 = { _id: 5 };
+      var c2 = new Collection();
       var merged;
 
       c.add(item1);
@@ -600,16 +603,16 @@ hello: 'world'});
     });
 
     it('should not affect total item counts with item that has same id', function() {
-      var item1 = {_id: 1},
-        item2 = {_id: 2},
-        item3 = {_id: 5},
-        item4 = {
-          _id: 1,
-          hello: 'world'
-        },
-        item5 = {_id: 2},
-        item6 = {_id: 5},
-        c2 = new Collection();
+      var item1 = { _id: 1 };
+      var item2 = { _id: 2 };
+      var item3 = { _id: 5 };
+      var item4 = {
+        _id: 1,
+        hello: 'world'
+      };
+      var item5 = { _id: 2 };
+      var item6 = { _id: 5 };
+      var c2 = new Collection();
       var merged;
 
       c.add(item1, item2, item3);
@@ -627,9 +630,9 @@ hello: 'world'});
 
   describe('toArray()', function() {
     it('should return new array with collection items', function() {
-      var item1 = {_id: 1},
-        item2 = {_id: 2},
-        item3 = {_id: 5};
+      var item1 = { _id: 1 };
+      var item2 = { _id: 2 };
+      var item3 = { _id: 5 };
 
       c.add(item1, item2, item3);
       expect(c.toArray()).toEqual([item1, item2, item3]);

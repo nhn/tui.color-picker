@@ -1,5 +1,5 @@
 module.exports = {
-  extends: 'tui',
+  extends: ['tui', 'plugin:prettier/recommended'],
   env: {
     browser: true,
     amd: true,

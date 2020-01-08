@@ -71,17 +71,13 @@ module.exports = function(env, argv) {
         },
         {
           test: /\.styl$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            'css-loader',
-            'stylus-loader'
-          ],
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'stylus-loader'],
           include: path.join(__dirname, 'src/styl')
         }
       ]
     },
     plugins: [
-      new MiniCssExtractPlugin({filename: FILENAME + '.css'}),
+      new MiniCssExtractPlugin({ filename: FILENAME + '.css' }),
       new webpack.BannerPlugin(BANNER)
     ],
     optimization: getOptimization(isMinified),
