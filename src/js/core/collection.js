@@ -5,15 +5,16 @@
 
 'use strict';
 
-var snippet = require('tui-code-snippet');
+var forEachArray = require('tui-code-snippet/collection/forEachArray');
+var forEachOwnProperties = require('tui-code-snippet/collection/forEachOwnProperties');
+var extend = require('tui-code-snippet/object/extend');
+var isArray = require('tui-code-snippet/type/isArray');
+var isExisty = require('tui-code-snippet/type/isExisty');
+var isFunction = require('tui-code-snippet/type/isFunction');
+var isObject = require('tui-code-snippet/type/isObject');
+var util = require('../util');
 
-var util = snippet,
-  forEachProp = util.forEachOwnProperties,
-  forEachArr = util.forEachArray,
-  isFunc = util.isFunction,
-  isObj = util.isObject;
-
-var aps = Array.prototype.slice;
+var slice = Array.prototype.slice;
 
 /**
  * Common collection.
@@ -36,7 +37,7 @@ function Collection(getItemIDFn) {
    */
   this.length = 0;
 
-  if (isFunc(getItemIDFn)) {
+  if (isFunction(getItemIDFn)) {
     /**
      * @type {function}
      */
@@ -56,7 +57,7 @@ function Collection(getItemIDFn) {
 Collection.and = function(filters) {
   var cnt;
 
-  filters = aps.call(arguments);
+  filters = slice.call(arguments);
   cnt = filters.length;
 
   return function(item) {
@@ -80,12 +81,12 @@ Collection.and = function(filters) {
 Collection.or = function(filters) {
   var cnt;
 
-  filters = aps.call(arguments);
+  filters = slice.call(arguments);
   cnt = filters.length;
 
   return function(item) {
-    var i = 1,
-      result = filters[0].call(null, item);
+    var i = 1;
+    var result = filters[0].call(null, item);
 
     for (; i < cnt; i += 1) {
       result = result || filters[i].call(null, item);
@@ -102,20 +103,16 @@ Collection.or = function(filters) {
  * @param {...Collection} collections collection arguments to merge
  * @returns {Collection} merged collection.
  */
-// eslint-disable-next-line no-unused-vars
-Collection.merge = function(collections) {
-  // eslint-disable-line
-  var cols = aps.call(arguments),
-    newItems = {},
-    merged = new Collection(cols[0].getItemID),
-    extend = util.extend;
+Collection.merge = function(firstCollection) {
+  var newItems = {};
+  var merged = new Collection(firstCollection.getItemID);
 
-  forEachArr(cols, function(col) {
+  forEachArray(arguments, function(col) {
     extend(newItems, col.items);
   });
 
   merged.items = newItems;
-  merged.length = util.keys(merged.items).length;
+  merged.length = util.getLength(merged.items);
 
   return merged;
 };
@@ -141,8 +138,8 @@ Collection.prototype.add = function(item) {
   var id, ownItems;
 
   if (arguments.length > 1) {
-    forEachArr(
-      aps.call(arguments),
+    forEachArray(
+      slice.call(arguments),
       function(o) {
         this.add(o);
       },
@@ -167,9 +164,8 @@ Collection.prototype.add = function(item) {
  * @returns {array} deleted model list.
  */
 Collection.prototype.remove = function(id) {
-  var removed = [],
-    ownItems,
-    itemToRemove;
+  var removed = [];
+  var ownItems, itemToRemove;
 
   if (!this.length) {
     return removed;
@@ -177,7 +173,7 @@ Collection.prototype.remove = function(id) {
 
   if (arguments.length > 1) {
     removed = util.map(
-      aps.call(arguments),
+      slice.call(arguments),
       function(id) {
         return this.remove(id);
       },
@@ -189,7 +185,7 @@ Collection.prototype.remove = function(id) {
 
   ownItems = this.items;
 
-  if (isObj(id)) {
+  if (isObject(id)) {
     id = this.getItemID(id);
   }
 
@@ -224,7 +220,7 @@ Collection.prototype.has = function(id) {
     return false;
   }
 
-  isFilter = isFunc(id);
+  isFilter = isFunction(id);
   has = false;
 
   if (isFilter) {
@@ -238,8 +234,8 @@ Collection.prototype.has = function(id) {
       return true;
     });
   } else {
-    id = isObj(id) ? this.getItemID(id) : id;
-    has = util.isExisty(this.items[id]);
+    id = isObject(id) ? this.getItemID(id) : id;
+    has = isExisty(this.items[id]);
   }
 
   return has;
@@ -254,7 +250,7 @@ Collection.prototype.has = function(id) {
 Collection.prototype.doWhenHas = function(id, fn, context) {
   var item = this.items[id];
 
-  if (!util.isExisty(item)) {
+  if (!isExisty(item)) {
     return;
   }
 
@@ -333,14 +329,13 @@ Collection.prototype.find = function(filter) {
  * });
  */
 Collection.prototype.groupBy = function(key, groupFunc) {
-  var result = {},
-    collection,
-    baseValue,
-    keyIsFunc = isFunc(key),
-    getItemIDFn = this.getItemID;
+  var result = {};
+  var keyIsFunc = isFunction(key);
+  var getItemIDFn = this.getItemID;
+  var collection, baseValue;
 
-  if (util.isArray(key)) {
-    util.forEachArray(key, function(k) {
+  if (isArray(key)) {
+    forEachArray(key, function(k) {
       result[k + ''] = new Collection(getItemIDFn);
     });
 
@@ -358,7 +353,7 @@ Collection.prototype.groupBy = function(key, groupFunc) {
     } else {
       baseValue = item[key];
 
-      if (isFunc(baseValue)) {
+      if (isFunction(baseValue)) {
         baseValue = baseValue.apply(item);
       }
     }
@@ -405,7 +400,7 @@ Collection.prototype.sort = function(compareFunction) {
     arr.push(item);
   });
 
-  if (isFunc(compareFunction)) {
+  if (isFunction(compareFunction)) {
     arr = arr.sort(compareFunction);
   }
 
@@ -420,7 +415,7 @@ Collection.prototype.sort = function(compareFunction) {
  * @param {*} [context] context
  */
 Collection.prototype.each = function(iteratee, context) {
-  forEachProp(this.items, iteratee, context || this);
+  forEachOwnProperties(this.items, iteratee, context || this);
 };
 
 /**

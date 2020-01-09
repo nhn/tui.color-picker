@@ -5,26 +5,13 @@
 
 'use strict';
 
-var util = require('tui-code-snippet');
+var isOldBrowser = require('./util').isOldBrowser;
+
 var PARSE_TRANSLATE_NUM_REGEX = /[\.\-0-9]+/g;
 var SVG_HUE_HANDLE_RIGHT_POS = -6;
 
 /* istanbul ignore next */
 var svgvml = {
-  /**
-   * Return true when browser is below IE8.
-   * @returns {boolean} is old browser?
-   */
-  isOldBrowser: function() {
-    var _isOldBrowser = svgvml._isOldBrowser;
-
-    if (!util.isExisty(_isOldBrowser)) {
-      svgvml._isOldBrowser = _isOldBrowser = util.browser.msie && util.browser.version < 9;
-    }
-
-    return _isOldBrowser;
-  },
-
   /**
    * Get translate transform value
    * @param {SVG|VML} obj - svg or vml object that want to know translate x, y
@@ -33,7 +20,7 @@ var svgvml = {
   getTranslateXY: function(obj) {
     var temp;
 
-    if (svgvml.isOldBrowser()) {
+    if (isOldBrowser) {
       temp = obj.style;
 
       return [parseFloat(temp.top), parseFloat(temp.left)];
@@ -59,7 +46,7 @@ var svgvml = {
    * @param {number} y - translate Y value
    */
   setTranslateXY: function(obj, x, y) {
-    if (svgvml.isOldBrowser()) {
+    if (isOldBrowser) {
       obj.style.left = x + 'px';
       obj.style.top = y + 'px';
     } else {
@@ -73,7 +60,7 @@ var svgvml = {
    * @param {number} y - translate Y value
    */
   setTranslateY: function(obj, y) {
-    if (svgvml.isOldBrowser()) {
+    if (isOldBrowser) {
       obj.style.top = y + 'px';
     } else {
       obj.setAttribute('transform', 'translate(' + SVG_HUE_HANDLE_RIGHT_POS + ',' + y + ')');
@@ -86,7 +73,7 @@ var svgvml = {
    * @param {string} colorStr - color string
    */
   setStrokeColor: function(obj, colorStr) {
-    if (svgvml.isOldBrowser()) {
+    if (isOldBrowser) {
       obj.strokecolor = colorStr;
     } else {
       obj.setAttribute('stroke', colorStr);
@@ -99,7 +86,7 @@ var svgvml = {
    * @param {string} colorStr - color string
    */
   setGradientColorStop: function(obj, colorStr) {
-    if (svgvml.isOldBrowser()) {
+    if (isOldBrowser) {
       obj.color = colorStr;
     } else {
       obj.setAttribute('stop-color', colorStr);

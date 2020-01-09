@@ -5,8 +5,10 @@
 
 'use strict';
 
-var util = require('tui-code-snippet');
-var domutil = require('./core/domutil');
+var extend = require('tui-code-snippet/object/extend');
+var inherit = require('tui-code-snippet/inheritance/inherit');
+
+var domUtil = require('./core/domUtil');
 var View = require('./core/view');
 
 /**
@@ -22,21 +24,21 @@ function Layout(options, container) {
    * option object
    * @type {object}
    */
-  this.options = util.extend(
+  this.options = extend(
     {
       cssPrefix: 'tui-colorpicker-'
     },
     options
   );
 
-  container = domutil.appendHTMLElement('div', container, this.options.cssPrefix + 'container');
+  container = domUtil.appendHTMLElement('div', container, this.options.cssPrefix + 'container');
 
   View.call(this, options, container);
 
   this.render();
 }
 
-util.inherit(Layout, View);
+inherit(Layout, View);
 
 /**
  * @override

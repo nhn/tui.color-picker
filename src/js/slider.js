@@ -5,11 +5,16 @@
 
 'use strict';
 
-var util = require('tui-code-snippet');
-var domutil = require('./core/domutil');
-var domevent = require('./core/domevent');
+var CustomEvents = require('tui-code-snippet/customEvents/customEvents');
+var getMousePosition = require('tui-code-snippet/domEvent/getMousePosition');
+var closest = require('tui-code-snippet/domUtil/closest');
+var hasClass = require('tui-code-snippet/domUtil/hasClass');
+var extend = require('tui-code-snippet/object/extend');
+var inherit = require('tui-code-snippet/inheritance/inherit');
+
+var domUtil = require('./core/domUtil');
 var svgvml = require('./svgvml');
-var colorutil = require('./colorutil');
+var colorUtil = require('./colorUtil');
 var View = require('./core/view');
 var Drag = require('./core/drag');
 var tmpl = require('../template/slider');
@@ -30,7 +35,7 @@ var HUE_WHEEL_MAX = 359.99;
  * @ignore
  */
 function Slider(options, container) {
-  container = domutil.appendHTMLElement('div', container, options.cssPrefix + 'slider-container');
+  container = domUtil.appendHTMLElement('div', container, options.cssPrefix + 'slider-container');
   container.style.display = 'none';
 
   View.call(this, options, container);
@@ -38,7 +43,7 @@ function Slider(options, container) {
   /**
    * @type {object}
    */
-  this.options = util.extend(
+  this.options = extend(
     {
       color: '#f8f8f8',
       cssPrefix: 'tui-colorpicker-'
@@ -96,7 +101,7 @@ function Slider(options, container) {
   );
 }
 
-util.inherit(Slider, View);
+inherit(Slider, View);
 
 /**
  * @override
@@ -104,13 +109,7 @@ util.inherit(Slider, View);
 Slider.prototype._beforeDestroy = function() {
   this.drag.off();
 
-  this.drag
-    = this.options
-    = this._dragDataCache
-    = this.sliderHandleElement
-    = this.huebarHandleElement
-    = this.baseColorElement
-    = null;
+  this.drag = this.options = this._dragDataCache = this.sliderHandleElement = this.huebarHandleElement = this.baseColorElement = null;
 };
 
 /**
@@ -135,14 +134,12 @@ Slider.prototype.isVisible = function() {
  * @param {string} colorStr - hex string color from parent view (Layout)
  */
 Slider.prototype.render = function(colorStr) {
-  var that = this,
-    container = that.container,
-    options = that.options,
-    html = tmpl.layout,
-    rgb,
-    hsv;
+  var container = this.container;
+  var options = this.options;
+  var html = tmpl.layout;
+  var rgb, hsv;
 
-  if (!colorutil.isValidRGB(colorStr)) {
+  if (!colorUtil.isValidRGB(colorStr)) {
     return;
   }
 
@@ -151,14 +148,14 @@ Slider.prototype.render = function(colorStr) {
   html = html.replace(/{{cssPrefix}}/g, options.cssPrefix);
   html = html.replace(/{{id}}/g, options.id);
 
-  that.container.innerHTML = html;
+  this.container.innerHTML = html;
 
-  that.sliderHandleElement = domutil.find('.' + options.cssPrefix + 'slider-handle', container);
-  that.huebarHandleElement = domutil.find('.' + options.cssPrefix + 'huebar-handle', container);
-  that.baseColorElement = domutil.find('.' + options.cssPrefix + 'slider-basecolor', container);
+  this.sliderHandleElement = container.querySelector('.' + options.cssPrefix + 'slider-handle');
+  this.huebarHandleElement = container.querySelector('.' + options.cssPrefix + 'huebar-handle');
+  this.baseColorElement = container.querySelector('.' + options.cssPrefix + 'slider-basecolor');
 
-  rgb = colorutil.hexToRGB(colorStr);
-  hsv = colorutil.rgbToHSV.apply(null, rgb);
+  rgb = colorUtil.hexToRGB(colorStr);
+  hsv = colorUtil.rgbToHSV.apply(null, rgb);
 
   this.moveHue(hsv[0], true);
   this.moveSaturationAndValue(hsv[1], hsv[2], true);
@@ -172,8 +169,8 @@ Slider.prototype.render = function(colorStr) {
  * @param {boolean} [silent=false] - set true then not fire custom event
  */
 Slider.prototype._moveColorSliderHandle = function(newLeft, newTop, silent) {
-  var handle = this.sliderHandleElement,
-    handleColor;
+  var handle = this.sliderHandleElement;
+  var handleColor;
 
   // Check position limitation.
   newTop = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], newTop);
@@ -188,7 +185,7 @@ Slider.prototype._moveColorSliderHandle = function(newLeft, newTop, silent) {
 
   if (!silent) {
     this.fire('_selectColor', {
-      color: colorutil.rgbToHEX.apply(null, this.getRGB())
+      color: colorUtil.rgbToHEX.apply(null, this.getRGB())
     });
   }
 };
@@ -237,11 +234,10 @@ Slider.prototype._moveColorSliderByPosition = function(x, y) {
  * @returns {number[]} saturation and value
  */
 Slider.prototype.getSaturationAndValue = function() {
-  var absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]),
-    maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1],
-    position = svgvml.getTranslateXY(this.sliderHandleElement),
-    saturation,
-    value;
+  var absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]);
+  var maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1];
+  var position = svgvml.getTranslateXY(this.sliderHandleElement);
+  var saturation, value;
 
   saturation = ((position[1] + absMin) / maxValue) * 100;
   // The value of HSV color model is inverted. top 100 ~ bottom 0. so subtract by 100
@@ -257,24 +253,23 @@ Slider.prototype.getSaturationAndValue = function() {
  * @param {boolean} [silent=false] - set true then not fire custom event
  */
 Slider.prototype._moveHueHandle = function(newTop, silent) {
-  var hueHandleElement = this.huebarHandleElement,
-    baseColorElement = this.baseColorElement,
-    newGradientColor,
-    hexStr;
+  var hueHandleElement = this.huebarHandleElement;
+  var baseColorElement = this.baseColorElement;
+  var newGradientColor, hexStr;
 
   newTop = Math.max(HUEBAR_POS_LIMIT_RANGE[0], newTop);
   newTop = Math.min(HUEBAR_POS_LIMIT_RANGE[1], newTop);
 
   svgvml.setTranslateY(hueHandleElement, newTop);
 
-  newGradientColor = colorutil.hsvToRGB(this.getHue(), 100, 100);
-  hexStr = colorutil.rgbToHEX.apply(null, newGradientColor);
+  newGradientColor = colorUtil.hsvToRGB(this.getHue(), 100, 100);
+  hexStr = colorUtil.rgbToHEX.apply(null, newGradientColor);
 
   svgvml.setGradientColorStop(baseColorElement, hexStr);
 
   if (!silent) {
     this.fire('_selectColor', {
-      color: colorutil.rgbToHEX.apply(null, this.getRGB())
+      color: colorUtil.rgbToHEX.apply(null, this.getRGB())
     });
   }
 };
@@ -285,9 +280,8 @@ Slider.prototype._moveHueHandle = function(newTop, silent) {
  * @param {boolean} [silent=false] - set true then not fire custom event
  */
 Slider.prototype.moveHue = function(degree, silent) {
-  var newTop = 0,
-    absMin,
-    maxValue;
+  var newTop = 0;
+  var absMin, maxValue;
 
   absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
   maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
@@ -314,10 +308,9 @@ Slider.prototype._moveHueByPosition = function(y) {
  * @returns {number} degree (0 ~ 359.9 degree)
  */
 Slider.prototype.getHue = function() {
-  var handle = this.huebarHandleElement,
-    position = svgvml.getTranslateXY(handle),
-    absMin,
-    maxValue;
+  var handle = this.huebarHandleElement;
+  var position = svgvml.getTranslateXY(handle);
+  var absMin, maxValue;
 
   absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
   maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
@@ -331,8 +324,8 @@ Slider.prototype.getHue = function() {
  * @returns {number[]} hsv values
  */
 Slider.prototype.getHSV = function() {
-  var sv = this.getSaturationAndValue(),
-    h = this.getHue();
+  var sv = this.getSaturationAndValue();
+  var h = this.getHue();
 
   return [h].concat(sv);
 };
@@ -342,7 +335,7 @@ Slider.prototype.getHSV = function() {
  * @returns {number[]} RGB value
  */
 Slider.prototype.getRGB = function() {
-  return colorutil.hsvToRGB.apply(null, this.getHSV());
+  return colorUtil.hsvToRGB.apply(null, this.getHSV());
 };
 
 /**********
@@ -355,12 +348,12 @@ Slider.prototype.getRGB = function() {
  * @returns {object} cached data.
  */
 Slider.prototype._prepareColorSliderForMouseEvent = function(event) {
-  var options = this.options,
-    sliderPart = domutil.closest(event.target, '.' + options.cssPrefix + 'slider-part'),
-    cache;
+  var options = this.options;
+  var sliderPart = closest(event.target, '.' + options.cssPrefix + 'slider-part');
+  var cache;
 
   cache = this._dragDataCache = {
-    isColorSlider: domutil.hasClass(sliderPart, options.cssPrefix + 'slider-left'),
+    isColorSlider: hasClass(sliderPart, options.cssPrefix + 'slider-left'),
     parentElement: sliderPart
   };
 
@@ -372,8 +365,8 @@ Slider.prototype._prepareColorSliderForMouseEvent = function(event) {
  * @param {object} clickEvent - Click event from Drag module
  */
 Slider.prototype._onClick = function(clickEvent) {
-  var cache = this._prepareColorSliderForMouseEvent(clickEvent),
-    mousePos = domevent.getMousePosition(clickEvent.originEvent, cache.parentElement);
+  var cache = this._prepareColorSliderForMouseEvent(clickEvent);
+  var mousePos = getMousePosition(clickEvent.originEvent, cache.parentElement);
 
   if (cache.isColorSlider) {
     this._moveColorSliderByPosition(mousePos[0], mousePos[1]);
@@ -397,8 +390,8 @@ Slider.prototype._onDragStart = function(dragStartEvent) {
  * @param {Drag#drag} dragEvent - drag event data
  */
 Slider.prototype._onDrag = function(dragEvent) {
-  var cache = this._dragDataCache,
-    mousePos = domevent.getMousePosition(dragEvent.originEvent, cache.parentElement);
+  var cache = this._dragDataCache;
+  var mousePos = getMousePosition(dragEvent.originEvent, cache.parentElement);
 
   if (cache.isColorSlider) {
     this._moveColorSliderByPosition(mousePos[0], mousePos[1]);
@@ -414,6 +407,6 @@ Slider.prototype._onDragEnd = function() {
   this._dragDataCache = null;
 };
 
-util.CustomEvents.mixin(Slider);
+CustomEvents.mixin(Slider);
 
 module.exports = Slider;

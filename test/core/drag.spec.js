@@ -1,12 +1,19 @@
-/*eslint-disable*/
-var Drag = require('../../src/js/core/drag');
-var domevent = require('../../src/js/core/domevent');
-var domutil = require('../../src/js/core/domutil');
+'use strict';
 
-describe('Handler/Drag', function() {
-  describe('_onMouseUp', function() {
-    it('emit "click" when not emitted drag event between mousedown and mousedown', function() {
-      spyOn(domevent, 'preventDefault');
+var Drag = require('@/core/drag');
+
+describe('Drag', function() {
+  var mockTarget, mockMouseEvent;
+  beforeEach(function() {
+    mockTarget = document.createElement('div');
+    mockMouseEvent = {
+      target: mockTarget,
+      button: 0
+    };
+  });
+
+  describe('_onMouseUp()', function() {
+    it('should emit "click" when not emitting drag event between mousedown and mousedown', function() {
       var mock = {
         options: {
           distance: 10
@@ -18,29 +25,25 @@ describe('Handler/Drag', function() {
         _getEventData: Drag.prototype._getEventData
       };
 
-      Drag.prototype._onMouseUp.call(mock, 'hello');
+      Drag.prototype._onMouseUp.call(mock, mockMouseEvent);
       expect(mock.fire).toHaveBeenCalledWith('click', {
-        target: undefined,
-        originEvent: 'hello'
+        target: mockTarget,
+        originEvent: mockMouseEvent
       });
 
       // alternative to mock._isMoved = true;
-      Drag.prototype._onMouseMove.call(mock, 'hello');
+      Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
 
-      Drag.prototype._onMouseUp.call(mock, 'hello');
+      Drag.prototype._onMouseUp.call(mock, mockMouseEvent);
       expect(mock.fire).toHaveBeenCalledWith('dragEnd', {
-        target: undefined,
-        originEvent: 'hello'
+        target: mockTarget,
+        originEvent: mockMouseEvent
       });
     });
   });
 
   describe('dragging', function() {
-    beforeEach(function() {
-      spyOn(domevent, 'getMouseButton').and.returnValue(0);
-    });
-
-    it('_dragStart fired only once every drag sessions.', function() {
+    it('_dragStart should fire only once every drag sessions', function() {
       var mock = {
         options: {
           distance: 10
@@ -52,24 +55,18 @@ describe('Handler/Drag', function() {
         _toggleDragEvent: function() {},
         _getEventData: Drag.prototype._getEventData
       };
-      var input = {
-        iam: 'mouseEvent',
-        target: 'hello'
-      };
 
-      mock.invoke.and.returnValue(true);
-      Drag.prototype._onMouseDown.call(mock, input);
-      // 9px 움직였다고 가정
+      Drag.prototype._onMouseDown.call(mock, mockMouseEvent);
       mock._distance = 9;
-      Drag.prototype._onMouseMove.call(mock, input);
-      Drag.prototype._onMouseMove.call(mock, input);
-      Drag.prototype._onMouseMove.call(mock, input);
-      Drag.prototype._onMouseMove.call(mock, input);
+      Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
+      Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
+      Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
+      Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
 
       expect(mock.invoke.calls.count()).toBe(1);
     });
 
-    it('makes custom event data from mousedown events', function() {
+    it('should make custom event data from mousedown events', function() {
       var mock = {
         options: {
           distance: 10
@@ -81,24 +78,19 @@ describe('Handler/Drag', function() {
         _toggleDragEvent: function() {},
         _getEventData: Drag.prototype._getEventData
       };
-      var input = {
-        iam: 'mouseEvent',
-        target: 'hello'
-      };
 
       mock.invoke.and.returnValue(true);
-      Drag.prototype._onMouseDown.call(mock, input);
-      // 10px 이동했다고 가정
+      Drag.prototype._onMouseDown.call(mock, mockMouseEvent);
       mock._distance = 10;
-      Drag.prototype._onMouseMove.call(mock, input);
+      Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
 
       expect(mock.invoke).toHaveBeenCalledWith('dragStart', {
-        target: 'hello',
-        originEvent: input
+        target: mockTarget,
+        originEvent: mockMouseEvent
       });
     });
 
-    it('return false when implemented dragStart handler then stop drag.', function() {
+    it('should stop drag when dragStart event returns false', function() {
       var mock = {
         options: {
           distance: 10
@@ -111,47 +103,26 @@ describe('Handler/Drag', function() {
 
       mock.invoke.and.returnValue(false);
 
-      Drag.prototype._onMouseMove.call(mock, {});
+      Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
 
       expect(mock._toggleDragEvent).toHaveBeenCalled();
     });
 
-    it('only primary mouse button can start drag events.', function() {
-      domevent.getMouseButton.and.returnValue(1);
-
+    it('should start when using a primary mouse button', function() {
       var mock = {
         options: {
           distance: 10
         },
         _distance: 0,
         invoke: jasmine.createSpy('Handler/Drag'),
-        _toggleDragEvent: jasmine.createSpy('Handler/Drag#_toggleDragEvent'),
+        _toggleDragEvent: jasmine.createSpy('Handler/Drag_toggleDragEvent'),
         _getEventData: Drag.prototype._getEventData
       };
 
-      mock.invoke.and.returnValue(true);
-      Drag.prototype._onMouseDown.call(mock, {});
+      mockMouseEvent.button = 2; // primary mouse button is 0.
+      Drag.prototype._onMouseDown.call(mock, mockMouseEvent);
 
       expect(mock._toggleDragEvent).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('_toggleDragEvent', function() {
-    beforeEach(function() {
-      spyOn(domutil, 'enableTextSelection');
-      spyOn(domutil, 'disableTextSelection');
-      spyOn(domutil, 'enableImageDrag');
-      spyOn(domutil, 'disableImageDrag');
-      spyOn(domevent, 'on');
-      spyOn(domevent, 'off');
-    });
-
-    it('toggle events for drags', function() {
-      Drag.prototype._toggleDragEvent(true);
-      expect(domutil.disableTextSelection).toHaveBeenCalled();
-
-      Drag.prototype._toggleDragEvent(false);
-      expect(domevent.off).toHaveBeenCalled();
     });
   });
 });
