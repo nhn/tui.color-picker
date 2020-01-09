@@ -1,6 +1,7 @@
-/*eslint-disable*/
-var util = require('tui-code-snippet');
-var View = require('../../src/js/core/view');
+'use strict';
+
+var View = require('@/core/view');
+
 describe('View', function() {
   var view;
 
@@ -8,47 +9,64 @@ describe('View', function() {
     loadFixtures('view.html');
   });
 
-  describe('View()', function() {
-    it('make an container element on body when container is not supplied.', function() {
-      view = new View();
-      expect($('.tui-view-' + util.stamp(view))).toEqual(view.container);
+  describe('instance', function() {
+    afterEach(function() {
+      view.destroy();
     });
 
-    it('setting default container.', function() {
+    it('should make an container element on body when container is not supplied', function() {
+      view = new View();
+      expect(document.querySelector('.tui-view-' + view.id)).toEqual(view.container);
+    });
+
+    it('should set an container by the second parameter', function() {
       var el = document.getElementById('container');
       view = new View(null, el);
       expect(view.container).toEqual(el);
     });
   });
 
-  describe('addChild', function() {
-    it('Can add child views.', function() {
+  describe('addChild()', function() {
+    var view2;
+
+    beforeEach(function() {
       view = new View();
-      var view2 = new View();
-
-      view.addChild(view2);
-
-      expect(view.childs.has(util.stamp(view2)));
+      view2 = new View();
     });
 
-    it('Can add some process before added.', function() {
-      view = new View();
-      var view2 = new View();
+    afterEach(function() {
+      view.destroy();
+    });
+
+    it('should add views as childs', function() {
+      view.addChild(view2);
+      expect(view.childs.has(view2.id)).toBe(true);
+    });
+
+    it('should execute a function before adding view as child', function() {
       var spy = jasmine.createSpy('beforeAdd');
 
       view.addChild(view2, spy);
 
       expect(spy).toHaveBeenCalledWith(view);
-      expect(view.childs.has(util.stamp(view2)));
+      expect(view.childs.has(view2.id));
     });
   });
 
   describe('recursive()', function() {
-    it('can invoke function each child views recursivly.', function() {
-      view = new View();
-      var view2 = new View();
-      var view3 = new View();
+    var view2, view3;
 
+    beforeEach(function() {
+      view = new View();
+      view2 = new View();
+      view3 = new View();
+    });
+
+    afterEach(function() {
+      view.destroy();
+    });
+
+    it('should invoke a function for each child views recursivly', function() {
       view.addChild(view2);
       view2.addChild(view3);
 
@@ -59,15 +77,12 @@ describe('View', function() {
       expect(view3.recursive).toHaveBeenCalled();
     });
 
-    it('set skipThis true then skip invoke function with root view.', function() {
-      view = new View();
-      var view2 = new View();
-      var view3 = new View();
+    it('should not invoke a function for the root view if set skipThis to true', function() {
+      var spy;
 
       view.addChild(view2);
       view2.addChild(view3);
-
-      var spy = jasmine.createSpy('recursive');
+      spy = jasmine.createSpy('recursive');
 
       view.recursive(spy, true);
 
@@ -77,23 +92,22 @@ describe('View', function() {
     });
   });
 
-  describe('destroy', function() {
+  describe('destroy()', function() {
     var view2;
+
     beforeEach(function() {
       view = new View();
       view2 = new View();
-
       view.addChild(view2);
     });
 
-    it('destroy child views recursivly.', function() {
+    it('should destroy child views recursivly', function() {
       spyOn(View.prototype, '_destroy').and.callThrough();
 
       view.destroy();
       expect(View.prototype._destroy.calls.count()).toBe(2);
       expect(view2).toEqual(
         jasmine.objectContaining({
-          __fe_id: jasmine.any(Number),
           id: null,
           childs: null,
           container: null
@@ -102,54 +116,58 @@ describe('View', function() {
     });
   });
 
-  describe('removeChild', function() {
+  describe('removeChild()', function() {
     var view2;
 
     beforeEach(function() {
       view = new View();
       view2 = new View();
-
       view.addChild(view2);
     });
 
-    it('Can remove child view.', function() {
-      view.removeChild(util.stamp(view2));
+    afterEach(function() {
+      view.destroy();
+    });
+
+    it('should remove child view by its id', function() {
+      view.removeChild(view2.id);
       expect(view.childs.length).toBe(0);
     });
 
-    it('Can remove child view by instance itself.', function() {
+    it('should remove child view by instance itself', function() {
       view.removeChild(view2);
       expect(view.childs.length).toBe(0);
     });
 
-    it('Can execute some process before view removed.', function() {
+    it('should execute a function before removing a view', function() {
       var spy = jasmine.createSpy('beforeRemove');
       view.removeChild(view2, spy);
       expect(spy).toHaveBeenCalledWith(view);
     });
   });
 
-  describe('render', function() {
+  describe('render()', function() {
     var view2;
 
     beforeEach(function() {
       view = new View();
       view2 = new View();
-
       view.addChild(view2);
     });
 
-    it('invoke render method recursivly.', function() {
+    afterEach(function() {
+      view.destroy();
+    });
+
+    it('should invoke render method recursively', function() {
       spyOn(view2, 'render');
-
       view.render();
-
       expect(view2.render).toHaveBeenCalled();
     });
   });
 
   describe('getViewBound()', function() {
-    it("calculate view's container element bounds.", function() {
+    it('should calculate the bounding box of an container element', function() {
       view = new View(null, document.getElementById('container2'));
       expect(view.getViewBound()).toEqual({
         x: 10,
@@ -162,9 +180,19 @@ describe('View', function() {
   });
 
   describe('resize()', function() {
-    it('can send recursivly to each parent instances.', function() {
+    beforeEach(function() {
+      view = new View();
+    });
+
+    afterEach(function() {
+      view.destroy();
+    });
+
+    it('should resize recursivly to each parent instances', function() {
+      var view2;
+
       view._onResize = jasmine.createSpy('viewOnResize');
-      var view2 = new View(null, document.getElementById('container3'));
+      view2 = new View(null, document.getElementById('container3'));
 
       view.addChild(view2);
       view2.resize(view2);
@@ -172,10 +200,12 @@ describe('View', function() {
       expect(view._onResize).toHaveBeenCalledWith(view2);
     });
 
-    it('send resize message properly.', function() {
+    it('should resize from the closest to farthest', function() {
+      var view2, view3;
+
       view._onResize = jasmine.createSpy('viewOnResize');
-      var view2 = new View(null, document.getElementById('container3'));
-      var view3 = new View(null, document.getElementById('container4'));
+      view2 = new View(null, document.getElementById('container3'));
+      view3 = new View(null, document.getElementById('container4'));
 
       // view <- view2 <- view3
       view.addChild(view2);

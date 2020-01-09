@@ -5,8 +5,11 @@
 
 'use strict';
 
-var util = require('tui-code-snippet');
-var colorutil = require('./colorutil');
+var CustomEvents = require('tui-code-snippet/customEvents/customEvents');
+var extend = require('tui-code-snippet/object/extend');
+var util = require('./util');
+var colorUtil = require('./colorUtil');
+
 var Layout = require('./layout');
 var Palette = require('./palette');
 var Slider = require('./slider');
@@ -49,7 +52,7 @@ function ColorPicker(options) {
    * @type {object}
    * @private
    */
-  options = this.options = util.extend(
+  options = this.options = extend(
     {
       container: null,
       color: '#f8f8f8',
@@ -120,7 +123,7 @@ function ColorPicker(options) {
   this.render(options.color);
 
   if (options.usageStatistics) {
-    util.sendHostname('color-picker', 'UA-129987462-1');
+    util.sendHostName();
   }
 }
 
@@ -131,10 +134,10 @@ function ColorPicker(options) {
  * @param {object} selectColorEventData - event data
  */
 ColorPicker.prototype._onSelectColorInPalette = function(selectColorEventData) {
-  var color = selectColorEventData.color,
-    opt = this.options;
+  var color = selectColorEventData.color;
+  var opt = this.options;
 
-  if (!colorutil.isValidRGB(color) && color !== '') {
+  if (!colorUtil.isValidRGB(color) && color !== '') {
     this.render();
 
     return;
@@ -174,8 +177,8 @@ ColorPicker.prototype._onToggleSlider = function() {
  * @param {object} selectColorEventData - event data
  */
 ColorPicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
-  var color = selectColorEventData.color,
-    opt = this.options;
+  var color = selectColorEventData.color;
+  var opt = this.options;
 
   /**
    * @event ColorPicker#selectColor
@@ -209,7 +212,7 @@ ColorPicker.prototype._onSelectColorInSlider = function(selectColorEventData) {
  * instance.setColor('#ffff00');
  */
 ColorPicker.prototype.setColor = function(hexStr) {
-  if (!colorutil.isValidRGB(hexStr)) {
+  if (!colorUtil.isValidRGB(hexStr)) {
     throw new Error('ColorPicker#setColor(): need valid hex string color value');
   }
 
@@ -261,6 +264,6 @@ ColorPicker.prototype.destroy = function() {
   this.layout = this.slider = this.palette = this.options = null;
 };
 
-util.CustomEvents.mixin(ColorPicker);
+CustomEvents.mixin(ColorPicker);
 
 module.exports = ColorPicker;

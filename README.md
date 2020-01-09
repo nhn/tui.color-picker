@@ -30,14 +30,14 @@
 TOAST UI ColorPicker applies Google Analytics (GA) to collect statistics on the use of open source, in order to identify how widely TOAST UI ColorPicker is used throughout the world. It also serves as important index to determine the future course of projects. location.hostname (e.g. > “ui.toast.com") is to be collected and the sole purpose is nothing but to measure statistics on the usage. To disable GA, use the following `usageStatistics` options when creating the instance.
 
 ```js
-var options = {
-    ...
-    usageStatistics: false
+const options = {
+  ...
+  usageStatistics: false
 }
-var instance = tui.colorPicker.create(options);
+const instance = tui.colorPicker.create(options);
 ```
 
-Or, include `tui-code-snippet.js` (**v1.5.0** or **later**) and then immediately write the options as follows:
+Or, include `tui-code-snippet.js` (**v2.2.0** or **later**) and then immediately write the options as follows:
 
 ```js
 tui.usageStatistics = false;
@@ -104,9 +104,10 @@ The CDN directory has the following structure.
 ```
 tui-color-picker/
 ├─ latest/
+│  ├─ tui-color-picker.css
 │  ├─ tui-color-picker.js
-│  ├─ tui-color-picker.min.js
-│  └─ tui-color-picker.css
+│  ├─ tui-color-picker.min.css
+│  └─ tui-color-picker.min.js
 ├─ v2.1.0/
 │  ├─ ...
 ```
@@ -138,7 +139,7 @@ var colorPicker = tui.colorPicker;
 
 #### Using module format in node environment
 ``` javascript
-var colorPicker = require('tui-color-picker'); /* CommonJS */
+const colorPicker = require('tui-color-picker'); /* CommonJS */
 ```
 
 ``` javascript
@@ -150,10 +151,10 @@ Then you should call the `create` method with [options](https://nhn.github.io/tu
 After creating an instance, you can call various APIs.
 
 ``` javascript
-var container = document.getElementById('tui-color-picker-conatiner');
-var instance = colorPicker.create({
-    container: container,
-    ...
+const container = document.getElementById('tui-color-picker-conatiner');
+const instance = colorPicker.create({
+  container: container,
+  ...
 });
 
 instance.getColor();
@@ -201,7 +202,7 @@ $ npm run test
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
+* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=2.2.0
 
 
 ## 🌏 Browser Support

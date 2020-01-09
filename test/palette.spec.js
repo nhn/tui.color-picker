@@ -1,9 +1,8 @@
 'use strict';
 
-var $ = require('jquery');
+var Palette = require('@/palette');
 
-var Palette = require('../src/js/palette');
-describe('view:Palette', function() {
+describe('Palette', function() {
   var inst;
 
   beforeEach(function() {
@@ -19,22 +18,27 @@ describe('view:Palette', function() {
     inst.destroy();
   });
 
-  it('render() makes button for each palette colors.', function() {
-    expect($('li').length).toBe(3);
+  it('render() should make buttons for each palette colors', function() {
+    expect(document.getElementsByTagName('li').length).toBe(3);
   });
 
-  it('must attach the tranparent class to an empty color.', function() {
-    expect($('li:last-child input').hasClass('tui-colorpicker-color-transparent')).toBe(true);
+  it('should attach the tranparent class to an empty color', function() {
+    var colorItem = document.getElementsByTagName('li');
+    var lastColorItem = colorItem[colorItem.length - 1];
+    var paletteButton = lastColorItem.getElementsByTagName('input')[0];
+    expect(paletteButton.className).toContain('tui-colorpicker-color-transparent');
   });
 
-  it('customevent should also work for the empty color for transparent.', function() {
-    var target = $('li:last-child input')[0];
+  it('customEvent should also work for the empty color(transparent)', function() {
+    var colorItem = document.getElementsByTagName('li');
+    var lastColorItem = colorItem[colorItem.length - 1];
+    var paletteButton = lastColorItem.getElementsByTagName('input')[0];
     var callbackFunction = jasmine.createSpy('callbackFunction');
 
     inst.on('_selectColor', callbackFunction);
 
     inst._onClick({
-      target: target
+      target: paletteButton
     });
 
     expect(callbackFunction.calls.argsFor(0)[0].color).toBe('');

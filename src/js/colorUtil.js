@@ -7,7 +7,7 @@
 
 var hexRX = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i;
 
-var colorutil = {
+var colorUtil = {
   /**
    * pad left zero characters.
    * @param {number} number number value to pad zero.
@@ -15,8 +15,8 @@ var colorutil = {
    * @returns {string} padded string.
    */
   leadingZero: function(number, length) {
-    var zero = '',
-      i = 0;
+    var zero = '';
+    var i = 0;
 
     if ((number + '').length > length) {
       return number + '';
@@ -48,7 +48,7 @@ var colorutil = {
   hexToRGB: function(hexStr) {
     var r, g, b;
 
-    if (!colorutil.isValidRGB(hexStr)) {
+    if (!colorUtil.isValidRGB(hexStr)) {
       return false;
     }
 
@@ -71,11 +71,11 @@ var colorutil = {
   rgbToHEX: function(r, g, b) {
     var hexStr =
       '#' +
-      colorutil.leadingZero(r.toString(16), 2) +
-      colorutil.leadingZero(g.toString(16), 2) +
-      colorutil.leadingZero(b.toString(16), 2);
+      colorUtil.leadingZero(r.toString(16), 2) +
+      colorUtil.leadingZero(g.toString(16), 2) +
+      colorUtil.leadingZero(b.toString(16), 2);
 
-    if (colorutil.isValidRGB(hexStr)) {
+    if (colorUtil.isValidRGB(hexStr)) {
       return hexStr;
     }
 
@@ -192,4 +192,4 @@ var colorutil = {
   }
 };
 
-module.exports = colorutil;
+module.exports = colorUtil;

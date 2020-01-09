@@ -12,24 +12,40 @@
                 border-radius: 3px;
                 padding: 7px;
             }
+            .explain {
+                position: absolute;
+                top: 0;
+                left: 250px;
+            }
+            .explain textarea {
+                width: 300px;
+                height: 300px;
+                resize: none;
+                border: none;
+                outline: 0;
+            }
         </style>
     </head>
 
     <body>
         <div class="code-html">
             <div id="color-picker"></div>
+            <div class="explain">
+                <h3>Result of <a href="http://nhn.github.io/tui.color-picker/latest/ColorPicker#event-selectColor" target="_blank">selectColor</a> event:</h3>
+                <textarea id="result" readonly></textarea>
+            </div>
         </div>
-
-        <script src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.min.js"></script>
         <script src="../dist/tui-color-picker.js"></script>
         <script class="code-js">
+        var result = document.getElementById('result');
 
         var colorpicker = tui.colorPicker.create({
             container: document.getElementById('color-picker')
         });
 
-        colorpicker.on('selectColor', function(obj) {
-            console.log(obj);
+        colorpicker.on('selectColor', function(ev) {
+            result.value = JSON.stringify(ev, null, 8);
+            console.log(ev);
         });
 
         </script>

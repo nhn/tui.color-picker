@@ -1,18 +1,14 @@
-'use strict';
+/* eslint-env es6 */
 
 module.exports = {
-  downloads: function(pkg) {
-    var name = pkg.name;
-    var version = pkg.version;
-    var extensions = ['.css', '.js', '.min.css', '.min.js'];
-    var result = {};
+  downloads: ({ name, version }) => {
+    const extensions = ['.css', '.js', '.min.css', '.min.js'];
+    const result = {};
 
-    var i, len, filename;
-
-    for (i = 0, len = extensions.length; i < len; i += 1) {
-      filename = name + extensions[i];
-      result[filename] = 'https://uicdn.toast.com/' + name + '/v' + version + '/' + filename;
-    }
+    extensions.forEach(ext => {
+      const filename = name + ext;
+      result[filename] = `https://uicdn.toast.com/${name}/v${version}/${filename}`;
+    });
 
     return result;
   }
