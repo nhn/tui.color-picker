@@ -69,7 +69,7 @@ function setConfig(defaultConfig, server) {
       'IE9',
       'IE10',
       'IE11',
-      'Edge',
+      // 'Edge',
       'Chrome-WebDriver',
       'Firefox-WebDriver'
       // 'Safari-WebDriver'
