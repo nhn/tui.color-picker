@@ -35,9 +35,11 @@ function generateId() {
  *  @param {string} [options.detailTxt='Detail'] - text for detail button.
  *  @param {boolean} [options.usageStatistics=true] - Let us know the hostname. If you don't want to send the hostname, please set to false.
  * @example
- * var colorPicker = tui.colorPicker; // or require('tui-color-picker')
+ * import colorPicker from 'tui-color-picker'; // ES6
+ * // const colorPicker = require('tui-color-picker'); // CommonJS
+ * // const colorPicker = tui.colorPicker;
  *
- * var instance = colorPicker.create({
+ * const instance = colorPicker.create({
  *   container: document.getElementById('color-picker')
  * });
  */
