@@ -149,7 +149,7 @@ First, you should import the module using one of the following ways depending on
 
 #### Using namespace in browser environment
 ``` javascript
-var colorPicker = tui.colorPicker;
+const colorPicker = tui.colorPicker;
 ```
 
 #### Using module format in node environment
