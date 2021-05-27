@@ -64,11 +64,9 @@
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "terser-webpack-plugin": "^2.3.0",
+    "tui-code-snippet": "^2.2.0",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.7",
     "webpack-dev-server": "^3.8.0"
-  },
-  "dependencies": {
-    "tui-code-snippet": "^2.2.0"
   }
 }

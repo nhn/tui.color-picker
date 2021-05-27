@@ -17,7 +17,6 @@
 * [Examples](#-examples)
 * [Install](#-install)
 * [Usage](#-usage)
-* [Dependency](#-dependency)
 * [Browser Support](#-browser-support)
 * [Pull Request Steps](#-pull-request-steps)
 * [Contributing](#-contributing)
@@ -199,10 +198,6 @@ $ npm run serve:ie8 # Run on Internet Explorer 8
 ``` sh
 $ npm run test
 ```
-
-
-## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=2.2.0
 
 
 ## 🌏 Browser Support
