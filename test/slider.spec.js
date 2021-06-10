@@ -18,15 +18,15 @@ describe('Slider', function() {
     inst.huebarHandleElement = huehandle;
     inst.baseColorElement = gradient;
 
-    spyOn(svgvml, 'setTranslateXY');
-    spyOn(svgvml, 'setStrokeColor');
-    spyOn(svgvml, 'getTranslateXY');
-    spyOn(inst, 'fire');
+    svgvml.setTranslateXY = jest.fn();
+    svgvml.setStrokeColor = jest.fn();
+    svgvml.getTranslateXY = jest.fn();
+    inst.fire = jest.fn();
   });
 
   describe('_moveColorSliderHandle()', function() {
     beforeEach(function() {
-      svgvml.getTranslateXY.and.returnValue([0, 0]);
+      svgvml.getTranslateXY.mockReturnValue([0, 0]);
     });
 
     it('should move the selected point of the slider by supplied position', function() {
@@ -51,7 +51,7 @@ describe('Slider', function() {
 
   describe('moveSaturationAndValue()', function() {
     beforeEach(function() {
-      spyOn(inst, '_moveColorSliderHandle');
+      inst._moveColorSliderHandle = jest.fn();
     });
 
     it('should move the selected point of the slider by supplied s, v values', function() {
@@ -66,9 +66,10 @@ describe('Slider', function() {
 
   describe('_moveHueHandle()', function() {
     beforeEach(function() {
-      spyOn(svgvml, 'setTranslateY');
-      spyOn(svgvml, 'setGradientColorStop');
-      svgvml.getTranslateXY.and.returnValue([0, 0]);
+      svgvml.setTranslateY = jest.fn();
+      svgvml.setGradientColorStop = jest.fn();
+
+      svgvml.getTranslateXY.mockReturnValue([0, 0]);
     });
 
     it('should move the selected point of the hue slider by supplied pixel value', function() {
@@ -78,7 +79,7 @@ describe('Slider', function() {
     });
 
     it('should change the base gradient color of the slider', function() {
-      spyOn(colorUtil, 'rgbToHEX').and.returnValue('good');
+      colorUtil.rgbToHEX = jest.fn().mockReturnValue('good');
       inst._moveHueHandle(30);
 
       expect(svgvml.setGradientColorStop).toHaveBeenCalledWith(gradient, 'good');
@@ -93,7 +94,7 @@ describe('Slider', function() {
 
   describe('moveHue()', function() {
     beforeEach(function() {
-      spyOn(inst, '_moveHueHandle');
+      inst._moveHueHandle = jest.fn();
     });
 
     it('should move the selected point of the hue slider by supplied degree', function() {
@@ -102,7 +103,7 @@ describe('Slider', function() {
       // 9.83 - 3 (handler height half)
       inst.moveHue(30);
 
-      expect(inst._moveHueHandle.calls.argsFor(0)[0]).toBeCloseTo(6.83);
+      expect(inst._moveHueHandle.mock.calls[0][0]).toBeCloseTo(6.83);
     });
   });
 });

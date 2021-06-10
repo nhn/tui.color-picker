@@ -2,6 +2,10 @@
 
 var View = require('@/core/view');
 
+function pxToNumber(str) {
+  return parseInt(str.replace('px', ''), 10);
+}
+
 describe('View', function() {
   var view;
 
@@ -44,7 +48,7 @@ describe('View', function() {
     });
 
     it('should execute a function before adding view as child', function() {
-      var spy = jasmine.createSpy('beforeAdd');
+      var spy = jest.fn();
 
       view.addChild(view2, spy);
 
@@ -70,7 +74,7 @@ describe('View', function() {
       view.addChild(view2);
       view2.addChild(view3);
 
-      spyOn(view3, 'recursive');
+      view3.recursive = jest.fn();
 
       view.recursive(function() {});
 
@@ -78,17 +82,22 @@ describe('View', function() {
     });
 
     it('should not invoke a function for the root view if set skipThis to true', function() {
-      var spy;
+      var spy,
+        spyMock = jest.fn();
 
       view.addChild(view2);
       view2.addChild(view3);
-      spy = jasmine.createSpy('recursive');
+      spy = function() {
+        var args = Array.prototype.slice.call(arguments);
+
+        return spyMock.apply(null, args);
+      };
 
       view.recursive(spy, true);
 
-      expect(spy.calls.argsFor(0)[0]).not.toBe(view);
-      expect(spy.calls.argsFor(0)[0]).toBe(view2);
-      expect(spy.calls.count()).toBe(2);
+      expect(spyMock).not.toHaveBeenCalledWith(view);
+      expect(spyMock).toHaveBeenCalledWith(view2);
+      expect(spyMock).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -102,17 +111,15 @@ describe('View', function() {
     });
 
     it('should destroy child views recursivly', function() {
-      spyOn(View.prototype, '_destroy').and.callThrough();
+      jest.spyOn(View.prototype, '_destroy');
 
       view.destroy();
-      expect(View.prototype._destroy.calls.count()).toBe(2);
-      expect(view2).toEqual(
-        jasmine.objectContaining({
-          id: null,
-          childs: null,
-          container: null
-        })
-      );
+      expect(View.prototype._destroy).toHaveBeenCalledTimes(2);
+      expect(view2).toMatchObject({
+        id: null,
+        childs: null,
+        container: null
+      });
     });
   });
 
@@ -140,7 +147,7 @@ describe('View', function() {
     });
 
     it('should execute a function before removing a view', function() {
-      var spy = jasmine.createSpy('beforeRemove');
+      var spy = jest.fn();
       view.removeChild(view2, spy);
       expect(spy).toHaveBeenCalledWith(view);
     });
@@ -160,7 +167,7 @@ describe('View', function() {
     });
 
     it('should invoke render method recursively', function() {
-      spyOn(view2, 'render');
+      view2.render = jest.fn();
       view.render();
       expect(view2.render).toHaveBeenCalled();
     });
@@ -169,6 +176,22 @@ describe('View', function() {
   describe('getViewBound()', function() {
     it('should calculate the bounding box of an container element', function() {
       view = new View(null, document.getElementById('container2'));
+
+      view.container.getBoundingClientRect = jest.fn().mockImplementation(function() {
+        var style = this.style;
+        var top = pxToNumber(style.top),
+          right = pxToNumber(style.left) + pxToNumber(style.width),
+          bottom = pxToNumber(style.top) + pxToNumber(style.height),
+          left = pxToNumber(style.left);
+
+        return {
+          top: top,
+          right: right,
+          bottom: bottom,
+          left: left
+        };
+      });
+
       expect(view.getViewBound()).toEqual({
         x: 10,
         y: 10,
@@ -189,21 +212,32 @@ describe('View', function() {
     });
 
     it('should resize recursivly to each parent instances', function() {
-      var view2;
+      var view2,
+        spy = jest.fn();
 
-      view._onResize = jasmine.createSpy('viewOnResize');
+      view._onResize = function() {
+        var args = Array.prototype.slice.call(arguments);
+
+        return spy.apply(null, args);
+      };
       view2 = new View(null, document.getElementById('container3'));
 
       view.addChild(view2);
       view2.resize(view2);
 
-      expect(view._onResize).toHaveBeenCalledWith(view2);
+      expect(spy).toHaveBeenCalledWith(view2);
     });
 
     it('should resize from the closest to farthest', function() {
-      var view2, view3;
+      var view2,
+        view3,
+        spy = jest.fn();
 
-      view._onResize = jasmine.createSpy('viewOnResize');
+      view._onResize = function() {
+        var args = Array.prototype.slice.call(arguments);
+
+        return spy.apply(null, args);
+      };
       view2 = new View(null, document.getElementById('container3'));
       view3 = new View(null, document.getElementById('container4'));
 
@@ -212,7 +246,7 @@ describe('View', function() {
       view2.addChild(view3);
 
       view3.resize(view3);
-      expect(view._onResize).toHaveBeenCalledWith(view3);
+      expect(spy).toHaveBeenCalledWith(view3);
     });
   });
 });
