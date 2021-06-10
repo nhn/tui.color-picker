@@ -31,7 +31,7 @@
   - [Setup](#setup)
   - [Develop](#develop)
     - [Run webpack-dev-server](#run-webpack-dev-server)
-    - [Run karma test](#run-karma-test)
+    - [Run jest test](#run-jest-test)
 - [🌏 Browser Support](#-browser-support)
 - [🔧 Pull Request Steps](#-pull-request-steps-1)
 - [💬 Contributing](#-contributing)
@@ -208,7 +208,7 @@ $ npm run serve
 $ npm run serve:ie8 # Run on Internet Explorer 8
 ```
 
-#### Run karma test
+#### Run jest test
 
 ``` sh
 $ npm run test

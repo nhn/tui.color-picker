@@ -4,7 +4,7 @@ module.exports = {
     browser: true,
     amd: true,
     node: true,
-    jasmine: true
+    jest: true
   },
   globals: {
     tui: true,
