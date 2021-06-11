@@ -82,8 +82,8 @@ describe('View', function() {
     });
 
     it('should not invoke a function for the root view if set skipThis to true', function() {
-      var spy,
-        spyMock = jest.fn();
+      var spy;
+      var spyMock = jest.fn();
 
       view.addChild(view2);
       view2.addChild(view3);
@@ -179,10 +179,10 @@ describe('View', function() {
 
       view.container.getBoundingClientRect = jest.fn().mockImplementation(function() {
         var style = this.style;
-        var top = pxToNumber(style.top),
-          right = pxToNumber(style.left) + pxToNumber(style.width),
-          bottom = pxToNumber(style.top) + pxToNumber(style.height),
-          left = pxToNumber(style.left);
+        var top = pxToNumber(style.top);
+        var right = pxToNumber(style.left) + pxToNumber(style.width);
+        var bottom = pxToNumber(style.top) + pxToNumber(style.height);
+        var left = pxToNumber(style.left);
 
         return {
           top: top,
@@ -212,8 +212,8 @@ describe('View', function() {
     });
 
     it('should resize recursivly to each parent instances', function() {
-      var view2,
-        spy = jest.fn();
+      var view2;
+      var spy = jest.fn();
 
       view._onResize = function() {
         var args = Array.prototype.slice.call(arguments);
@@ -229,9 +229,8 @@ describe('View', function() {
     });
 
     it('should resize from the closest to farthest', function() {
-      var view2,
-        view3,
-        spy = jest.fn();
+      var view2, view3;
+      var spy = jest.fn();
 
       view._onResize = function() {
         var args = Array.prototype.slice.call(arguments);
