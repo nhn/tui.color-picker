@@ -1,6 +1,6 @@
 /*!
  * TOAST UI Color Picker
- * @version 2.2.6
+ * @version 2.2.7
  * @author NHN FE Development Team <dl_javascript@nhn.com>
  * @license MIT
  */
@@ -2443,13 +2443,7 @@ module.exports = isObject;
  */
 
 /**
- * This object has an information that indicate the kind of browser.
- * The list below is a detectable browser list.
- *  - ie8 ~ ie11
- *  - chrome
- *  - firefox
- *  - safari
- *  - edge
+ * This object has an information that indicate the kind of browser. It can detect IE8 ~ IE11, Chrome, Firefox, Safari, and Edge.
  * @memberof module:browser
  * @example
  * var browser = require('tui-code-snippet/browser/browser'); // node, commonjs
@@ -2472,7 +2466,7 @@ var browser = {
   version: 0
 };
 
-if (window && window.navigator) {
+if (typeof window !== 'undefined' && window.navigator) {
   detectBrowser();
 }
 
@@ -4294,9 +4288,16 @@ function generateId() {
  *  @param {string} [options.detailTxt='Detail'] - text for detail button.
  *  @param {boolean} [options.usageStatistics=true] - Let us know the hostname. If you don't want to send the hostname, please set to false.
  * @example
- * var colorPicker = tui.colorPicker; // or require('tui-color-picker')
+ * // ES6
+ * import colorPicker from 'tui-color-picker';
  *
- * var instance = colorPicker.create({
+ * // CommonJS
+ * const colorPicker = require('tui-color-picker');
+ *
+ * // Browser
+ * const colorPicker = tui.colorPicker;
+ *
+ * const instance = colorPicker.create({
  *   container: document.getElementById('color-picker')
  * });
  */
