@@ -9,7 +9,7 @@ describe('ColorPicker', function() {
     var colorPicker, el;
 
     beforeEach(function() {
-      spyOn(util, 'sendHostName');
+      util.sendHostName = jest.fn();
       el = document.createElement('div');
     });
 
