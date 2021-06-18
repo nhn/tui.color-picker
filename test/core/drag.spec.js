@@ -21,7 +21,7 @@ describe('Drag', function() {
         _distance: 0,
         _isMoved: false,
         _toggleDragEvent: function() {},
-        fire: jasmine.createSpy('Handler/Drag'),
+        fire: jest.fn(),
         _getEventData: Drag.prototype._getEventData
       };
 
@@ -50,8 +50,8 @@ describe('Drag', function() {
         },
         _distance: 9,
         _dragStartFired: false,
-        invoke: jasmine.createSpy('Handler/Drag'),
-        fire: jasmine.createSpy('fire'),
+        invoke: jest.fn(),
+        fire: jest.fn(),
         _toggleDragEvent: function() {},
         _getEventData: Drag.prototype._getEventData
       };
@@ -63,7 +63,7 @@ describe('Drag', function() {
       Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
       Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
 
-      expect(mock.invoke.calls.count()).toBe(1);
+      expect(mock.invoke).toHaveBeenCalledTimes(1);
     });
 
     it('should make custom event data from mousedown events', function() {
@@ -73,13 +73,13 @@ describe('Drag', function() {
         },
         _distance: 10,
         _dragStartFired: false,
-        invoke: jasmine.createSpy('Handler/Drag'),
-        fire: jasmine.createSpy('fire'),
+        invoke: jest.fn(),
+        fire: jest.fn(),
         _toggleDragEvent: function() {},
         _getEventData: Drag.prototype._getEventData
       };
 
-      mock.invoke.and.returnValue(true);
+      mock.invoke.mockReturnValue(true);
       Drag.prototype._onMouseDown.call(mock, mockMouseEvent);
       mock._distance = 10;
       Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
@@ -96,12 +96,12 @@ describe('Drag', function() {
           distance: 10
         },
         _distance: 10,
-        invoke: jasmine.createSpy('Handler/Drag'),
-        _toggleDragEvent: jasmine.createSpy('Handler/Drag#_toggleDragEvent'),
+        invoke: jest.fn(),
+        _toggleDragEvent: jest.fn(),
         _getEventData: Drag.prototype._getEventData
       };
 
-      mock.invoke.and.returnValue(false);
+      mock.invoke.mockReturnValue(false);
 
       Drag.prototype._onMouseMove.call(mock, mockMouseEvent);
 
@@ -114,8 +114,8 @@ describe('Drag', function() {
           distance: 10
         },
         _distance: 0,
-        invoke: jasmine.createSpy('Handler/Drag'),
-        _toggleDragEvent: jasmine.createSpy('Handler/Drag_toggleDragEvent'),
+        invoke: jest.fn(),
+        _toggleDragEvent: jest.fn(),
         _getEventData: Drag.prototype._getEventData
       };
 

@@ -508,25 +508,24 @@ describe('Collection', function() {
 
       c.add(item1, item2, item3);
 
-      spy = jasmine.createSpy('each');
+      spy = jest.fn();
     });
 
     it('should iterate own items', function() {
       c.each(spy);
 
-      expect(spy.calls.argsFor(2)).toEqual(
-        jasmine.arrayContaining([
-          {
-            _id: 4,
-            value: 2
-          },
-          '4'
-        ])
+      expect(spy).toHaveBeenCalledWith(
+        {
+          _id: 4,
+          value: 2
+        },
+        '4',
+        expect.any(Object)
       );
     });
 
     it('should break loop when iteratee returns false', function() {
-      spy.and.callFake(function(item) {
+      spy.mockImplementation(function(item) {
         if (item.value === 50) {
           return false;
         }
@@ -534,16 +533,15 @@ describe('Collection', function() {
 
       c.each(spy);
 
-      expect(spy.calls.count()).toBe(2);
-      expect(spy.calls.argsFor(2)).toEqual([]);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
   });
 
   describe('doWhenHas()', function() {
     it('should invoke the supplied method when collection has model', function() {
       var item1 = { _id: 1 };
-      var spy1 = jasmine.createSpy('spy1');
-      var spy2 = jasmine.createSpy('spy2');
+      var spy1 = jest.fn();
+      var spy2 = jest.fn();
 
       c.add(item1);
 

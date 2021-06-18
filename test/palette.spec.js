@@ -6,7 +6,7 @@ describe('Palette', function() {
   var inst;
 
   beforeEach(function() {
-    jasmine.getFixtures('test.html');
+    loadFixtures('test.html');
 
     inst = new Palette({
       preset: ['#000000', '#111111', '']
@@ -33,7 +33,7 @@ describe('Palette', function() {
     var colorItem = document.getElementsByTagName('li');
     var lastColorItem = colorItem[colorItem.length - 1];
     var paletteButton = lastColorItem.getElementsByTagName('input')[0];
-    var callbackFunction = jasmine.createSpy('callbackFunction');
+    var callbackFunction = jest.fn();
 
     inst.on('_selectColor', callbackFunction);
 
@@ -41,6 +41,6 @@ describe('Palette', function() {
       target: paletteButton
     });
 
-    expect(callbackFunction.calls.argsFor(0)[0].color).toBe('');
+    expect(callbackFunction).toHaveBeenCalledWith({ color: '' });
   });
 });

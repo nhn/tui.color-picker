@@ -11,18 +11,32 @@
 
 
 ## 🚩 Table of Contents
-* [Collect statistics on the use of open source](#collect-statistics-on-the-use-of-open-source)
-* [Documents](#-documents)
-* [Features](#-features)
-* [Examples](#-examples)
-* [Install](#-install)
-* [Usage](#-usage)
-* [Dependency](#-dependency)
-* [Browser Support](#-browser-support)
-* [Pull Request Steps](#-pull-request-steps)
-* [Contributing](#-contributing)
-* [TOAST UI Family](#-toast-ui-family)
-* [License](#-license)
+
+- [Collect statistics on the use of open source](#collect-statistics-on-the-use-of-open-source)
+- [📙 Documents](#-documents)
+- [🎨 Features](#-features)
+- [🐾 Examples](#-examples)
+- [💾 Install](#-install)
+  - [Via Package Manager](#via-package-manager)
+    - [npm](#npm)
+    - [bower](#bower)
+  - [Via Contents Delivery Network (CDN)](#via-contents-delivery-network-cdn)
+  - [Download Source Files](#download-source-files)
+- [🔨 Usage](#-usage)
+  - [HTML](#html)
+  - [JavaScript](#javascript)
+    - [Using namespace in browser environment](#using-namespace-in-browser-environment)
+    - [Using module format in node environment](#using-module-format-in-node-environment)
+- [🔧 Pull Request Steps](#-pull-request-steps)
+  - [Setup](#setup)
+  - [Develop](#develop)
+    - [Running dev server](#running-dev-server)
+    - [Running test](#running-test)
+- [🌏 Browser Support](#-browser-support)
+- [🔧 Pull Request Steps](#-pull-request-steps-1)
+- [💬 Contributing](#-contributing)
+- [🍞 TOAST UI Family](#-toast-ui-family)
+- [📜 License](#-license)
 
 
 ## Collect statistics on the use of open source
@@ -134,7 +148,7 @@ First, you should import the module using one of the following ways depending on
 
 #### Using namespace in browser environment
 ``` javascript
-var colorPicker = tui.colorPicker;
+const colorPicker = tui.colorPicker;
 ```
 
 #### Using module format in node environment
@@ -187,22 +201,18 @@ Let's start development!
 You can see your code is reflected as soon as you saving the codes by running a server.
 Don't miss adding test cases and then make green rights.
 
-#### Run webpack-dev-server
+#### Running dev server
 
 ``` sh
 $ npm run serve
 $ npm run serve:ie8 # Run on Internet Explorer 8
 ```
 
-#### Run karma test
+#### Running test
 
 ``` sh
 $ npm run test
 ```
-
-
-## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=2.2.0
 
 
 ## 🌏 Browser Support
