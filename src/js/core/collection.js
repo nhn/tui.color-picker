@@ -1,6 +1,5 @@
 /**
  * @fileoverview Common collections.
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 'use strict';

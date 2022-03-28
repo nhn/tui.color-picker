@@ -1,6 +1,5 @@
 /**
  * @fileoverview General drag handler
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 'use strict';

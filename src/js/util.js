@@ -1,6 +1,5 @@
 /**
  * @fileoverview Utils for ColorPicker component
- * @author NHN. FE dev Lab. <dl_javascript@nhn.com>
  */
 
 'use strict';

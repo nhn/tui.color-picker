@@ -4,7 +4,7 @@
 [![GitHub release](https://img.shields.io/github/release/nhn/tui.color-picker.svg)](https://github.com/nhn/tui.color-picker/releases/latest)
 [![npm](https://img.shields.io/npm/v/tui-color-picker.svg)](https://www.npmjs.com/package/tui-color-picker)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/nhn/tui.project-name/labels/help%20wanted)
-[![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhn)
+[![code with hearth by NHN Cloud](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN_Cloud-ff1414.svg)](https://github.com/nhn)
 
 
 <p><a href="https://nhn.github.io/tui.color-picker/latest/"><img src="https://user-images.githubusercontent.com/8615506/64393371-08042900-d08c-11e9-9a4e-f183b7dd50db.gif" /></a></p>
@@ -248,4 +248,4 @@ For more information on PR's steps, please see links in the Contributing section
 
 ## 📜 License
 
-This software is licensed under the [MIT](https://github.com/nhn/tui.color-picker/blob/production/LICENSE) © [NHN](https://github.com/nhn).
+This software is licensed under the [MIT](https://github.com/nhn/tui.color-picker/blob/production/LICENSE) © [NHN Cloud](https://github.com/nhn).
