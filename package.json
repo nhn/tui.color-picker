@@ -24,9 +24,10 @@
     "component",
     "color",
     "picker",
-    "svgvml"
+    "svgvml",
+    "nhn cloud"
   ],
-  "author": "NHN FE Development Team <dl_javascript@nhn.com>",
+  "author": "NHN Cloud FE Development Team <dl_javascript@nhn.com>",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.5.5",

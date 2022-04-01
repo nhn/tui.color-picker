@@ -1,6 +1,5 @@
 /**
  * @fileoverview Utility modules for manipulate DOM elements.
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 'use strict';
