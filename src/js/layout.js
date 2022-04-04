@@ -1,6 +1,5 @@
 /**
  * @fileoverview ColorPicker layout module
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 'use strict';

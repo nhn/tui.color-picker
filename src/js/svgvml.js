@@ -1,6 +1,5 @@
 /**
  * @fileoverview module for manipulate SVG or VML object
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 'use strict';

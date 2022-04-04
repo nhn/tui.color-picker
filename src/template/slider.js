@@ -1,6 +1,5 @@
 /**
  * @fileoverview Slider template
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 'use strict';

@@ -4,7 +4,7 @@
 [![GitHub release](https://img.shields.io/github/release/nhn/tui.color-picker.svg)](https://github.com/nhn/tui.color-picker/releases/latest)
 [![npm](https://img.shields.io/npm/v/tui-color-picker.svg)](https://www.npmjs.com/package/tui-color-picker)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/nhn/tui.project-name/labels/help%20wanted)
-[![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhn)
+[![code with hearth by NHN Cloud](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN_Cloud-ff1414.svg)](https://github.com/nhn)
 
 
 <p><a href="https://nhn.github.io/tui.color-picker/latest/"><img src="https://user-images.githubusercontent.com/8615506/64393371-08042900-d08c-11e9-9a4e-f183b7dd50db.gif" /></a></p>
@@ -186,7 +186,7 @@ Run npm scripts and develop yourself with the following process.
 
 Fork `develop` branch into your personal repository.
 Clone it to local computer. Install node modules.
-Before starting development, you should check to haveany errors.
+Before starting development, you should check if there are any errors.
 
 ``` sh
 $ git clone https://github.com/{your-personal-repo}/tui.color-picker.git
@@ -198,7 +198,7 @@ $ npm run test
 ### Develop
 
 Let's start development!
-You can see your code is reflected as soon as you saving the codes by running a server.
+You can see your code reflected as soon as you save the code by running a server.
 Don't miss adding test cases and then make green rights.
 
 #### Running dev server
@@ -223,10 +223,10 @@ $ npm run test
 
 ## 🔧 Pull Request Steps
 
-Before PR, check to test lastly and then check any errors.
-If it has no error, commit and then push it!
+Before uploading your PR, run test one last time to check if there are any errors.
+If it has no errors, commit and then push it!
 
-For more information on PR's step, please see links of Contributing section.
+For more information on PR's steps, please see links in the Contributing section.
 
 
 ## 💬 Contributing
@@ -248,4 +248,4 @@ For more information on PR's step, please see links of Contributing section.
 
 ## 📜 License
 
-This software is licensed under the [MIT](https://github.com/nhn/tui.color-picker/blob/production/LICENSE) © [NHN](https://github.com/nhn).
+This software is licensed under the [MIT](https://github.com/nhn/tui.color-picker/blob/production/LICENSE) © [NHN Cloud](https://github.com/nhn).
