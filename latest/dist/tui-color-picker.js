@@ -1,7 +1,7 @@
 /*!
  * TOAST UI Color Picker
  * @version 2.2.7
- * @author NHN FE Development Team <dl_javascript@nhn.com>
+ * @author NHN Cloud FE Development Team <dl_javascript@nhn.com>
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -260,7 +260,6 @@ module.exports = isUndefined;
 "use strict";
 /**
  * @fileoverview Utils for ColorPicker component
- * @author NHN. FE dev Lab. <dl_javascript@nhn.com>
  */
 
 
@@ -522,7 +521,6 @@ module.exports = forEachOwnProperties;
 "use strict";
 /**
  * @fileoverview The base class of views.
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -729,7 +727,6 @@ module.exports = View;
 "use strict";
 /**
  * @fileoverview Utility modules for manipulate DOM elements.
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -1366,7 +1363,6 @@ module.exports = isString;
 "use strict";
 /**
  * @fileoverview Utility methods to manipulate colors
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -1930,7 +1926,6 @@ module.exports = inherit;
 "use strict";
 /**
  * @fileoverview Common collections.
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -2582,7 +2577,6 @@ module.exports = getClass;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
  * @fileoverview General drag handler
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -2929,7 +2923,6 @@ module.exports = getTarget;
 "use strict";
 /**
  * @fileoverview Color palette view
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -3138,7 +3131,6 @@ module.exports = hasClass;
 "use strict";
 /**
  * @fileoverview Slider view
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -3549,7 +3541,6 @@ module.exports = Slider;
 "use strict";
 /**
  * @fileoverview module for manipulate SVG or VML object
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -4249,7 +4240,6 @@ module.exports = getMouseButton;
 "use strict";
 /**
  * @fileoverview ColorPicker factory module
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -4522,7 +4512,6 @@ module.exports = ColorPicker;
 "use strict";
 /**
  * @fileoverview ColorPicker layout module
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -4609,7 +4598,6 @@ module.exports = createObject;
 "use strict";
 /**
  * @fileoverview Palette view template
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -5199,7 +5187,6 @@ module.exports = toArray;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
  * @fileoverview Slider template
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
