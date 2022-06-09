@@ -149,6 +149,8 @@ Slider.prototype.render = function(colorStr) {
 
   this.container.innerHTML = html;
 
+  this.sliderSvgElement = container.querySelector('.' + options.cssPrefix + 'svg-slider');
+  this.huebarSvgElement = container.querySelector('.' + options.cssPrefix + 'svg-huebar');
   this.sliderHandleElement = container.querySelector('.' + options.cssPrefix + 'slider-handle');
   this.huebarHandleElement = container.querySelector('.' + options.cssPrefix + 'huebar-handle');
   this.baseColorElement = container.querySelector('.' + options.cssPrefix + 'slider-basecolor');
@@ -170,6 +172,11 @@ Slider.prototype.render = function(colorStr) {
 Slider.prototype._moveColorSliderHandle = function(newLeft, newTop, silent) {
   var handle = this.sliderHandleElement;
   var handleColor;
+  var sliderRects = this.sliderSvgElement.getClientRects()[0];
+
+  if (sliderRects) {
+    COLORSLIDER_POS_LIMIT_RANGE[1] = sliderRects.height - 10;
+  }
 
   // Check position limitation.
   newTop = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], newTop);
@@ -255,6 +262,11 @@ Slider.prototype._moveHueHandle = function(newTop, silent) {
   var hueHandleElement = this.huebarHandleElement;
   var baseColorElement = this.baseColorElement;
   var newGradientColor, hexStr;
+  var huebarRects = this.huebarSvgElement.getClientRects()[0];
+
+  if (huebarRects) {
+    HUEBAR_POS_LIMIT_RANGE[1] = huebarRects.height - 7;
+  }
 
   newTop = Math.max(HUEBAR_POS_LIMIT_RANGE[0], newTop);
   newTop = Math.min(HUEBAR_POS_LIMIT_RANGE[1], newTop);
