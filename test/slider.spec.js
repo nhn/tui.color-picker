@@ -10,6 +10,16 @@ describe('Slider', function() {
   var colorslider = { name: 'colorslider' };
   var huehandle = { name: 'huehandle' };
   var gradient = { name: 'gradient' };
+  var sliderSvg = {
+    getClientRects: function() {
+      return { height: 122 };
+    }
+  };
+  var huebarSvg = {
+    getClientRects: function() {
+      return { height: 122 };
+    }
+  };
 
   beforeEach(function() {
     var el = document.createElement('div');
@@ -17,6 +27,8 @@ describe('Slider', function() {
     inst.sliderHandleElement = colorslider;
     inst.huebarHandleElement = huehandle;
     inst.baseColorElement = gradient;
+    inst.sliderSvgElement = sliderSvg;
+    inst.huebarSvgElement = huebarSvg;
 
     svgvml.setTranslateXY = jest.fn();
     svgvml.setStrokeColor = jest.fn();
