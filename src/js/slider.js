@@ -20,8 +20,10 @@ var tmpl = require('../template/slider');
 
 // Limitation position of point element inside of colorslider and hue bar
 // Minimum value can to be negative because that using color point of handle element is center point. not left, top point.
-var COLORSLIDER_POS_LIMIT_RANGE = [-7, 112];
-var HUEBAR_POS_LIMIT_RANGE = [-3, 115];
+var DEFAULT_COLORSLIDER_POS_LIMIT_MIN = -7;
+var DEFAULT_COLORSLIDER_POS_LIMIT_MAX = 112;
+var DEFAULT_HUEBAR_POS_LIMIT_MIN = -3;
+var DEFAULT_HUEBAR_POS_LIMIT_MAX = 115;
 var HUE_WHEEL_MAX = 359.99;
 
 /**
@@ -87,6 +89,13 @@ function Slider(options, container) {
     },
     container
   );
+
+  this.colorSliderPosLimitRange = [
+    DEFAULT_COLORSLIDER_POS_LIMIT_MIN,
+    DEFAULT_COLORSLIDER_POS_LIMIT_MAX
+  ];
+
+  this.huebarPosLimitRange = [DEFAULT_HUEBAR_POS_LIMIT_MIN, DEFAULT_HUEBAR_POS_LIMIT_MAX];
 
   // bind drag events
   this.drag.on(
@@ -162,6 +171,14 @@ Slider.prototype.render = function(colorStr) {
   this.moveSaturationAndValue(hsv[1], hsv[2], true);
 };
 
+Slider.prototype._setColorSliderPosMax = function() {
+  var sliderRects = this.sliderSvgElement.getClientRects()[0];
+
+  if (sliderRects) {
+    this.colorSliderPosLimitRange[1] = sliderRects.height - 10;
+  }
+};
+
 /**
  * Move colorslider by newLeft(X), newTop(Y) value
  * @private
@@ -172,17 +189,12 @@ Slider.prototype.render = function(colorStr) {
 Slider.prototype._moveColorSliderHandle = function(newLeft, newTop, silent) {
   var handle = this.sliderHandleElement;
   var handleColor;
-  var sliderRects = this.sliderSvgElement.getClientRects()[0];
-
-  if (sliderRects) {
-    COLORSLIDER_POS_LIMIT_RANGE[1] = sliderRects.height - 10;
-  }
 
   // Check position limitation.
-  newTop = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], newTop);
-  newTop = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], newTop);
-  newLeft = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], newLeft);
-  newLeft = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], newLeft);
+  newTop = Math.max(this.colorSliderPosLimitRange[0], newTop);
+  newTop = Math.min(this.colorSliderPosLimitRange[1], newTop);
+  newLeft = Math.max(this.colorSliderPosLimitRange[0], newLeft);
+  newLeft = Math.min(this.colorSliderPosLimitRange[1], newLeft);
 
   svgvml.setTranslateXY(handle, newLeft, newTop);
 
@@ -210,8 +222,8 @@ Slider.prototype.moveSaturationAndValue = function(saturation, value, silent) {
   saturation = saturation || 0;
   value = value || 0;
 
-  absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]);
-  maxValue = COLORSLIDER_POS_LIMIT_RANGE[1];
+  absMin = Math.abs(this.colorSliderPosLimitRange[0]);
+  maxValue = this.colorSliderPosLimitRange[1];
 
   // subtract absMin value because current color position is not left, top of handle element.
   // The saturation. from left 0 to right 100
@@ -231,7 +243,7 @@ Slider.prototype.moveSaturationAndValue = function(saturation, value, silent) {
  * @param {number} y - the pixel value to move handle
  */
 Slider.prototype._moveColorSliderByPosition = function(x, y) {
-  var offset = COLORSLIDER_POS_LIMIT_RANGE[0];
+  var offset = this.colorSliderPosLimitRange[0];
   this._moveColorSliderHandle(x + offset, y + offset);
 };
 
@@ -240,8 +252,8 @@ Slider.prototype._moveColorSliderByPosition = function(x, y) {
  * @returns {number[]} saturation and value
  */
 Slider.prototype.getSaturationAndValue = function() {
-  var absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]);
-  var maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1];
+  var absMin = Math.abs(this.colorSliderPosLimitRange[0]);
+  var maxValue = absMin + this.colorSliderPosLimitRange[1];
   var position = svgvml.getTranslateXY(this.sliderHandleElement);
   var saturation, value;
 
@@ -250,6 +262,14 @@ Slider.prototype.getSaturationAndValue = function() {
   value = 100 - ((position[0] + absMin) / maxValue) * 100;
 
   return [saturation, value];
+};
+
+Slider.prototype._setHueBarPosMax = function() {
+  var huebarRects = this.huebarSvgElement.getClientRects()[0];
+
+  if (huebarRects) {
+    this.huebarPosLimitRange[1] = huebarRects.height - 7;
+  }
 };
 
 /**
@@ -262,14 +282,9 @@ Slider.prototype._moveHueHandle = function(newTop, silent) {
   var hueHandleElement = this.huebarHandleElement;
   var baseColorElement = this.baseColorElement;
   var newGradientColor, hexStr;
-  var huebarRects = this.huebarSvgElement.getClientRects()[0];
 
-  if (huebarRects) {
-    HUEBAR_POS_LIMIT_RANGE[1] = huebarRects.height - 7;
-  }
-
-  newTop = Math.max(HUEBAR_POS_LIMIT_RANGE[0], newTop);
-  newTop = Math.min(HUEBAR_POS_LIMIT_RANGE[1], newTop);
+  newTop = Math.max(this.huebarPosLimitRange[0], newTop);
+  newTop = Math.min(this.huebarPosLimitRange[1], newTop);
 
   svgvml.setTranslateY(hueHandleElement, newTop);
 
@@ -294,8 +309,8 @@ Slider.prototype.moveHue = function(degree, silent) {
   var newTop = 0;
   var absMin, maxValue;
 
-  absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
-  maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
+  absMin = Math.abs(this.huebarPosLimitRange[0]);
+  maxValue = absMin + this.huebarPosLimitRange[1];
 
   degree = degree || 0;
   newTop = (maxValue * degree) / HUE_WHEEL_MAX - absMin;
@@ -309,7 +324,7 @@ Slider.prototype.moveHue = function(degree, silent) {
  * @param {number} y - pixel value to move hue handle
  */
 Slider.prototype._moveHueByPosition = function(y) {
-  var offset = HUEBAR_POS_LIMIT_RANGE[0];
+  var offset = this.huebarPosLimitRange[0];
 
   this._moveHueHandle(y + offset);
 };
@@ -323,8 +338,8 @@ Slider.prototype.getHue = function() {
   var position = svgvml.getTranslateXY(handle);
   var absMin, maxValue;
 
-  absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
-  maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
+  absMin = Math.abs(this.huebarPosLimitRange[0]);
+  maxValue = absMin + this.huebarPosLimitRange[1];
 
   // maxValue : 359.99 = pos.y : x
   return ((position[0] + absMin) * HUE_WHEEL_MAX) / maxValue;
@@ -393,6 +408,8 @@ Slider.prototype._onClick = function(clickEvent) {
  * @param {object} dragStartEvent - dragStart event data from Drag#dragStart
  */
 Slider.prototype._onDragStart = function(dragStartEvent) {
+  this._setColorSliderPosMax();
+  this._setHueBarPosMax();
   this._prepareColorSliderForMouseEvent(dragStartEvent);
 };
 
