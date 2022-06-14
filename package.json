@@ -1,6 +1,6 @@
 {
   "name": "tui-color-picker",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "main": "dist/tui-color-picker.js",
   "files": [
     "dist"
