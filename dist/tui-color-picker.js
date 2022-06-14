@@ -1,7 +1,7 @@
 /*!
  * TOAST UI Color Picker
- * @version 2.2.7
- * @author NHN FE Development Team <dl_javascript@nhn.com>
+ * @version 2.2.8
+ * @author NHN Cloud FE Development Team <dl_javascript@nhn.com>
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -260,7 +260,6 @@ module.exports = isUndefined;
 "use strict";
 /**
  * @fileoverview Utils for ColorPicker component
- * @author NHN. FE dev Lab. <dl_javascript@nhn.com>
  */
 
 
@@ -522,7 +521,6 @@ module.exports = forEachOwnProperties;
 "use strict";
 /**
  * @fileoverview The base class of views.
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -729,7 +727,6 @@ module.exports = View;
 "use strict";
 /**
  * @fileoverview Utility modules for manipulate DOM elements.
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -1366,7 +1363,6 @@ module.exports = isString;
 "use strict";
 /**
  * @fileoverview Utility methods to manipulate colors
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -1930,7 +1926,6 @@ module.exports = inherit;
 "use strict";
 /**
  * @fileoverview Common collections.
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -2582,7 +2577,6 @@ module.exports = getClass;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
  * @fileoverview General drag handler
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -2929,7 +2923,6 @@ module.exports = getTarget;
 "use strict";
 /**
  * @fileoverview Color palette view
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -3138,7 +3131,6 @@ module.exports = hasClass;
 "use strict";
 /**
  * @fileoverview Slider view
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -3168,8 +3160,10 @@ var tmpl = __webpack_require__(57); // Limitation position of point element insi
 // Minimum value can to be negative because that using color point of handle element is center point. not left, top point.
 
 
-var COLORSLIDER_POS_LIMIT_RANGE = [-7, 112];
-var HUEBAR_POS_LIMIT_RANGE = [-3, 115];
+var DEFAULT_COLORSLIDER_POS_LIMIT_MIN = -7;
+var DEFAULT_COLORSLIDER_POS_LIMIT_MAX = 112;
+var DEFAULT_HUEBAR_POS_LIMIT_MIN = -3;
+var DEFAULT_HUEBAR_POS_LIMIT_MAX = 115;
 var HUE_WHEEL_MAX = 359.99;
 /**
  * @constructor
@@ -3227,7 +3221,9 @@ function Slider(options, container) {
 
   this.drag = new Drag({
     distance: 0
-  }, container); // bind drag events
+  }, container);
+  this.colorSliderPosLimitRange = [DEFAULT_COLORSLIDER_POS_LIMIT_MIN, DEFAULT_COLORSLIDER_POS_LIMIT_MAX];
+  this.huebarPosLimitRange = [DEFAULT_HUEBAR_POS_LIMIT_MIN, DEFAULT_HUEBAR_POS_LIMIT_MAX]; // bind drag events
 
   this.drag.on({
     dragStart: this._onDragStart,
@@ -3286,6 +3282,8 @@ Slider.prototype.render = function (colorStr) {
   html = html.replace(/{{cssPrefix}}/g, options.cssPrefix);
   html = html.replace(/{{id}}/g, options.id);
   this.container.innerHTML = html;
+  this.sliderSvgElement = container.querySelector('.' + options.cssPrefix + 'svg-slider');
+  this.huebarSvgElement = container.querySelector('.' + options.cssPrefix + 'svg-huebar');
   this.sliderHandleElement = container.querySelector('.' + options.cssPrefix + 'slider-handle');
   this.huebarHandleElement = container.querySelector('.' + options.cssPrefix + 'huebar-handle');
   this.baseColorElement = container.querySelector('.' + options.cssPrefix + 'slider-basecolor');
@@ -3293,6 +3291,14 @@ Slider.prototype.render = function (colorStr) {
   hsv = colorUtil.rgbToHSV.apply(null, rgb);
   this.moveHue(hsv[0], true);
   this.moveSaturationAndValue(hsv[1], hsv[2], true);
+};
+
+Slider.prototype._setColorSliderPosMax = function () {
+  var sliderRects = this.sliderSvgElement.getClientRects()[0];
+
+  if (sliderRects) {
+    this.colorSliderPosLimitRange[1] = sliderRects.height - 10;
+  }
 };
 /**
  * Move colorslider by newLeft(X), newTop(Y) value
@@ -3307,10 +3313,10 @@ Slider.prototype._moveColorSliderHandle = function (newLeft, newTop, silent) {
   var handle = this.sliderHandleElement;
   var handleColor; // Check position limitation.
 
-  newTop = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], newTop);
-  newTop = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], newTop);
-  newLeft = Math.max(COLORSLIDER_POS_LIMIT_RANGE[0], newLeft);
-  newLeft = Math.min(COLORSLIDER_POS_LIMIT_RANGE[1], newLeft);
+  newTop = Math.max(this.colorSliderPosLimitRange[0], newTop);
+  newTop = Math.min(this.colorSliderPosLimitRange[1], newTop);
+  newLeft = Math.max(this.colorSliderPosLimitRange[0], newLeft);
+  newLeft = Math.min(this.colorSliderPosLimitRange[1], newLeft);
   svgvml.setTranslateXY(handle, newLeft, newTop);
   handleColor = newTop > 50 ? 'white' : 'black';
   svgvml.setStrokeColor(handle, handleColor);
@@ -3335,8 +3341,8 @@ Slider.prototype.moveSaturationAndValue = function (saturation, value, silent) {
   var absMin, maxValue, newLeft, newTop;
   saturation = saturation || 0;
   value = value || 0;
-  absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]);
-  maxValue = COLORSLIDER_POS_LIMIT_RANGE[1]; // subtract absMin value because current color position is not left, top of handle element.
+  absMin = Math.abs(this.colorSliderPosLimitRange[0]);
+  maxValue = this.colorSliderPosLimitRange[1]; // subtract absMin value because current color position is not left, top of handle element.
   // The saturation. from left 0 to right 100
 
   newLeft = saturation * maxValue / 100 - absMin; // The Value. from top 100 to bottom 0. that why newTop subtract by maxValue.
@@ -3356,7 +3362,7 @@ Slider.prototype.moveSaturationAndValue = function (saturation, value, silent) {
 
 
 Slider.prototype._moveColorSliderByPosition = function (x, y) {
-  var offset = COLORSLIDER_POS_LIMIT_RANGE[0];
+  var offset = this.colorSliderPosLimitRange[0];
 
   this._moveColorSliderHandle(x + offset, y + offset);
 };
@@ -3367,14 +3373,22 @@ Slider.prototype._moveColorSliderByPosition = function (x, y) {
 
 
 Slider.prototype.getSaturationAndValue = function () {
-  var absMin = Math.abs(COLORSLIDER_POS_LIMIT_RANGE[0]);
-  var maxValue = absMin + COLORSLIDER_POS_LIMIT_RANGE[1];
+  var absMin = Math.abs(this.colorSliderPosLimitRange[0]);
+  var maxValue = absMin + this.colorSliderPosLimitRange[1];
   var position = svgvml.getTranslateXY(this.sliderHandleElement);
   var saturation, value;
   saturation = (position[1] + absMin) / maxValue * 100; // The value of HSV color model is inverted. top 100 ~ bottom 0. so subtract by 100
 
   value = 100 - (position[0] + absMin) / maxValue * 100;
   return [saturation, value];
+};
+
+Slider.prototype._setHueBarPosMax = function () {
+  var huebarRects = this.huebarSvgElement.getClientRects()[0];
+
+  if (huebarRects) {
+    this.huebarPosLimitRange[1] = huebarRects.height - 7;
+  }
 };
 /**
  * Move hue handle supplied pixel value
@@ -3388,8 +3402,8 @@ Slider.prototype._moveHueHandle = function (newTop, silent) {
   var hueHandleElement = this.huebarHandleElement;
   var baseColorElement = this.baseColorElement;
   var newGradientColor, hexStr;
-  newTop = Math.max(HUEBAR_POS_LIMIT_RANGE[0], newTop);
-  newTop = Math.min(HUEBAR_POS_LIMIT_RANGE[1], newTop);
+  newTop = Math.max(this.huebarPosLimitRange[0], newTop);
+  newTop = Math.min(this.huebarPosLimitRange[1], newTop);
   svgvml.setTranslateY(hueHandleElement, newTop);
   newGradientColor = colorUtil.hsvToRGB(this.getHue(), 100, 100);
   hexStr = colorUtil.rgbToHEX.apply(null, newGradientColor);
@@ -3411,8 +3425,8 @@ Slider.prototype._moveHueHandle = function (newTop, silent) {
 Slider.prototype.moveHue = function (degree, silent) {
   var newTop = 0;
   var absMin, maxValue;
-  absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
-  maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1];
+  absMin = Math.abs(this.huebarPosLimitRange[0]);
+  maxValue = absMin + this.huebarPosLimitRange[1];
   degree = degree || 0;
   newTop = maxValue * degree / HUE_WHEEL_MAX - absMin;
 
@@ -3426,7 +3440,7 @@ Slider.prototype.moveHue = function (degree, silent) {
 
 
 Slider.prototype._moveHueByPosition = function (y) {
-  var offset = HUEBAR_POS_LIMIT_RANGE[0];
+  var offset = this.huebarPosLimitRange[0];
 
   this._moveHueHandle(y + offset);
 };
@@ -3440,8 +3454,8 @@ Slider.prototype.getHue = function () {
   var handle = this.huebarHandleElement;
   var position = svgvml.getTranslateXY(handle);
   var absMin, maxValue;
-  absMin = Math.abs(HUEBAR_POS_LIMIT_RANGE[0]);
-  maxValue = absMin + HUEBAR_POS_LIMIT_RANGE[1]; // maxValue : 359.99 = pos.y : x
+  absMin = Math.abs(this.huebarPosLimitRange[0]);
+  maxValue = absMin + this.huebarPosLimitRange[1]; // maxValue : 359.99 = pos.y : x
 
   return (position[0] + absMin) * HUE_WHEEL_MAX / maxValue;
 };
@@ -3512,6 +3526,10 @@ Slider.prototype._onClick = function (clickEvent) {
 
 
 Slider.prototype._onDragStart = function (dragStartEvent) {
+  this._setColorSliderPosMax();
+
+  this._setHueBarPosMax();
+
   this._prepareColorSliderForMouseEvent(dragStartEvent);
 };
 /**
@@ -3549,7 +3567,6 @@ module.exports = Slider;
 "use strict";
 /**
  * @fileoverview module for manipulate SVG or VML object
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -4249,7 +4266,6 @@ module.exports = getMouseButton;
 "use strict";
 /**
  * @fileoverview ColorPicker factory module
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -4522,7 +4538,6 @@ module.exports = ColorPicker;
 "use strict";
 /**
  * @fileoverview ColorPicker layout module
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -4609,7 +4624,6 @@ module.exports = createObject;
 "use strict";
 /**
  * @fileoverview Palette view template
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
@@ -5199,7 +5213,6 @@ module.exports = toArray;
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/**
  * @fileoverview Slider template
- * @author NHN. FE Development Team <dl_javascript@nhn.com>
  */
 
 
